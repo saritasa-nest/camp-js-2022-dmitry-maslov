@@ -58,34 +58,16 @@ export class AnimeApi extends Api {
   }
 }
 
-/**
- * TODO: JSDOC.
- */
-interface GetPaginatedListAnimeListResponse {
+export interface GetPaginatedListAnimeListResponse {
 
-  /**
-   *
-   */
   results: ListAnime[];
 
-  /**
-   *
-   */
   count: number;
 
-  /**
-   *
-   */
   offset: number;
 
-  /**
-   *
-   */
   limit: number;
 
-  /**
-   *
-   */
   ordering: string;
 }
 
