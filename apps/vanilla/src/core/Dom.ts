@@ -30,10 +30,6 @@ export class Dom<T extends HTMLElement= HTMLElement> {
     return this;
   }
 
-  public on(event: keyof HTMLElementEventMap, method: () => void): Dom {
-    this.$el.addEventListener(event, method);
-  }
-
   /**
    * Append node in element.
    * @param node {HTMLElement} Dom node.
