@@ -30,13 +30,19 @@ export class Dom<T extends HTMLElement= HTMLElement> {
     return this;
   }
 
+  public on(event: keyof HTMLElementEventMap, method: () => void): Dom {
+    this.$el.addEventListener(event, method);
+  }
+
   /**
    * Append node in element.
    * @param node {HTMLElement} Dom node.
    * @returns This Dom instance for chaining.
    */
-  public append(node: Dom): Dom<T> {
-    this.$el.append(node.$el);
+  public append(...node: Dom[]): Dom<T> {
+    node.forEach($node => {
+      this.$el.append($node.$el);
+    });
     return this;
   }
 
