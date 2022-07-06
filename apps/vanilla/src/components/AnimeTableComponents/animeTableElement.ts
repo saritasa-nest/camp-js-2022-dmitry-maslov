@@ -1,6 +1,6 @@
 import { ListAnime } from '@js-camp/core/models/listAnime';
 
-import { $, Dom } from '../core/Dom';
+import { $, Dom } from '../../core/Dom';
 
 /**
  * Creates the HOME element of the anime table.
@@ -22,9 +22,13 @@ export function $createAnimeTableElement(listAnime: ListAnime): Dom {
   const $airedStart = $.create('span').setTextContent(String(listAnime.airedStart ? listAnime.airedStart.getFullYear() : 'Unknown'));
   const $airedStartCol = $.create('td', 'border-r').append($airedStart);
 
-  return $.create('tr', 'flex border-y my-1 w-full justify-between')
-    .append($imageCol)
-    .append($titleCol)
-    .append($statusCol)
-    .append($airedStartCol);
+  return (
+    $.create('tr', 'flex border-y my-1 w-full justify-between')
+      .append(
+        $imageCol,
+        $titleCol,
+        $statusCol,
+        $airedStartCol,
+      )
+  );
 }
