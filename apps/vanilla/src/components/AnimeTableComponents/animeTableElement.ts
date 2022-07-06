@@ -4,7 +4,7 @@ import { $, Dom } from '../../core/Dom';
 
 /**
  * Creates the HOME element of the anime table.
- * @param listAnime ListAnime Object.
+ * @param listAnime ListAnime prop.
  * @returns Instance HOUSE describing element of anime table.
  */
 export function $createAnimeTableElement(listAnime: ListAnime): Dom {
