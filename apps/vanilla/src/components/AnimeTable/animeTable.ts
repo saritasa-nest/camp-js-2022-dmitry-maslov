@@ -2,10 +2,13 @@ import { ListAnime } from '@js-camp/core/models/listAnime';
 
 import { $ } from '../../core/Dom';
 
+import { Dom } from './../../core/Dom';
+
 import { animeApi, GetPaginatedListAnimeListResponse } from './../../services/anime.service';
 
 // Components
 import { $createAnimeTableElement } from './animeTableElement';
+import { $createAnimeTableHeader } from './animeTableHeader';
 
 interface AnimeTableState {
 
@@ -39,7 +42,11 @@ interface AnimeTableMethods {
  * Render an anime table on the page.
  * @param selector The selector inside which we create the table. Example: '#app'.
  */
-export function $createAnimeTableComponent(selector: string): void {
+export function $createAnimeTableComponent(selector: string): Dom {
+  const $root = $(selector);
+  const $tbody = $.create('tbody');
+  const $thead = $createAnimeTableHeader();
+
   const state: AnimeTableState = {
     elements: [],
     paginationParams: {
@@ -68,13 +75,10 @@ export function $createAnimeTableComponent(selector: string): void {
     },
   };
 
-  const $root = $(selector);
-  const $tbody = $.create('tbody');
-
   /**
    * The method is called right after the component is rendered.
    */
-  async function afterRender(): Promise<void> {
+  async function didMount(): Promise<void> {
     const { results } = await methods.getData();
     state.elements = results;
 
@@ -82,18 +86,20 @@ export function $createAnimeTableComponent(selector: string): void {
   }
 
   /**
-   * Renders the component in HTML.
+   * Mount the component on the root element.
    */
-  function render(): void {
+  function mount(): void {
     $root.append(
       $.create('table')
         .append(
-          $.create('thead'),
+          $thead,
           $tbody,
         ),
     );
+
+    didMount();
   }
 
-  render();
-  afterRender();
+  mount();
+  return $root;
 }
