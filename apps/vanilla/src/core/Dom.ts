@@ -63,7 +63,7 @@ export class Dom<T extends HTMLElement= HTMLElement> {
    * @param text {string}.
    * @returns This Dom instance for chaining.
    */
-  public setTextContent(text: string): Dom {
+  public setTextContent(text: string): Dom<T> {
     this.$el.textContent = text.trim();
     return this;
   }
@@ -106,7 +106,11 @@ $.create = function<T extends HTMLElement = HTMLElement>(tagName: keyof HTMLElem
   const el = document.createElement(tagName);
 
   if (classes !== undefined) {
-    classes.split(' ').forEach(elClass => el.classList.add(elClass));
+    classes.split(' ').forEach(elClass => {
+      if (elClass) {
+        el.classList.add(elClass);
+      }
+  });
   }
 
   return $(el as T);
