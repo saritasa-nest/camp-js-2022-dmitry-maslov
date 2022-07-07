@@ -9,11 +9,11 @@ export class Pagination<T> extends Immerable {
   /** Name. */
   public readonly results: T[];
 
-  public constructor(data: PostInitArgs<T>) {
+  public constructor(data: InitArgs<T>) {
     super();
     this.count = data.count;
     this.results = data.results;
   }
 }
 
-type PostInitArgs<T> = OmitImmerable<Pagination<T>>;
+type InitArgs<T> = OmitImmerable<Pagination<T>>;

@@ -27,7 +27,7 @@ export class ListAnime extends Immerable {
   /** Anime Status. */
   public readonly status: AnimeStatus;
 
-  public constructor(data: PostInitArgs) {
+  public constructor(data: InitArgs) {
     super();
     this.id = data.id;
     this.image = data.image;
@@ -39,4 +39,4 @@ export class ListAnime extends Immerable {
   }
 }
 
-type PostInitArgs = OmitImmerable<ListAnime>;
+type InitArgs = OmitImmerable<ListAnime>;
