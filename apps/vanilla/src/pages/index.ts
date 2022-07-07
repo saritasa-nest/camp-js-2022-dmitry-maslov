@@ -1,3 +1,5 @@
-import { $createAnimeTableComponent } from '../components/AnimeTable/animeTable';
+import { AnimeTableComponent } from './../components/AnimeTableComponents/animeTable';
 
-$createAnimeTableComponent('#table');
+const $AnimeTable = new AnimeTableComponent('#table');
+
+$AnimeTable.mount();
