@@ -11,9 +11,11 @@ export function $createAnimeTableElement(listAnime: ListAnime): Dom {
 
   const $image = $.create<HTMLImageElement>('img', 'w-40 flex-shrink-0 flex-grow-1 justify-between');
   $image.$el.src = listAnime.image;
-  const $imageCol = $.create('td', 'border-r').append($image);
+  const $imageCol = $.create('td', 'border-r')
+    .append($image);
 
-  const $engTitle = $.create('span').setTextContent(listAnime.titleEng);
+  const $engTitle = $.create('span')
+    .setTextContent(listAnime.titleEng);
   const $titleCol = $.create('td', 'border-r').append($engTitle);
 
   const $status = $.create('span').setTextContent(listAnime.status);
