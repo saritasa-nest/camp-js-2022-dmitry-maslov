@@ -9,7 +9,7 @@ import { animeApi } from '../../services/anime.service';
 // Components
 import { $createAnimeTableElement } from './animeTableElement';
 import { PaginationPanel } from './animeTablePagination';
-import { AnimeTableHeaderComponent } from './SotredPanel';
+import { AnimeTableHeader } from './animeTableHeader';
 
 interface AnimeTableState {
 
@@ -37,7 +37,7 @@ interface AnimeTableMethods {
   updateOrderState(order: AnimeOrder): Promise<void>;
 }
 
-export class AnimeTableComponent {
+export class AnimeTable {
   private state: AnimeTableState = {
     elements: [],
     paginationParams: {
@@ -54,7 +54,7 @@ export class AnimeTableComponent {
 
   private $tableElements?: Dom;
 
-  private $TableHeader?: AnimeTableHeaderComponent;
+  private $TableHeader?: AnimeTableHeader;
 
   private $PaginationPanel?: PaginationPanel;
 
@@ -63,10 +63,6 @@ export class AnimeTableComponent {
     this.update();
   }
 
-  /**
-   * TODO: Translate to english.
-   * Методы компонента, которые не являются главными методам компонента.
-   */
   private methods: AnimeTableMethods;
 
   public constructor(selector: string) {
@@ -160,7 +156,7 @@ export class AnimeTableComponent {
 
     this.$root = $(this.selector);
 
-    this.$TableHeader = new AnimeTableHeaderComponent({
+    this.$TableHeader = new AnimeTableHeader({
       order: this.state.order,
       setOrder: this.methods.updateOrderState,
     });

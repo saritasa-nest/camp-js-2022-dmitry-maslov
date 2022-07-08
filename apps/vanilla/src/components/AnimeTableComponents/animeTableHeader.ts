@@ -1,117 +1,138 @@
 import {
   AnimeOrder,
   AnimeOrders,
+  AnimeNotOrder,
+  AnimeReversedOrder,
 } from '@js-camp/core/enums/anime/ordering.enum';
 
-import { Dom, $ } from '../../core/Dom';
+import { $, Dom } from '../../core/Dom';
 
-import { AnimeReversedOrder } from './../../../../../libs/core/enums/anime/ordering.enum';
-
-interface SortTableHeaderMethods {
-  setOrder(order: AnimeOrders): void;
-  setSortElementsStatus(): void;
-}
-
-interface SortTableHeaderProps {
+interface AnimeTableHeaderProps {
   order: AnimeOrders;
-  updateOrder(order: AnimeOrders): void;
+  setOrder(order: AnimeOrders): void;
 }
 
 /**
  * Created table headers, is responsible for sorting.
  */
-export class SortTableHeader {
-  private $root?: Dom;
+export class AnimeTableHeader {
+  private $root: Dom;
 
-  private $row?: Dom;
+  private $row: Dom;
 
-  private elements: SortHeader[];
+  private props: AnimeTableHeaderProps;
 
-  private methods: SortTableHeaderMethods;
+  private headers: Header[];
 
-  private props: SortTableHeaderProps;
+  private setOrderInHeader(header: Header): void {
+    const { order, reverseOrder, status } = header;
 
-  public constructor(props: SortTableHeaderProps) {
+    this.resetHeadersStatus();
+
+    if (order !== undefined && reverseOrder !== undefined) {
+      switch (status) {
+        case SortStatus.Not:
+          this.props.setOrder(order);
+          header.status = SortStatus.Sort;
+          break;
+
+        case SortStatus.Sort:
+          this.props.setOrder(reverseOrder);
+          header.status = SortStatus.Reverse;
+          break;
+
+        case SortStatus.Reverse:
+          this.props.setOrder(AnimeNotOrder.NotOrder);
+          header.status = SortStatus.Not;
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  public constructor(props: AnimeTableHeaderProps) {
     this.props = props;
-    this.methods = {
-      setOrder: (order: AnimeOrders) => {
-        this.props.updateOrder(order);
-      },
-      setSortElementsStatus: (): void => {
-        const { order } = this.props;
 
-        if (order === AnimeOrder.NotOrder) {
-          return void 0;
-        }
-
-        for (let index = 0; index < this.elements.length; index++) {
-          const el = this.elements[index];
-
-          if (order === el.reverseOrder || order === el.order) {
-
-            if (order in AnimeOrder) {
-              el.status = SortStatus.Sort;
-            } else if (order in AnimeReversedOrder) {
-              el.status = SortStatus.Reverse;
-            }
-
-            break;
-          }
-        }
-
-      },
-    };
-
-    this.elements = [
+    this.$root = $.create('thead');
+    this.$row = $.create('tr', 'flex justify-between');
+    this.headers = [
       {
-        $header: $.create('th').setTextContent('English Title'),
-        $status: $.create('div'),
-        status: SortStatus.Not,
+        $header: $.create('th').setTextContent('Photo'),
+      },
+      {
+        $header: $.create('th', 'cursor-pointer').setTextContent('English title'),
         order: AnimeOrder.TitleEng,
         reverseOrder: AnimeReversedOrder.ReversedTitleEng,
+        status: SortStatus.Not,
       },
       {
-        $status: $.create('div'),
-        status: SortStatus.Not,
-        $header: $.create('th').setTextContent('status'),
+        $header: $.create('th').setTextContent('Status'),
         order: AnimeOrder.Status,
         reverseOrder: AnimeReversedOrder.ReversedStatus,
+        status: SortStatus.Not,
       },
       {
-        $status: $.create('div'),
-        status: SortStatus.Not,
-        $header: $.create('th').setTextContent('Aired Start Year'),
+        $header: $.create('th').setTextContent('Aired start'),
         order: AnimeOrder.AiredStart,
         reverseOrder: AnimeReversedOrder.ReversedAiredStart,
+        status: SortStatus.Not,
       },
     ];
   }
 
-  public getElement() {
+  private resetHeadersStatus(): void {
+    this.headers.forEach(header => {
+      if (header.status) {
+        header.status = SortStatus.Not;
+      }
+    });
+  }
+
+  public update(order: AnimeOrders): void {
+    this.headers.forEach(header => {
+      if (order === header.order || order === header.reverseOrder) {
+        switch (header.status) {
+          case SortStatus.Sort:
+            // TODO: Ставим стиль для возрастания
+            break;
+          case SortStatus.Reverse:
+            // TODO: Ставим стиль для убывания
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
+
+  public getElements(): Dom {
     return this.$root;
   }
 
-  public update() {
-    //
-  }
+  public mount(): void {
+    this.headers.forEach(header => {
+      const { $header, order } = header;
 
-  public mount() {
-    this.$root = $.create('thead');
-    this.$row = $.create('tr', 'flex');
+      if (order !== undefined) {
+        $header.$el.addEventListener('click', () => {
+          this.setOrderInHeader(header);
+        });
+      }
 
-    const $photoCol = $.create('th').setTextContent('Photo');
-
-    this.$row.append($photoCol);
+      this.$row.append($header);
+    });
 
     this.$root.append(this.$row);
   }
 }
-interface SortHeader {
+
+interface Header {
   $header: Dom;
-  $status: Dom;
-  status: SortStatus;
-  order: AnimeOrder;
-  reverseOrder: AnimeReversedOrder;
+  status?: SortStatus;
+  order?: AnimeOrders;
+  reverseOrder?: AnimeOrders;
 }
 
 enum SortStatus {
