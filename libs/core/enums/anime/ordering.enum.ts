@@ -1,29 +1,47 @@
 /**
  * TODO: DOC.
  */
-export enum AnimeOrdering {
-  Id = 'id',
-  ReversedId = '-id',
+export type AnimeOrders = '' | AnimeOrder | AnimeReversedOrder | AnimeNotOrder;
+
+export enum AnimeNotOrder {
+  NotOrder = '',
+}
+
+export enum AnimeOrder {
   TitleEng = 'title_eng',
-  ReversedTitleEng = '-title_eng',
+
   TitleJpn = 'title_jpn',
-  ReversedTitleJpn = '-title_jpn',
+
   Synopsis = 'synopsis',
-  ReversedSynopsis = 'synopsis',
+
   Status = 'status',
-  ReversedStatus = 'status',
+
   Source = 'source',
-  ReversedSource = '-source',
+
   Rating = 'rating',
-  ReversedRating = '-rating',
+
   Aired = 'aired',
-  ReversedAired = '-aired',
-  AiredStart = 'aired__startwith',
-  ReversedAiredStart = '-aired__startwith',
+
+  AiredStart = 'aired__startswith',
+
   AiredEnd = 'aired__endswith',
-  ReversedEnd = '-aired__endswith',
+
   Created = 'created',
-  ReversedCreated = '-created',
+
   Modified = 'modified',
+
+}
+
+export enum AnimeReversedOrder {
+  ReversedTitleEng = '-title_eng',
+  ReversedTitleJpn = '-title_jpn',
+  ReversedSynopsis = '-synopsis',
+  ReversedStatus = '-status',
+  ReversedSource = '-source',
+  ReversedRating = '-rating',
+  ReversedAired = '-aired',
+  ReversedAiredStart = '-aired__startswith',
+  ReversedEnd = '-aired__endswith',
+  ReversedCreated = '-created',
   ReversedModified = '-modified',
 }

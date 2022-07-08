@@ -1,8 +1,5 @@
 import { $, Dom } from '../../core/Dom';
 
-import { GetPaginatedListAnimeListResponse } from './../../services/anime.service';
-
-import { Pagination } from './../../../../../libs/core/models/pagination';
 import { PaginationParams } from './animeTable';
 
 interface PaginationPanelState {
@@ -11,7 +8,7 @@ interface PaginationPanelState {
 
 interface PaginationPanelProps {
   paginationParams: PaginationParams;
-  updatePagination: (paginatinoParams: PaginationParams) => void;
+  updatePagination(paginatinoParams: PaginationParams): void;
 }
 
 interface PaginationPanelMethods {
@@ -87,7 +84,11 @@ export class PaginationPanel {
         this.state.pages.forEach(num => {
           const $button = $.create('button', `w-10 border hover:bg-slate-200 ${activePage === num ? 'bg-slate-300' : ''}`.trim())
             .setTextContent(String(num));
-          $button.$el.addEventListener('click', () => this.methods.setPagination(num));
+
+          // Лучше сделать слушателся на родителе и вызывать по дата атрибуту и подобному
+          $button.$el.addEventListener('click', () => {
+            this.methods.setPagination(num);
+          });
 
           this.$root?.append($button);
         });

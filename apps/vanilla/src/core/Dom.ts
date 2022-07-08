@@ -18,7 +18,6 @@ export class Dom<T extends HTMLElement= HTMLElement> {
     } else {
       this.$el = el;
     }
-
   }
 
   /**

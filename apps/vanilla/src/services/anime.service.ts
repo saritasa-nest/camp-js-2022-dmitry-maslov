@@ -1,3 +1,4 @@
+import { AnimeNotOrder, AnimeOrder, AnimeOrders } from '@js-camp/core/enums/anime/ordering.enum';
 import { ListAnimeDTO } from '@js-camp/core/dtos/animeList.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { ListAnimeMapper } from '@js-camp/core/mappers/listAnime.mapper';
@@ -17,10 +18,6 @@ export const apiConfig: AxiosRequestConfig = {
   },
 };
 
-/**
- * AnimeApi Service.
- * //TODO: нормальный комментарий.
- */
 export class AnimeApi extends Api {
   public constructor(config: AxiosRequestConfig) {
     super(config);
@@ -35,14 +32,14 @@ export class AnimeApi extends Api {
   public async getPaginatedListAnimeList({
     limit = 25,
     offset = 0,
-    ordering = 'id',
-  }: { limit?: number; offset?: number; ordering?: string; }):
+    ordering = AnimeNotOrder.NotOrder,
+  }: { limit?: number; offset?: number; ordering?: AnimeOrders; }):
   Promise<GetPaginatedListAnimeListResponse> {
     const response = await this.get<PaginationDto<ListAnimeDTO>>(`/anime/`, {
       params: {
         limit,
         offset,
-        ordering: `${ordering}`,
+        ordering: `${ordering || 'id'}`.trim(),
       },
     });
 
@@ -52,8 +49,8 @@ export class AnimeApi extends Api {
       count,
       limit,
       offset,
-      ordering,
       results,
+      ordering,
     };
   }
 }
@@ -68,7 +65,7 @@ export interface GetPaginatedListAnimeListResponse {
 
   limit: number;
 
-  ordering: string;
+  ordering: AnimeOrders;
 }
 
 export const animeApi = new AnimeApi(apiConfig);
