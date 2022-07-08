@@ -1,12 +1,11 @@
 import { ListAnime } from '@js-camp/core/models/listAnime';
 
-import { AnimeOrder, AnimeOrders, AnimeNotOrder } from '@js-camp/core/enums/anime/ordering.enum';
+import { AnimeOrders, AnimeNotOrder } from '@js-camp/core/enums/anime/ordering.enum';
 
 import { $, Dom } from '../../core/Dom';
 
 import { animeApi } from '../../services/anime.service';
 
-// Components
 import { $createAnimeTableElement } from './animeTableElement';
 import { PaginationPanel } from './animeTablePagination';
 import { AnimeTableHeader } from './animeTableHeader';
@@ -19,24 +18,13 @@ interface AnimeTableState {
   /** Parameters for working with pagination. */
   paginationParams: PaginationParams;
 
+  /** Sort oreder. */
   order: AnimeOrders;
 }
 
-interface AnimeTableMethods {
-
-  /** Gets anime list data and pagination data from the server. */
-  getData(): Promise<void>;
-
-  /** Updates elements in an html table. */
-  updateDomTableElements(): void;
-
-  updatePaginationElement(): void;
-
-  updatePaginationState(paginationParams: PaginationParams): Promise<void>;
-
-  updateOrderState(order: AnimeOrder): Promise<void>;
-}
-
+/**
+ * The class creates a sorted table with anime and pagination.
+ */
 export class AnimeTable {
   private state: AnimeTableState = {
     elements: [],
@@ -63,89 +51,89 @@ export class AnimeTable {
     this.update();
   }
 
-  private methods: AnimeTableMethods;
+  /**
+   * Gets anime list data and pagination data from the server.
+   */
+  private async getData(): Promise<void> {
+    const requestParams = {
+      ...this.state.paginationParams,
+      ordering: this.state.order,
+    };
+
+    const { count, limit, offset, results } =
+      await animeApi.getPaginatedListAnimeList({
+        limit: requestParams.limit,
+        offset: requestParams.offset,
+        ordering: requestParams.ordering,
+      });
+
+    this.setState({
+      elements: results,
+      paginationParams: {
+        count,
+        limit,
+        offset,
+      },
+      order: requestParams.ordering,
+    });
+  }
+
+  private updateDomTableElements(): void {
+    const $elements = this.state.elements.map(listAnime => $createAnimeTableElement(listAnime));
+
+    if (this.$tableElements) {
+      this.$tableElements
+        .clear()
+        .append(...$elements);
+    } else {
+      throw new Error(`${this}, not mounted`);
+    }
+  }
+
+  private updatePaginationElement(): void {
+    const { count, limit, offset } = this.state.paginationParams;
+
+    if (this.$PaginationPanel) {
+      this.$PaginationPanel.update({
+        count, limit, offset,
+      });
+    } else {
+      throw new Error(`${this}, not mounted`);
+    }
+  }
+
+  private updatePaginationState = async(paginationParams: PaginationParams): Promise<void> => {
+    this.setState({
+      ...this.state,
+      paginationParams,
+    });
+
+    await this.getData();
+  };
+
+  private updateOrderState = async(order: AnimeOrders): Promise<void> => {
+    this.setState({
+      ...this.state,
+      order,
+    });
+
+    await this.getData();
+  };
 
   public constructor(selector: string) {
     this.selector = selector;
-
-    this.methods = {
-      getData: async() => {
-        const requestParams = {
-          ...this.state.paginationParams,
-          ordering: this.state.order,
-        };
-
-        const { count, limit, offset, results } =
-          await animeApi.getPaginatedListAnimeList({
-            limit: requestParams.limit,
-            offset: requestParams.offset,
-            ordering: requestParams.ordering,
-          });
-
-        this.setState({
-          elements: results,
-          paginationParams: {
-            count,
-            limit,
-            offset,
-          },
-          order: requestParams.ordering,
-        });
-      },
-
-      updateDomTableElements: () => {
-        const $elements = this.state.elements.map(listAnime => $createAnimeTableElement(listAnime));
-
-        if (this.$tableElements) {
-          this.$tableElements
-            .clear()
-            .append(...$elements);
-        } else {
-          throw new Error(`${this}, not mounted`);
-        }
-      },
-
-      updatePaginationElement: () => {
-        const { count, limit, offset } = this.state.paginationParams;
-
-        if (this.$PaginationPanel) {
-          this.$PaginationPanel.update({
-            count, limit, offset,
-          });
-        } else {
-          throw new Error(`${this}, not mounted`);
-        }
-      },
-
-      updatePaginationState: async paginationParams => {
-        this.setState({
-          ...this.state,
-          paginationParams,
-        });
-
-        await this.methods.getData();
-      },
-      updateOrderState: async order => {
-        this.setState({
-          ...this.state,
-          order,
-        });
-
-        await this.methods.getData();
-      },
-    };
   }
 
   /**
    * Updates the contents of the component.
    */
   public update(): void {
-    this.methods.updateDomTableElements();
-    this.methods.updatePaginationElement();
+    this.updateDomTableElements();
+    this.updatePaginationElement();
   }
 
   private async didMount(): Promise<void> {
-    await this.methods.getData();
+    await this.getData();
     this.update();
   }
 
@@ -158,7 +146,7 @@ export class AnimeTable {
 
     this.$TableHeader = new AnimeTableHeader({
       order: this.state.order,
-      setOrder: this.methods.updateOrderState,
+      setOrder: this.updateOrderState,
     });
 
     this.$TableHeader.mount();
@@ -169,7 +157,7 @@ export class AnimeTable {
         limit: this.state.paginationParams.limit,
         offset: this.state.paginationParams.offset,
       },
-      updatePagination: this.methods.updatePaginationState,
+      updatePagination: this.updatePaginationState,
     });
 
     this.$PaginationPanel.mount();
@@ -189,6 +177,9 @@ export class AnimeTable {
   }
 }
 
+/**
+ * Parameters for pagination.
+ */
 export interface PaginationParams {
 
   /** Limiting the amount of data. */
