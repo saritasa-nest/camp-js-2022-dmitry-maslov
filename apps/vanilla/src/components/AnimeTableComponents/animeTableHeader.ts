@@ -8,7 +8,11 @@ import {
 import { $, Dom } from '../../core/Dom';
 
 interface AnimeTableHeaderProps {
+
+  /** Sort order param. */
   order: AnimeOrders;
+
+  /** Causes the parent component to change the sort option. */
   setOrder(order: AnimeOrders): void;
 }
 
@@ -90,6 +94,10 @@ export class AnimeTableHeader {
     });
   }
 
+  /**
+   * Updates header elements.
+   * @param order Order.
+   */
   public update(order: AnimeOrders): void {
     this.headers.forEach(header => {
       if (order === header.order || order === header.reverseOrder) {
@@ -107,10 +115,17 @@ export class AnimeTableHeader {
     });
   }
 
+  /**
+   * Return dom instance component.
+   * @returns Dom instance component.
+   */
   public getElements(): Dom {
     return this.$root;
   }
 
+  /**
+   * Mount component in dom tree.
+   */
   public mount(): void {
     this.headers.forEach(header => {
       const { $header, order } = header;
@@ -129,12 +144,23 @@ export class AnimeTableHeader {
 }
 
 interface Header {
+
+  /** Dom Instance Header. */
   $header: Dom;
+
+  /** Status. */
   status?: SortStatus;
+
+  /** Order type in this header.  */
   order?: AnimeOrders;
+
+  /** Reverse Order type in this header. */
   reverseOrder?: AnimeOrders;
 }
 
+/**
+ * Contains sort statuses. Used to change sort options.
+ */
 enum SortStatus {
   Not = 0,
   Sort,
