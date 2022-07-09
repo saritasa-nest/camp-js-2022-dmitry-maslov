@@ -16,6 +16,10 @@ interface AnimeTableHeaderProps {
   setOrder(order: AnimeOrders): void;
 }
 
+// Мысль о том,
+// что можно прокидывать поля запроса в дата атрибуты компонента,
+// чтоб не хранить их в JS и делегировать на одного слушатееля
+
 /**
  * Created table headers, is responsible for sorting.
  */

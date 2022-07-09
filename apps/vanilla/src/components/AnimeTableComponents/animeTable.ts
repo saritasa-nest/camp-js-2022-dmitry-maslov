@@ -18,7 +18,7 @@ interface AnimeTableState {
   /** Parameters for working with pagination. */
   paginationParams: PaginationParams;
 
-  /** Sort oreder. */
+  /** Sort order. */
   order: AnimeOrders;
 }
 
