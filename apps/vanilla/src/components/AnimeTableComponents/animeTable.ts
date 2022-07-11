@@ -97,7 +97,6 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   }
 
-
   private update({ elements, order, paginationParams }: AnimeTableUpdateParams): void {
     this.$TableElements.update(elements);
     this.$PaginationPanel.update(paginationParams);

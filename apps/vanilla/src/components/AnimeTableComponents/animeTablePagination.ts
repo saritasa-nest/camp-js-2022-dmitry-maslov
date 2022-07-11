@@ -23,14 +23,14 @@ const buttonActiveClasses = ['bg-slate-300'];
 export class PaginationPanel {
   private $root?: Element;
 
-  private maxButtonsCount = 10;
+  private maxButtonsCount = 7;
 
   private paginationParams: PaginationResponseParams;
 
   private buttons?: {
     next: HTMLButtonElement;
     prev: HTMLButtonElement;
-    other: Element[];
+    otherButtonsContainer: HTMLElement;
   };
 
   private updateMethod: UpdateMethod;
@@ -69,23 +69,52 @@ export class PaginationPanel {
     const { limit, offset, count } = this.paginationParams;
 
     const actualPageNumber = offset / limit + 1;
-    const lastPageNumber = count / limit + (count % limit > 0 ? 1 : 0);
+    const lastPageNumber = Math.floor(count / limit + (count % limit > 0 ? 1 : 0));
 
     if (this.buttons === undefined) {
       throw new Error('component not mounted');
     }
 
+    this.buttons.otherButtonsContainer.innerHTML = '';
+
+    const $firstPageButton = this.createButton('1');
+    const $lastPageButton = this.createButton(String(lastPageNumber));
+    const $otherButtons: HTMLElement[] = [];
+
     if (actualPageNumber > 1) {
       this.buttons.prev.disabled = false;
     } else {
+      $firstPageButton.classList.add(...buttonActiveClasses);
       this.buttons.prev.disabled = true;
+    }
+
+    if (lastPageNumber === 1) {
+      this.buttons.otherButtonsContainer.append($firstPageButton);
+      this.buttons.next.disabled = true;
+      return void 0;
     }
 
     if (actualPageNumber === lastPageNumber) {
       this.buttons.next.disabled = true;
+      $lastPageButton.classList.add(...buttonActiveClasses);
     } else {
       this.buttons.next.disabled = false;
     }
+
+    if (lastPageNumber !== 2) {
+      const startIterNumber = actualPageNumber;
+      const endIterNumber = startIterNumber + this.maxButtonsCount - 2;
+
+      for (let pageNumber = startIterNumber; pageNumber < endIterNumber; pageNumber++) {
+        console.log('asdf');
+      }
+    }
+
+    this.buttons.otherButtonsContainer.append(
+      $firstPageButton,
+      ...$otherButtons,
+      $lastPageButton,
+    );
   }
 
   private onClick(event: MouseEvent): void {
@@ -132,24 +161,23 @@ export class PaginationPanel {
     this.$root = document.createElement('div');
     this.$root.classList.add('flex', 'justify-center', 'm-1');
 
+    const $otherButtonsContainer = document.createElement('div');
+    $otherButtonsContainer.classList.add('flex');
+
     this.buttons = {
       next: this.createButton('>>'),
       prev: this.createButton('<<'),
-      other: [],
+      otherButtonsContainer: $otherButtonsContainer,
     };
 
     this.buttons.next.disabled = true;
     this.buttons.prev.disabled = true;
 
-    this.$root.append(this.buttons.prev);
-
-    const $otherButtonsContainer = document.createElement('div');
-
-    this.$root.append($otherButtonsContainer);
+    this.buttons.otherButtonsContainer.append();
 
     this.$root.append(
       this.buttons.prev,
-      $otherButtonsContainer,
+      this.buttons.otherButtonsContainer,
       this.buttons.next,
     );
 
