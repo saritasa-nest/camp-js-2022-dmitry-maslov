@@ -48,7 +48,20 @@ export class AnimeTable {
 
   private $TableElements: TableElements = new TableElements();
 
-  private $PaginationPanel: PaginationPanel = new PaginationPanel(this.updatePaginationState);
+  private updatePaginationState = (paginationParams: PaginationRequestParams): void => {
+    this.state.paginationParams = {
+      ...this.state.paginationParams,
+      limit: paginationParams.limit,
+      offset: paginationParams.offset,
+    };
+
+    this.fetchDataAndUpdateElements();
+  };
+
+  private $PaginationPanel: PaginationPanel = new PaginationPanel({
+    updateMethod: this.updatePaginationState,
+    defaultPaginationParams: this.state.paginationParams,
+  });
 
   public constructor(selector: string) {
     this.selector = selector;
@@ -84,15 +97,6 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   }
 
-  private updatePaginationState(paginationParams: PaginationRequestParams): void {
-    this.state.paginationParams = {
-      ...this.state.paginationParams,
-      limit: paginationParams.limit,
-      offset: paginationParams.offset,
-    };
-
-    this.fetchDataAndUpdateElements();
-  }
 
   private update({ elements, order, paginationParams }: AnimeTableUpdateParams): void {
     this.$TableElements.update(elements);
@@ -118,8 +122,8 @@ export class AnimeTable {
     this.$TableElements.mount();
     this.$PaginationPanel.mount();
 
-    this.$root.append(this.$TableElements.getElement());
     this.$root.append(this.$PaginationPanel.getElement());
+    this.$root.append(this.$TableElements.getElement());
 
     // this.$root.append(this.$TableHeader.getElement());
 

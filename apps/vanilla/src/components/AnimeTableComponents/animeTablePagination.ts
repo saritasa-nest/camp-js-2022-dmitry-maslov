@@ -2,47 +2,42 @@ import { PaginationRequestParams, PaginationResponseParams } from './animeTable'
 
 type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 
+interface PaginationPanelProps {
+
+  /**
+   * Method to update pagination data in parent component.
+   */
+  updateMethod: (paginationParams: PaginationRequestParams) => void;
+
+  /**
+   * Default pagination parameters;.
+   */
+  defaultPaginationParams: PaginationResponseParams;
+}
+
+const buttonActiveClasses = ['bg-slate-300'];
+
 /**
  * The class creates a pagination panel.
  */
 export class PaginationPanel {
   private $root?: Element;
 
-  private buttonsCountLimit = 10;
+  private maxButtonsCount = 10;
 
-  private $buttons: Element[] = [];
+  private paginationParams: PaginationResponseParams;
+
+  private buttons?: {
+    next: HTMLButtonElement;
+    prev: HTMLButtonElement;
+    other: Element[];
+  };
 
   private updateMethod: UpdateMethod;
 
-  private generatePages(): void {
-    const { count, limit, offset } = this.props.paginationParams;
-
-    if (count > limit) {
-      const otherPages: number[] = [];
-      const lastPage = Math.floor(count / limit);
-      const activePage = Math.floor(offset / limit) + 1;
-
-      const otherButtonsLength = 8;
-
-      let firstPage = activePage - Math.floor(otherButtonsLength / 2);
-      let penultPage = activePage + Math.floor(otherButtonsLength / 2);
-
-      if (firstPage - 1 <= 1) {
-        firstPage = 2;
-        penultPage = otherButtonsLength + firstPage - 1;
-      } else if (penultPage + 1 >= lastPage) {
-        penultPage = lastPage - 1;
-        firstPage = penultPage - otherButtonsLength + 1;
-      }
-
-      for (let i = firstPage; i <= penultPage; i++) {
-        otherPages.push(i);
-      }
-    }
-  }
-
-  public constructor(setNewPaginationAndUpdateCallback: UpdateMethod) {
-    this.updateMethod = setNewPaginationAndUpdateCallback;
+  public constructor(props: PaginationPanelProps) {
+    this.updateMethod = props.updateMethod;
+    this.paginationParams = props.defaultPaginationParams;
   }
 
   /**
@@ -50,19 +45,17 @@ export class PaginationPanel {
    * @returns Element. Html Component element.
    */
   public getElement(): Element {
-    if (this.$root === null) {
+    if (this.$root === undefined) {
       throw new Error(`${this} component not mount`);
     }
     return this.$root;
   }
 
-  private createButton(numOfPage: number): Element {
+  private createButton(text: string): HTMLButtonElement {
     const $button = document.createElement('button');
 
-    $button.classList.add('w-12', 'border');
-    $button.dataset.page = String(numOfPage);
-    $button.setAttribute('data-page', String(numOfPage));
-    $button.textContent = String(numOfPage);
+    $button.classList.add('w-12', 'border', 'disabled:opacity-50');
+    $button.textContent = text;
 
     return $button;
   }
@@ -72,15 +65,64 @@ export class PaginationPanel {
    * @param paginationParams Pagination Params.
    */
   public update(paginationParams: PaginationResponseParams): void {
-    const { limit, offset, count} = paginationParams;
+    this.paginationParams = paginationParams;
+    const { limit, offset, count } = this.paginationParams;
 
-    if (this.$buttons[0] === undefined) {
-      this.$buttons[0] = this.createButton(1);
+    const actualPageNumber = offset / limit + 1;
+    const lastPageNumber = count / limit + (count % limit > 0 ? 1 : 0);
+
+    if (this.buttons === undefined) {
+      throw new Error('component not mounted');
     }
 
-    this.$root?.append(this.$buttons[0]);
+    if (actualPageNumber > 1) {
+      this.buttons.prev.disabled = false;
+    } else {
+      this.buttons.prev.disabled = true;
+    }
 
-    const maxPage = count / limit + (count % limit ? 1 : 0);
+    if (actualPageNumber === lastPageNumber) {
+      this.buttons.next.disabled = true;
+    } else {
+      this.buttons.next.disabled = false;
+    }
+  }
+
+  private onClick(event: MouseEvent): void {
+    const { offset, limit } = this.paginationParams;
+
+    if (this.buttons === undefined) {
+      throw new Error('buttons not created');
+    }
+
+    if (event.target === null) {
+      throw new Error('Target null');
+    }
+
+    switch (event.target) {
+      case this.buttons.prev:
+        this.updateMethod({
+          ...this.paginationParams,
+          offset: offset - limit,
+        });
+        break;
+
+      case this.buttons.next:
+        this.updateMethod({
+          ...this.paginationParams,
+          offset: offset + limit,
+        });
+        break;
+
+      default:
+        if (event.target instanceof HTMLButtonElement) {
+          this.updateMethod({
+            ...this.paginationParams,
+            offset: (Number(event.target.textContent) - 1) * limit,
+          });
+        }
+        break;
+    }
   }
 
   /**
@@ -90,8 +132,31 @@ export class PaginationPanel {
     this.$root = document.createElement('div');
     this.$root.classList.add('flex', 'justify-center', 'm-1');
 
-    this.$root.addEventListener('click', (event) => {
-      console.log(event.target.dataset.page)
+    this.buttons = {
+      next: this.createButton('>>'),
+      prev: this.createButton('<<'),
+      other: [],
+    };
+
+    this.buttons.next.disabled = true;
+    this.buttons.prev.disabled = true;
+
+    this.$root.append(this.buttons.prev);
+
+    const $otherButtonsContainer = document.createElement('div');
+
+    this.$root.append($otherButtonsContainer);
+
+    this.$root.append(
+      this.buttons.prev,
+      $otherButtonsContainer,
+      this.buttons.next,
+    );
+
+    this.$root.addEventListener('click', event => {
+      if (event instanceof MouseEvent) {
+        this.onClick(event);
+      }
     });
   }
 }

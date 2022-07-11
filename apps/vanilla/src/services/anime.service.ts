@@ -27,9 +27,9 @@ export class AnimeApi extends Api {
    * @param ordering Ordering.
    */
   public async getPaginatedListAnimeList({
-    limit = 25,
-    offset = 0,
-    ordering = AnimeNotOrder.NotOrder,
+    limit,
+    offset,
+    ordering,
   }: GetPaginatedListAnimeListRequest): Promise<GetPaginatedListAnimeListResponse> {
     const response = await this.get<PaginationDto<ListAnimeDTO>>(`/anime/`, {
       params: {
