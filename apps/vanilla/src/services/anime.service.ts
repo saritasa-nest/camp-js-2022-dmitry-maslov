@@ -21,6 +21,9 @@ export const apiConfig: AxiosRequestConfig = {
   },
 };
 
+/**
+ * Anime API class.
+ */
 export class AnimeApi extends Api {
   public constructor(config: AxiosRequestConfig) {
     super(config);
@@ -77,11 +80,15 @@ export interface GetPaginatedListAnimeListResponse {
  * Request.
  */
 export interface GetPaginatedListAnimeListRequest {
-  limit?: number;
 
-  offset?: number;
+  /** Limit results. */
+  limit: number;
 
-  ordering?: AnimeOrders;
+  /** Offset. */
+  offset: number;
+
+  /** Ordering. */
+  ordering: AnimeOrders;
 }
 
 export const animeApi = new AnimeApi(apiConfig);

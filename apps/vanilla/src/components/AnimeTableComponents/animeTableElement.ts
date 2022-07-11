@@ -36,7 +36,7 @@ export function $createAnimeTableElement(listAnime: ListAnime): HTMLElement {
   $airedStart.textContent =
     listAnime.airedStart !== null ? String(listAnime.airedStart.getFullYear()) : 'Not started';
   const $airedStartCol = document.createElement('td');
-  $airedStart.append($airedStart);
+  $airedStartCol.append($airedStart);
 
   const $row = document.createElement('tr');
   $row.classList.add('flex', 'border-y', 'my-1', 'w-full', 'justify-between');

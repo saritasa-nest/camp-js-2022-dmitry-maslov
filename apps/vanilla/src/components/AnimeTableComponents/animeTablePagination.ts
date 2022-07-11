@@ -1,50 +1,18 @@
-import { $, Dom } from '../../core/Dom';
+import { PaginationRequestParams, PaginationResponseParams } from './animeTable';
 
-import { PaginationParams } from './animeTable';
-
-interface PaginationPanelState {
-  /** Array of page number. */
-  pages: number[];
-}
-
-interface PaginationPanelProps {
-  /** Pagination Params. */
-  paginationParams: PaginationParams;
-
-  /** Updates the pagination settings in the parent component. */
-  updatePagination(paginatinoParams: PaginationParams): void;
-}
+type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 
 /**
  * The class creates a pagination panel.
  */
 export class PaginationPanel {
-  private state: PaginationPanelState = {
-    pages: [],
-  };
+  private $root?: Element;
 
-  private setState(newState: PaginationPanelState): void {
-    this.state = newState;
-  }
+  private buttonsCountLimit = 10;
 
-  private method(): void {
-    const { offset } = this.props.paginationParams;
-    console.log(offset);
-  }
+  private $buttons: Element[] = [];
 
-  private props: PaginationPanelProps;
-
-  private $root?: Dom;
-
-  private setPagination(page: number): void {
-    const { count, limit } = this.props.paginationParams;
-
-    this.props.updatePagination({
-      count,
-      limit,
-      offset: (page - 1) * limit,
-    });
-  }
+  private updateMethod: UpdateMethod;
 
   private generatePages(): void {
     const { count, limit, offset } = this.props.paginationParams;
@@ -70,66 +38,60 @@ export class PaginationPanel {
       for (let i = firstPage; i <= penultPage; i++) {
         otherPages.push(i);
       }
-
-      this.setState({
-        pages: [1, ...otherPages, lastPage],
-      });
     }
   }
 
-  private updatePaginationButtons(): void {
-    this.$root?.clear();
-
-    const activePage =
-      Math.floor(
-        this.props.paginationParams.offset / this.props.paginationParams.limit
-      ) + 1;
-    this.state.pages.forEach((num) => {
-      const $button = $.create(
-        'button',
-        `w-10 border hover:bg-slate-200 ${
-          activePage === num ? 'bg-slate-300' : ''
-        }`.trim()
-      ).setTextContent(String(num));
-
-      // Лучше сделать слушателся на родителе и вызывать по дата атрибуту и подобному
-      $button.$el.addEventListener('click', () => {
-        this.setPagination(num);
-      });
-
-      this.$root?.append($button);
-    });
-  }
-
-  public constructor(props: PaginationPanelProps) {
-    this.props = props;
+  public constructor(setNewPaginationAndUpdateCallback: UpdateMethod) {
+    this.updateMethod = setNewPaginationAndUpdateCallback;
   }
 
   /**
-   * Returns an instance of the DOM element if mounted, otherwise throws an error.
-   * @returns DOM.
+   * Returns an instance HTML Element.
+   * @returns Element. Html Component element.
    */
-  public getElement(): Dom {
-    if (this.$root) {
-      return this.$root;
+  public getElement(): Element {
+    if (this.$root === null) {
+      throw new Error(`${this} component not mount`);
     }
-    throw new Error(`${this} component not mount`);
+    return this.$root;
+  }
+
+  private createButton(numOfPage: number): Element {
+    const $button = document.createElement('button');
+
+    $button.classList.add('w-12', 'border');
+    $button.dataset.page = String(numOfPage);
+    $button.setAttribute('data-page', String(numOfPage));
+    $button.textContent = String(numOfPage);
+
+    return $button;
   }
 
   /**
    * Updated pugination buttons.
-   * @param props Pagination Params.
+   * @param paginationParams Pagination Params.
    */
-  public update(props: PaginationParams): void {
-    this.props.paginationParams = props;
-    this.generatePages();
-    this.updatePaginationButtons();
+  public update(paginationParams: PaginationResponseParams): void {
+    const { limit, offset, count} = paginationParams;
+
+    if (this.$buttons[0] === undefined) {
+      this.$buttons[0] = this.createButton(1);
+    }
+
+    this.$root?.append(this.$buttons[0]);
+
+    const maxPage = count / limit + (count % limit ? 1 : 0);
   }
 
   /**
    * Mount the component on the root element.
    */
   public mount(): void {
-    this.$root = $.create('div', 'flex justify-center m-1');
+    this.$root = document.createElement('div');
+    this.$root.classList.add('flex', 'justify-center', 'm-1');
+
+    this.$root.addEventListener('click', (event) => {
+      console.log(event.target.dataset.page)
+    });
   }
 }
