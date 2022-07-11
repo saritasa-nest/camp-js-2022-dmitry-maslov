@@ -3,13 +3,11 @@ import { $, Dom } from '../../core/Dom';
 import { PaginationParams } from './animeTable';
 
 interface PaginationPanelState {
-
   /** Array of page number. */
   pages: number[];
 }
 
 interface PaginationPanelProps {
-
   /** Pagination Params. */
   paginationParams: PaginationParams;
 
@@ -29,6 +27,11 @@ export class PaginationPanel {
     this.state = newState;
   }
 
+  private method(): void {
+    const { offset } = this.props.paginationParams;
+    console.log(offset);
+  }
+
   private props: PaginationPanelProps;
 
   private $root?: Dom;
@@ -37,7 +40,9 @@ export class PaginationPanel {
     const { count, limit } = this.props.paginationParams;
 
     this.props.updatePagination({
-      count, limit, offset: (page - 1) * limit,
+      count,
+      limit,
+      offset: (page - 1) * limit,
     });
   }
 
@@ -67,11 +72,7 @@ export class PaginationPanel {
       }
 
       this.setState({
-        pages: [
-          1,
-          ...otherPages,
-          lastPage,
-        ],
+        pages: [1, ...otherPages, lastPage],
       });
     }
   }
@@ -79,10 +80,17 @@ export class PaginationPanel {
   private updatePaginationButtons(): void {
     this.$root?.clear();
 
-    const activePage = Math.floor(this.props.paginationParams.offset / this.props.paginationParams.limit) + 1 ;
-    this.state.pages.forEach(num => {
-      const $button = $.create('button', `w-10 border hover:bg-slate-200 ${activePage === num ? 'bg-slate-300' : ''}`.trim())
-        .setTextContent(String(num));
+    const activePage =
+      Math.floor(
+        this.props.paginationParams.offset / this.props.paginationParams.limit
+      ) + 1;
+    this.state.pages.forEach((num) => {
+      const $button = $.create(
+        'button',
+        `w-10 border hover:bg-slate-200 ${
+          activePage === num ? 'bg-slate-300' : ''
+        }`.trim()
+      ).setTextContent(String(num));
 
       // Лучше сделать слушателся на родителе и вызывать по дата атрибуту и подобному
       $button.$el.addEventListener('click', () => {

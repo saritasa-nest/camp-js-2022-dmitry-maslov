@@ -1,4 +1,2 @@
-import { AnimeTable } from './../components/AnimeTableComponents/animeTable';
-
-const $AnimeTable = new AnimeTable('#table');
-$AnimeTable.mount();
+const $tableContainer = document.querySelector('#table-root');
+$tableContainer?.classList.add('m-10', 'border', 'w-10', 'h-10');

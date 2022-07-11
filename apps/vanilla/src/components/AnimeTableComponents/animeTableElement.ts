@@ -1,36 +1,46 @@
 import { ListAnime } from '@js-camp/core/models/listAnime';
 
-import { $, Dom } from '../../core/Dom';
-
 /**
  * Creates the HOME element of the anime table.
  * @param listAnime ListAnime prop.
- * @returns Instance HOUSE describing element of anime table.
+ * @returns HTML element of anime table.
  */
-export function $createAnimeTableElement(listAnime: ListAnime): Dom {
-
-  const $image = $.create<HTMLImageElement>('img', 'w-40 flex-shrink-0 flex-grow-1 justify-between');
-  $image.$el.src = listAnime.image;
-  const $imageCol = $.create('td', 'border-r')
-    .append($image);
-
-  const $engTitle = $.create('span')
-    .setTextContent(listAnime.titleEng);
-  const $titleCol = $.create('td', 'border-r').append($engTitle);
-
-  const $status = $.create('span').setTextContent(listAnime.status);
-  const $statusCol = $.create('td', 'border-r').append($status);
-
-  const $airedStart = $.create('span').setTextContent(String(listAnime.airedStart ? listAnime.airedStart.getFullYear() : 'Unknown'));
-  const $airedStartCol = $.create('td', 'border-r').append($airedStart);
-
-  return (
-    $.create('tr', 'flex border-y my-1 w-full justify-between')
-      .append(
-        $imageCol,
-        $titleCol,
-        $statusCol,
-        $airedStartCol,
-      )
+export function $createAnimeTableElement(listAnime: ListAnime): HTMLElement {
+  const $image = document.createElement('img');
+  $image.classList.add(
+    'w-40',
+    'flex-shrink-0',
+    'flex',
+    'flex-grow-1',
+    'justify-between',
   );
+  $image.src = listAnime.image;
+
+  const $imageCol = document.createElement('td');
+  $imageCol.classList.add('border-r');
+  $imageCol.append($image);
+
+  const $engTitle = document.createElement('span');
+  $engTitle.textContent = listAnime.titleEng;
+  const $titleCol = document.createElement('td');
+  $imageCol.classList.add('border-r');
+  $titleCol.append($engTitle);
+
+  const $status = document.createElement('span');
+  $status.textContent = listAnime.status;
+  const $statusCol = document.createElement('td');
+  $statusCol.classList.add('border-r');
+  $statusCol.append($status);
+
+  const $airedStart = document.createElement('span');
+  $airedStart.textContent =
+    listAnime.airedStart !== null ? String(listAnime.airedStart.getFullYear()) : 'Not started';
+  const $airedStartCol = document.createElement('td');
+  $airedStart.append($airedStart);
+
+  const $row = document.createElement('tr');
+  $row.classList.add('flex', 'border-y', 'my-1', 'w-full', 'justify-between');
+  $row.append($imageCol, $titleCol, $statusCol, $airedStartCol);
+
+  return $row;
 }
