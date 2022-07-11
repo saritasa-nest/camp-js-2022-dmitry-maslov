@@ -2,11 +2,11 @@ import {
   AnimeNotOrder, AnimeOrders,
 } from '@js-camp/core/enums/anime/ordering.enum';
 
+import { ListAnime } from '@js-camp/core/models/listAnime';
+
 import { animeApi } from '../../services/anime.service';
 
 import { TableElements } from './animeTableElements';
-
-import { ListAnime } from '@js-camp/core/models/listAnime';
 
 import { PaginationPanel } from './animeTablePagination';
 
@@ -49,10 +49,6 @@ export class AnimeTable {
   private $TableElements: TableElements = new TableElements();
 
   private $PaginationPanel: PaginationPanel = new PaginationPanel(this.updatePaginationState);
-
-  //private $TableHeader: AnimeTableHeader = new TableHeader({
-  //updateMethod: this.fetchDataAndUpdateElements,
-  //});
 
   public constructor(selector: string) {
     this.selector = selector;
@@ -124,7 +120,8 @@ export class AnimeTable {
 
     this.$root.append(this.$TableElements.getElement());
     this.$root.append(this.$PaginationPanel.getElement());
-    //this.$root.append(this.$TableHeader.getElement());
+
+    // this.$root.append(this.$TableHeader.getElement());
 
     this.didMount();
   }
