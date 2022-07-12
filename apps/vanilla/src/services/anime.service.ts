@@ -1,5 +1,4 @@
 import {
-  AnimeNotOrder,
   AnimeOrders,
 } from '@js-camp/core/enums/anime/ordering.enum';
 import { ListAnimeDTO } from '@js-camp/core/dtos/animeList.dto';

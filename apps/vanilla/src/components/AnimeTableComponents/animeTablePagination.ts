@@ -23,8 +23,6 @@ const buttonActiveClasses = ['bg-slate-300'];
 export class PaginationPanel {
   private $root?: Element;
 
-  private maxButtonsCount = 7;
-
   private paginationParams: PaginationResponseParams;
 
   private buttons?: {
@@ -93,7 +91,6 @@ export class PaginationPanel {
       this.buttons.next.disabled = true;
       return void 0;
     }
-
     if (actualPageNumber === lastPageNumber) {
       this.buttons.next.disabled = true;
       $lastPageButton.classList.add(...buttonActiveClasses);
@@ -101,12 +98,43 @@ export class PaginationPanel {
       this.buttons.next.disabled = false;
     }
 
-    if (lastPageNumber !== 2) {
-      const startIterNumber = actualPageNumber;
-      const endIterNumber = startIterNumber + this.maxButtonsCount - 2;
+    let isPenultNotButton = actualPageNumber + 3 !== lastPageNumber;
 
-      for (let pageNumber = startIterNumber; pageNumber < endIterNumber; pageNumber++) {
-        console.log('asdf');
+    let startIterNumber = 2;
+    let endIterNumber = startIterNumber + 3;
+
+    if (lastPageNumber !== 2) {
+      if (lastPageNumber < 7) {
+        startIterNumber = 2;
+        endIterNumber = lastPageNumber - 1;
+      } else {
+        if (actualPageNumber > 4) {
+          const $noButton = document.createElement('div');
+          $noButton.textContent = '...';
+          $otherButtons.push($noButton);
+          startIterNumber = actualPageNumber - 1;
+          endIterNumber = actualPageNumber + 1;
+        }
+        if (actualPageNumber + 3 >= lastPageNumber) {
+          isPenultNotButton = false;
+          startIterNumber = lastPageNumber - 4;
+          endIterNumber = lastPageNumber - 1;
+        }
+      }
+
+      for (let pageNumber = startIterNumber; pageNumber <= endIterNumber; pageNumber++) {
+        const $button = this.createButton(String(pageNumber));
+        $otherButtons.push($button);
+
+        if (pageNumber === actualPageNumber) {
+          $button.classList.add(...buttonActiveClasses);
+        }
+      }
+
+      if (isPenultNotButton) {
+        const $noButton = document.createElement('div');
+        $noButton.textContent = '...';
+        $otherButtons.push($noButton);
       }
     }
 
