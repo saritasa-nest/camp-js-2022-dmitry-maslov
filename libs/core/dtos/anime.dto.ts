@@ -5,7 +5,6 @@ import { AnimeSource } from './../enums/anime/source.enum';
 import { AnimeType } from './../enums/anime/type.enum';
 import { AnimeStatus } from './../enums/anime/status.enum';
 
-import { StudioDTO } from './studio.dto';
 import { GenreDto } from './genre.dto';
 
 /** Anime DTO. */
@@ -73,9 +72,6 @@ export interface AnimeDto {
 
   /** Studios. */
   readonly studios: readonly number[];
-
-  /** Studios data. */
-  readonly studios_data: readonly StudioDTO[];
 
   /** Genres. */
   readonly genres: readonly number[];
