@@ -107,7 +107,6 @@ export class PaginationPanel {
 
     if (lastPageNumber !== 2) {
       if (lastPageNumber < 7) {
-        startIterNumber = 2;
         endIterNumber = lastPageNumber - 1;
       } else {
         if (actualPageNumber > 4) {
