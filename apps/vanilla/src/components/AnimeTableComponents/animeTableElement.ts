@@ -40,6 +40,9 @@ export function $createAnimeTableElement(listAnime: ListAnime): HTMLElement {
   return $row;
 }
 
+/**
+ * Create column element.
+ */
 function $createCol(): HTMLElement {
   const $col = document.createElement('td');
   $col.classList.add(...elementStyles.col);
