@@ -69,25 +69,30 @@ export class AnimeTableHeader {
 
   /**
    * Updates header elements.
-   * @param order Order.
    */
-  public update(order: AnimeOrders): void {
+  public update(): void {
     if (this.headers === undefined) {
       throw new Error(`${this} not mounted`);
     }
     this.headers.forEach(header => {
-      if (order === header.order || order === header.reverseOrder) {
         switch (header.status) {
           case SortStatus.Sort:
-            // TODO: Ставим стиль для возрастания
+            if (header.$statusIndicator) {
+              header.$statusIndicator.textContent = '(increase sort)';
+            }
             break;
           case SortStatus.Reverse:
-            // TODO: Ставим стиль для убывания
+            if (header.$statusIndicator) {
+              header.$statusIndicator.textContent = '(descending sort)';
+            }
             break;
-          default:
+          case SortStatus.Not:
+            if (header.$statusIndicator) {
+              header.$statusIndicator.textContent = '';
+            }
             break;
+          default: break;
         }
-      }
     });
   }
 
@@ -144,6 +149,11 @@ export class AnimeTableHeader {
       const { $header, order } = header;
 
       if (order !== undefined) {
+        const $statusIndicator = document.createElement('span');
+        $statusIndicator.classList.add('text-sm');
+        header.$statusIndicator = $statusIndicator;
+
+        $header.append($statusIndicator);
         $header.addEventListener('click', () => {
           this.setOrderInHeader(header);
         });
@@ -185,6 +195,9 @@ interface Header {
 
   /** Status. */
   status?: SortStatus;
+
+  /** Status indicator element. */
+  $statusIndicator?: HTMLSpanElement;
 
   /** Order type in this header.  */
   order?: AnimeOrders;

@@ -104,10 +104,10 @@ export class AnimeTable {
     });
   }
 
-  private update({ elements, order, paginationParams }: AnimeTableUpdateParams): void {
+  private update({ elements, paginationParams }: AnimeTableUpdateParams): void {
     this.$TableElements.update(elements);
     this.$PaginationPanel.update(paginationParams);
-    this.$TableHeader.update(order);
+    this.$TableHeader.update();
   }
 
   private async didMount(): Promise<void> {
