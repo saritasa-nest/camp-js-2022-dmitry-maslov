@@ -60,45 +60,13 @@ export class PaginationPanel {
     return $button;
   }
 
-  /**
-   * Updated pugination buttons.
-   * @param paginationParams Pagination Params.
-   */
-  public update(paginationParams: PaginationResponseParams): void {
-    this.paginationParams = paginationParams;
+  private generateOtherButtons(): HTMLElement[] {
     const { limit, offset, count } = this.paginationParams;
+
+    const $otherButtons: HTMLElement[] = [];
 
     const actualPageNumber = offset / limit + 1;
     const lastPageNumber = Math.floor(count / limit + (count % limit > 0 ? 1 : 0));
-
-    if (this.buttons === undefined) {
-      throw new Error('component not mounted');
-    }
-
-    this.buttons.otherButtonsContainer.innerHTML = '';
-
-    const $firstPageButton = this.createButton('1');
-    const $lastPageButton = this.createButton(String(lastPageNumber));
-    const $otherButtons: HTMLElement[] = [];
-
-    if (actualPageNumber > 1) {
-      this.buttons.prev.disabled = false;
-    } else {
-      $firstPageButton.classList.add(...buttonActiveClasses);
-      this.buttons.prev.disabled = true;
-    }
-
-    if (lastPageNumber === 1) {
-      this.buttons.otherButtonsContainer.append($firstPageButton);
-      this.buttons.next.disabled = true;
-      return void 0;
-    }
-    if (actualPageNumber === lastPageNumber) {
-      this.buttons.next.disabled = true;
-      $lastPageButton.classList.add(...buttonActiveClasses);
-    } else {
-      this.buttons.next.disabled = false;
-    }
 
     let isPenultNotButton = actualPageNumber + 3 !== lastPageNumber;
 
@@ -140,6 +108,51 @@ export class PaginationPanel {
         $otherButtons.push($noButton);
       }
     }
+
+    return $otherButtons;
+  }
+
+  /**
+   * Updated pagination buttons.
+   * @param paginationParams Pagination Params.
+   */
+  public update(paginationParams: PaginationResponseParams): void {
+    this.paginationParams = paginationParams;
+    const { limit, offset, count } = this.paginationParams;
+
+    const actualPageNumber = offset / limit + 1;
+    const lastPageNumber = Math.floor(count / limit + (count % limit > 0 ? 1 : 0));
+
+    if (this.buttons === undefined) {
+      throw new Error('component not mounted');
+    }
+
+    this.buttons.otherButtonsContainer.innerHTML = '';
+
+    const $firstPageButton = this.createButton('1');
+    const $lastPageButton = this.createButton(String(lastPageNumber));
+
+    if (actualPageNumber > 1) {
+      this.buttons.prev.disabled = false;
+    } else {
+      $firstPageButton.classList.add(...buttonActiveClasses);
+      this.buttons.prev.disabled = true;
+    }
+
+    if (lastPageNumber === 1) {
+      this.buttons.otherButtonsContainer.append($firstPageButton);
+      this.buttons.next.disabled = true;
+      return void 0;
+    }
+
+    if (actualPageNumber === lastPageNumber) {
+      this.buttons.next.disabled = true;
+      $lastPageButton.classList.add(...buttonActiveClasses);
+    } else {
+      this.buttons.next.disabled = false;
+    }
+
+    const $otherButtons = this.generateOtherButtons();
 
     this.buttons.otherButtonsContainer.append(
       $firstPageButton,
