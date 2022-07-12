@@ -1,12 +1,15 @@
-/**
- * TODO: DOC.
- */
 export type AnimeOrders = '' | AnimeOrder | AnimeReversedOrder | AnimeNotOrder;
 
+/**
+ * Not order param.
+ */
 export enum AnimeNotOrder {
   NotOrder = '',
 }
 
+/**
+ * Order params.
+ */
 export enum AnimeOrder {
   TitleEng = 'title_eng',
 
@@ -32,6 +35,9 @@ export enum AnimeOrder {
 
 }
 
+/**
+ * Reversed Order params.
+ */
 export enum AnimeReversedOrder {
   ReversedTitleEng = '-title_eng',
   ReversedTitleJpn = '-title_jpn',

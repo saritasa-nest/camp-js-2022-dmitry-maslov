@@ -5,9 +5,9 @@ import { PaginationDto } from './../dtos/pagination.dto';
 export namespace PaginationMapper {
 
   /**
-   * /TODO: JSDOC.
-   * @param resultMapper
-   * @param dto
+   * FromDTO.
+   * @param resultMapper ResultMapper.
+   * @param dto Dto.
    * @returns
    */
   export function fromDto<T, TDto>(resultMapper: (resultDto: TDto) => T, dto: PaginationDto<TDto>): Pagination<T> {

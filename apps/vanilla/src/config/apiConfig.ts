@@ -1,10 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 
 export const apiConfig: AxiosRequestConfig = {
-  // TODO: Забрать из env
-  baseURL: 'https://api.camp-js.saritasa.rocks/api/v1/anime',
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    // TODO: Забрать из env
-    'Api-Key': '519f134a-60a7-44de-83ef-7ef6badd9fda',
+    'Api-Key': import.meta.env.VITE_API_KEY,
   },
 };
