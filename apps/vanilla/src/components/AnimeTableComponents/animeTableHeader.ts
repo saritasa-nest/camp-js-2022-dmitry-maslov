@@ -5,32 +5,23 @@ import {
   AnimeReversedOrder,
 } from '@js-camp/core/enums/anime/ordering.enum';
 
-import { $, Dom } from '../../core/Dom';
+import { elementStyles, headerStyles, tableStyles } from './animeTable.styles';
 
 interface AnimeTableHeaderProps {
 
-  /** Sort order param. */
-  order: AnimeOrders;
-
   /** Causes the parent component to change the sort option. */
-  setOrder(order: AnimeOrders): void;
+  updateMethod(order: AnimeOrders): void;
 }
-
-// Мысль о том,
-// что можно прокидывать поля запроса в дата атрибуты компонента,
-// чтоб не хранить их в JS и делегировать на одного слушатееля
 
 /**
  * Created table headers, is responsible for sorting.
  */
 export class AnimeTableHeader {
-  private $root: Dom;
+  private $root?: HTMLElement;
 
-  private $row: Dom;
+  private headers?: Header[];
 
-  private props: AnimeTableHeaderProps;
-
-  private headers: Header[];
+  private updateMethod: (order: AnimeOrders) => void;
 
   private setOrderInHeader(header: Header): void {
     const { order, reverseOrder, status } = header;
@@ -40,17 +31,17 @@ export class AnimeTableHeader {
     if (order !== undefined && reverseOrder !== undefined) {
       switch (status) {
         case SortStatus.Not:
-          this.props.setOrder(order);
+          this.updateMethod(order);
           header.status = SortStatus.Sort;
           break;
 
         case SortStatus.Sort:
-          this.props.setOrder(reverseOrder);
+          this.updateMethod(reverseOrder);
           header.status = SortStatus.Reverse;
           break;
 
         case SortStatus.Reverse:
-          this.props.setOrder(AnimeNotOrder.NotOrder);
+          this.updateMethod(AnimeNotOrder.NotOrder);
           header.status = SortStatus.Not;
           break;
 
@@ -61,36 +52,14 @@ export class AnimeTableHeader {
   }
 
   public constructor(props: AnimeTableHeaderProps) {
-    this.props = props;
-
-    this.$root = $.create('thead');
-    this.$row = $.create('tr', 'flex justify-between');
-    this.headers = [
-      {
-        $header: $.create('th').setTextContent('Photo'),
-      },
-      {
-        $header: $.create('th', 'cursor-pointer').setTextContent('English title'),
-        order: AnimeOrder.TitleEng,
-        reverseOrder: AnimeReversedOrder.ReversedTitleEng,
-        status: SortStatus.Not,
-      },
-      {
-        $header: $.create('th').setTextContent('Status'),
-        order: AnimeOrder.Status,
-        reverseOrder: AnimeReversedOrder.ReversedStatus,
-        status: SortStatus.Not,
-      },
-      {
-        $header: $.create('th').setTextContent('Aired start'),
-        order: AnimeOrder.AiredStart,
-        reverseOrder: AnimeReversedOrder.ReversedAiredStart,
-        status: SortStatus.Not,
-      },
-    ];
+    this.updateMethod = props.updateMethod;
   }
 
   private resetHeadersStatus(): void {
+    if (this.headers === undefined) {
+      throw new Error(`${this} not mounted`);
+    }
+
     this.headers.forEach(header => {
       if (header.status) {
         header.status = SortStatus.Not;
@@ -103,6 +72,9 @@ export class AnimeTableHeader {
    * @param order Order.
    */
   public update(order: AnimeOrders): void {
+    if (this.headers === undefined) {
+      throw new Error(`${this} not mounted`);
+    }
     this.headers.forEach(header => {
       if (order === header.order || order === header.reverseOrder) {
         switch (header.status) {
@@ -123,7 +95,11 @@ export class AnimeTableHeader {
    * Return dom instance component.
    * @returns Dom instance component.
    */
-  public getElements(): Dom {
+  public getElement(): HTMLElement {
+    if (this.$root === undefined) {
+      throw new Error(`${this} not called mount`);
+    }
+
     return this.$root;
   }
 
@@ -131,26 +107,81 @@ export class AnimeTableHeader {
    * Mount component in dom tree.
    */
   public mount(): void {
+    this.$root = document.createElement('thead');
+    this.$root.classList.add(...tableStyles.thead);
+
+    const $row = document.createElement('tr');
+    $row.classList.add(...tableStyles.row);
+
+    this.headers = [
+      {
+        $header: $createColHeader({
+          headerTitle: 'Photo',
+          styles: tableStyles.imageCol,
+        }),
+      },
+      {
+        $header: $createColHeader({ headerTitle: 'English title', isSortHeader: true }),
+        order: AnimeOrder.TitleEng,
+        reverseOrder: AnimeReversedOrder.ReversedTitleEng,
+        status: SortStatus.Not,
+      },
+      {
+        $header: $createColHeader({ headerTitle: 'Status', isSortHeader: true }),
+        order: AnimeOrder.Status,
+        reverseOrder: AnimeReversedOrder.ReversedStatus,
+        status: SortStatus.Not,
+      },
+      {
+        $header: $createColHeader({ headerTitle: 'Aired start', isSortHeader: true }),
+        order: AnimeOrder.AiredStart,
+        reverseOrder: AnimeReversedOrder.ReversedAiredStart,
+        status: SortStatus.Not,
+      },
+    ];
+
     this.headers.forEach(header => {
       const { $header, order } = header;
 
       if (order !== undefined) {
-        $header.$el.addEventListener('click', () => {
+        $header.addEventListener('click', () => {
           this.setOrderInHeader(header);
         });
       }
 
-      this.$row.append($header);
+      $row.append($header);
     });
 
-    this.$root.append(this.$row);
+    this.$root.append($row);
   }
+}
+
+/**
+ * Created header.
+ * @param headerParams Title, styles?, isSortedHeader?: true.
+ * @returns
+ */
+function $createColHeader({ headerTitle, styles, isSortHeader }:
+  {headerTitle: string; styles?: string[]; isSortHeader?: true;}): HTMLElement {
+  const $colHeader = document.createElement('th');
+  $colHeader.textContent = headerTitle;
+
+  if (isSortHeader) {
+    $colHeader.classList.add(...headerStyles.sortedHeader, ...elementStyles.col);
+  }
+
+  if (styles !== undefined) {
+    $colHeader.classList.add(...styles);
+  }
+
+  return $colHeader;
+
 }
 
 interface Header {
 
   /** Dom Instance Header. */
-  $header: Dom;
+  $header: HTMLElement;
 
   /** Status. */
   status?: SortStatus;

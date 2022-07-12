@@ -1,5 +1,7 @@
 import { ListAnime } from '@js-camp/core/models/listAnime';
 
+import { tableStyles } from './animeTable.styles';
+
 import { $createAnimeTableElement } from './animeTableElement';
 
 /**
@@ -39,5 +41,6 @@ export class TableElements {
    */
   public mount(): void {
     this.$root = document.createElement('tbody');
+    this.$root.classList.add(...tableStyles.tbody);
   }
 }

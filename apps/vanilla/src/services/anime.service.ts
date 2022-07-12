@@ -5,19 +5,15 @@ import { ListAnimeDTO } from '@js-camp/core/dtos/animeList.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { ListAnimeMapper } from '@js-camp/core/mappers/listAnime.mapper';
 import { ListAnime } from '@js-camp/core/models/listAnime';
-import { AxiosRequestConfig } from 'axios';
-import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-import { Api } from 'axios-es6-class';
 
-import { apiConfig } from '../config/apiConfig';
+import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
+
+import { ApiService } from './api.service';
 
 /**
  * Anime API class.
  */
-export class AnimeApi extends Api {
-  public constructor(config: AxiosRequestConfig) {
-    super(config);
-  }
+export class AnimeApi extends ApiService {
 
   /**
    * Get Paginated List Anime List.
@@ -81,4 +77,4 @@ export interface GetPaginatedListAnimeListRequest {
   ordering: AnimeOrders;
 }
 
-export const animeApi = new AnimeApi(apiConfig);
+export const animeApi = new AnimeApi();

@@ -1,5 +1,7 @@
 import { PaginationRequestParams, PaginationResponseParams } from './animeTable';
 
+import { paginationStyles } from './animeTable.styles';
+
 type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 
 interface PaginationPanelProps {
@@ -52,7 +54,7 @@ export class PaginationPanel {
   private createButton(text: string): HTMLButtonElement {
     const $button = document.createElement('button');
 
-    $button.classList.add('w-12', 'border', 'disabled:opacity-50');
+    $button.classList.add(...paginationStyles.button);
     $button.textContent = text;
 
     return $button;
@@ -110,6 +112,7 @@ export class PaginationPanel {
       } else {
         if (actualPageNumber > 4) {
           const $noButton = document.createElement('div');
+          $noButton.classList.add(...paginationStyles.noButton);
           $noButton.textContent = '...';
           $otherButtons.push($noButton);
           startIterNumber = actualPageNumber - 1;
@@ -127,12 +130,13 @@ export class PaginationPanel {
         $otherButtons.push($button);
 
         if (pageNumber === actualPageNumber) {
-          $button.classList.add(...buttonActiveClasses);
+          $button.classList.add(...paginationStyles.activeButton);
         }
       }
 
       if (isPenultNotButton) {
         const $noButton = document.createElement('div');
+        $noButton.classList.add(...paginationStyles.noButton);
         $noButton.textContent = '...';
         $otherButtons.push($noButton);
       }
