@@ -47,9 +47,9 @@ export class AnimeTable {
     elements: [],
   };
 
-  private $root?: Element;
+  private root?: Element;
 
-  private $TableElements: TableElements = new TableElements();
+  private tableElements: TableElements = new TableElements();
 
   private updateOrderState = (newOrder: AnimeOrders): void => {
     this.state.order = newOrder;
@@ -67,12 +67,12 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   };
 
-  private $PaginationPanel: PaginationPanel = new PaginationPanel({
+  private paginationPanel: PaginationPanel = new PaginationPanel({
     updateMethod: this.updatePaginationState,
     defaultPaginationParams: this.state.paginationParams,
   });
 
-  private $TableHeader: AnimeTableHeader = new AnimeTableHeader({
+  private tableHeader: AnimeTableHeader = new AnimeTableHeader({
     updateMethod: this.updateOrderState,
   });
 
@@ -105,9 +105,9 @@ export class AnimeTable {
   }
 
   private update({ elements, paginationParams }: AnimeTableUpdateParams): void {
-    this.$TableElements.update(elements);
-    this.$PaginationPanel.update(paginationParams);
-    this.$TableHeader.update();
+    this.tableElements.update(elements);
+    this.paginationPanel.update(paginationParams);
+    this.tableHeader.update();
   }
 
   private async didMount(): Promise<void> {
@@ -118,28 +118,28 @@ export class AnimeTable {
 /   * Mount the component on the root element.
    */
   public mount(): void {
-    const $root = document.querySelector(this.selector);
+    const root = document.querySelector(this.selector);
 
-    if ($root === null) {
+    if (root === null) {
       throw new Error('Selector not found');
     }
 
-    this.$root = $root;
-    const $table = document.createElement('table');
-    $table.classList.add(...tableStyles.tableClass);
+    this.root = root;
+    const table = document.createElement('table');
+    table.classList.add(...tableStyles.tableClass);
 
-    this.$TableElements.mount();
-    this.$PaginationPanel.mount();
-    this.$TableHeader.mount();
+    this.tableElements.mount();
+    this.paginationPanel.mount();
+    this.tableHeader.mount();
 
-    $table.append(
-      this.$TableHeader.getElement(),
-      this.$TableElements.getElement(),
+    table.append(
+      this.tableHeader.getElement(),
+      this.tableElements.getElement(),
     );
 
-    this.$root.append(
-      this.$PaginationPanel.getElement(),
-      $table,
+    this.root.append(
+      this.paginationPanel.getElement(),
+      table,
     );
 
     this.didMount();
