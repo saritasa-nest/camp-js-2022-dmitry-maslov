@@ -17,7 +17,7 @@ interface AnimeTableHeaderProps {
  * Created table headers, is responsible for sorting.
  */
 export class AnimeTableHeader {
-  private $root?: HTMLElement;
+  private root?: HTMLElement;
 
   private headers?: Header[];
 
@@ -77,18 +77,18 @@ export class AnimeTableHeader {
     this.headers.forEach(header => {
         switch (header.status) {
           case SortStatus.Sort:
-            if (header.$statusIndicator) {
-              header.$statusIndicator.textContent = '(increase sort)';
+            if (header.statusIndicator) {
+              header.statusIndicator.textContent = '(increase sort)';
             }
             break;
           case SortStatus.Reverse:
-            if (header.$statusIndicator) {
-              header.$statusIndicator.textContent = '(descending sort)';
+            if (header.statusIndicator) {
+              header.statusIndicator.textContent = '(descending sort)';
             }
             break;
           case SortStatus.Not:
-            if (header.$statusIndicator) {
-              header.$statusIndicator.textContent = '';
+            if (header.statusIndicator) {
+              header.statusIndicator.textContent = '';
             }
             break;
           default: break;
@@ -101,44 +101,44 @@ export class AnimeTableHeader {
    * @returns Dom instance component.
    */
   public getElement(): HTMLElement {
-    if (this.$root === undefined) {
+    if (this.root === undefined) {
       throw new Error(`${this} not called mount`);
     }
 
-    return this.$root;
+    return this.root;
   }
 
   /**
    * Mount component in dom tree.
    */
   public mount(): void {
-    this.$root = document.createElement('thead');
-    this.$root.classList.add(...tableStyles.thead);
+    this.root = document.createElement('thead');
+    this.root.classList.add(...tableStyles.thead);
 
-    const $row = document.createElement('tr');
-    $row.classList.add(...tableStyles.row);
+    const row = document.createElement('tr');
+    row.classList.add(...tableStyles.row);
 
     this.headers = [
       {
-        $header: $createColHeader({
+        headerEl: createColHeader({
           headerTitle: 'Photo',
           styles: tableStyles.imageCol,
         }),
       },
       {
-        $header: $createColHeader({ headerTitle: 'English title', isSortHeader: true }),
+        headerEl: createColHeader({ headerTitle: 'English title', isSortHeader: true }),
         order: AnimeOrder.TitleEng,
         reverseOrder: AnimeReversedOrder.ReversedTitleEng,
         status: SortStatus.Not,
       },
       {
-        $header: $createColHeader({ headerTitle: 'Status', isSortHeader: true }),
+        headerEl: createColHeader({ headerTitle: 'Status', isSortHeader: true }),
         order: AnimeOrder.Status,
         reverseOrder: AnimeReversedOrder.ReversedStatus,
         status: SortStatus.Not,
       },
       {
-        $header: $createColHeader({ headerTitle: 'Aired start', isSortHeader: true }),
+        headerEl: createColHeader({ headerTitle: 'Aired start', isSortHeader: true }),
         order: AnimeOrder.AiredStart,
         reverseOrder: AnimeReversedOrder.ReversedAiredStart,
         status: SortStatus.Not,
@@ -146,23 +146,23 @@ export class AnimeTableHeader {
     ];
 
     this.headers.forEach(header => {
-      const { $header, order } = header;
+      const { headerEl, order } = header;
 
       if (order !== undefined) {
-        const $statusIndicator = document.createElement('span');
-        $statusIndicator.classList.add('text-sm');
-        header.$statusIndicator = $statusIndicator;
+        const statusIndicator = document.createElement('span');
+        statusIndicator.classList.add('text-sm');
+        header.statusIndicator = statusIndicator;
 
-        $header.append($statusIndicator);
-        $header.addEventListener('click', () => {
+        headerEl.append(statusIndicator);
+        headerEl.addEventListener('click', () => {
           this.setOrderInHeader(header);
         });
       }
 
-      $row.append($header);
+      row.append(headerEl);
     });
 
-    this.$root.append($row);
+    this.root.append(row);
   }
 }
 
@@ -171,33 +171,33 @@ export class AnimeTableHeader {
  * @param headerParams Title, styles?, isSortedHeader?: true.
  * @returns
  */
-function $createColHeader({ headerTitle, styles, isSortHeader }:
+function createColHeader({ headerTitle, styles, isSortHeader }:
   {headerTitle: string; styles?: string[]; isSortHeader?: true;}): HTMLElement {
-  const $colHeader = document.createElement('th');
-  $colHeader.textContent = headerTitle;
+  const colHeader = document.createElement('th');
+  colHeader.textContent = headerTitle;
 
   if (isSortHeader) {
-    $colHeader.classList.add(...headerStyles.sortedHeader, ...elementStyles.col);
+    colHeader.classList.add(...headerStyles.sortedHeader, ...elementStyles.col);
   }
 
   if (styles !== undefined) {
-    $colHeader.classList.add(...styles);
+    colHeader.classList.add(...styles);
   }
 
-  return $colHeader;
+  return colHeader;
 
 }
 
 interface Header {
 
   /** Dom Instance Header. */
-  $header: HTMLElement;
+  headerEl: HTMLElement;
 
   /** Status. */
   status?: SortStatus;
 
   /** Status indicator element. */
-  $statusIndicator?: HTMLSpanElement;
+  statusIndicator?: HTMLSpanElement;
 
   /** Order type in this header.  */
   order?: AnimeOrders;

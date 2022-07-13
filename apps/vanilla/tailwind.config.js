@@ -1,4 +1,3 @@
-// apps/app1/tailwind.config.js
 const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
 const { join } = require('path');
 

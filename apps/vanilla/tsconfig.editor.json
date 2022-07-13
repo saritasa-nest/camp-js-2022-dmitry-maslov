@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["**/*.ts", "../../libs"],
+  "include": ["**/*.ts", "../../libs", "tailwind.config.js"],
   "compilerOptions": {
     "types": ["node"]
   }

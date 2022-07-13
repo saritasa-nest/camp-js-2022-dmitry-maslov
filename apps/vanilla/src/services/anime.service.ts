@@ -8,12 +8,17 @@ import { ListAnime } from '@js-camp/core/models/listAnime';
 
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
-import { ApiService } from './api.service';
+import { Api } from 'axios-es6-class';
+
+import { apiConfig } from '../config/apiConfig';
 
 /**
  * Anime API class.
  */
-export class AnimeApi extends ApiService {
+export class AnimeApi extends Api {
+  public constructor() {
+    super(apiConfig);
+  }
 
   /**
    * Get Paginated List Anime List.
