@@ -85,8 +85,7 @@ export class AnimeTable {
       elements: response.results,
       order: this.state.order,
       paginationParams: {
-        offset: this.state.paginationParams.offset,
-        limit: this.state.paginationParams.limit,
+        ...this.state.paginationParams,
         count: response.count,
       },
     };
