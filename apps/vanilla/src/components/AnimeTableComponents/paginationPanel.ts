@@ -66,7 +66,7 @@ export class PaginationPanel {
     const otherButtons: HTMLElement[] = [];
 
     const actualPageNumber = offset / limit + 1;
-    const lastPageNumber = Math.floor(count / limit + (count % limit > 0 ? 1 : 0));
+    const lastPageNumber = Math.ceil(count / limit);
 
     let isPenultNotButton = actualPageNumber + 3 !== lastPageNumber;
 
@@ -121,7 +121,7 @@ export class PaginationPanel {
     const { limit, offset, count } = this.paginationParams;
 
     const actualPageNumber = offset / limit + 1;
-    const lastPageNumber = Math.floor(count / limit + (count % limit > 0 ? 1 : 0));
+    const lastPageNumber = Math.ceil(count / limit);
 
     if (this.buttons === undefined) {
       throw new Error('component not mounted');
