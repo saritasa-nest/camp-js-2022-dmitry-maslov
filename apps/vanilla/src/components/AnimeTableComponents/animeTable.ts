@@ -15,19 +15,13 @@ import { tableStyles } from './animeTable.styles';
 
 interface AnimeTableState {
 
-  /**
-   * Pagination params.
-   */
+  /** Pagination params. */
   paginationParams: PaginationResponseParams;
 
-  /**
-   * Order.
-   */
+  /** Order. */
   order: AnimeOrders;
 
-  /**
-   * List anima array.
-   */
+  /** List anima array. */
   elements: ListAnime[];
 }
 
@@ -115,7 +109,7 @@ export class AnimeTable {
   }
 
   /**
-/   * Mount the component on the root element.
+   * Mount the component on the root element.
    */
   public mount(): void {
     const root = document.querySelector(this.selector);
@@ -146,23 +140,17 @@ export class AnimeTable {
   }
 }
 
-/**
- * Pagination request params.
- */
+/** Pagination request params. */
 export interface PaginationRequestParams {
 
-  /**
-   * Limit.
-   */
+  /** Limit. */
   limit: number;
 
   /** Offset. */
   offset: number;
 }
 
-/**
- * Parameters for pagination.
- */
+/** Parameters for pagination. */
 export interface PaginationResponseParams {
 
   /** Limiting the amount of data. */
@@ -175,9 +163,7 @@ export interface PaginationResponseParams {
   count: number;
 }
 
-/**
- * Parameters for update.
- */
+/** Parameters for update. */
 export interface AnimeTableUpdateParams {
 
   /** Parameters for pagination. */

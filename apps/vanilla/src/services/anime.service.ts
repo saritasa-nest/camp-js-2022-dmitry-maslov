@@ -56,20 +56,14 @@ export class AnimeApi extends Api {
  */
 export interface GetPaginatedListAnimeListResponse {
 
-  /**
-   * Anime array in server.
-   */
+  /** Anime array in server.*/
   results: ListAnime[];
 
-  /**
-   * Count elements in server.
-   */
+  /** Count elements in server.*/
   count: number;
 }
 
-/**
- * Request.
- */
+/** Request. */
 export interface GetPaginatedListAnimeListRequest {
 
   /** Limit results. */
