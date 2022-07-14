@@ -13,11 +13,15 @@ import { AnimeTableHeader } from './animeTableHeader';
 import { TableElements } from './animeTableElements';
 
 import { PaginationPanel } from './paginationPanel';
+import { FilterPanel } from './filterPanel';
 
 interface AnimeTableState {
 
   /** Pagination params. */
   paginationParams: PaginationResponseParams;
+
+  /** Filter params. */
+  filterParams: FiltersParams;
 
   /** Order. */
   order: AnimeOrders;
@@ -37,6 +41,9 @@ export class AnimeTable {
       limit: 10,
       offset: 0,
       count: 0,
+    },
+    filterParams: {
+      searchTerm: '',
     },
     order: AnimeNotOrder.NotOrder,
     elements: [],
@@ -62,9 +69,19 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   };
 
+  private updateFiltersState = (filtersParams: FiltersParams): void => {
+    this.state.filterParams = filtersParams;
+    this.fetchDataAndUpdateElements();
+  };
+
   private paginationPanel: PaginationPanel = new PaginationPanel({
     updateMethod: this.updatePaginationState,
     defaultPaginationParams: this.state.paginationParams,
+  });
+
+  private filterPanel: FilterPanel = new FilterPanel({
+    updateMethod: this.updateFiltersState,
+    defaultFilterParams: this.state.filterParams,
   });
 
   private tableHeader: AnimeTableHeader = new AnimeTableHeader({
@@ -80,6 +97,7 @@ export class AnimeTable {
       limit: this.state.paginationParams.limit,
       offset: this.state.paginationParams.offset,
       ordering: this.state.order,
+      search: this.state.filterParams.searchTerm,
     });
 
     this.state = {
@@ -89,6 +107,7 @@ export class AnimeTable {
         ...this.state.paginationParams,
         count: response.count,
       },
+      filterParams: this.state.filterParams,
     };
 
     this.updateTable({
@@ -131,7 +150,9 @@ export class AnimeTable {
       this.tableElements.getElement(),
     );
 
+    this.filterPanel.createHtml();
     this.root.append(
+      this.filterPanel.getElement(),
       this.paginationPanel.getElement(),
       table,
     );
@@ -148,6 +169,13 @@ export interface PaginationRequestParams {
 
   /** Offset. */
   offset: number;
+}
+
+/** Filters request params. */
+export interface FiltersParams {
+
+  /** Search term. */
+  searchTerm: string;
 }
 
 /** Parameters for pagination. */

@@ -25,17 +25,20 @@ export class AnimeApi extends Api {
    * @param limit Limit data.
    * @param offset Offset.
    * @param ordering Ordering.
+   * @param search Search term.
    */
   public async getPaginatedListAnimeList({
     limit,
     offset,
     ordering,
+    search,
   }: PaginatedListAnimeListRequest): Promise<PaginatedListAnimeListResponse> {
     const response = await this.get<PaginationDto<AnimeDTO>>(`anime/anime/`, {
       params: {
         limit,
         offset,
         ordering: `${ordering || 'id'}`.trim(),
+        search,
       },
     });
 
@@ -74,6 +77,9 @@ export interface PaginatedListAnimeListRequest {
 
   /** Ordering. */
   ordering: AnimeOrders;
+
+  /** Search term. */
+  readonly search: string;
 }
 
 export const animeApi = new AnimeApi();
