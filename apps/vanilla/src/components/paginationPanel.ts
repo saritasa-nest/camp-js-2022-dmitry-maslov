@@ -1,6 +1,6 @@
-import { paginationStyles } from '../../constants/styles/animeTable';
+import { paginationStyles } from '../constants/styles/animeTable';
 
-import { PaginationRequestParams, PaginationResponseParams } from './animeTable';
+import { PaginationRequestParams, PaginationResponseParams } from './AnimeTableComponents/animeTable';
 
 type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 
@@ -110,7 +110,7 @@ export class PaginationPanel {
    * Updated pagination buttons.
    * @param paginationParams Pagination Params.
    */
-  public update(paginationParams: PaginationResponseParams): void {
+  public updatePagination(paginationParams: PaginationResponseParams): void {
     this.paginationParams = paginationParams;
     const { limit, offset, count } = this.paginationParams;
 
@@ -192,8 +192,8 @@ export class PaginationPanel {
     }
   }
 
-  /** Mount the component on the root element.*/
-  public mount(): void {
+  /** Initialize the pagination component. */
+  public initializePagination(): void {
     this.root = document.createElement('div');
     this.root.classList.add('flex', 'justify-center', 'm-1');
 
