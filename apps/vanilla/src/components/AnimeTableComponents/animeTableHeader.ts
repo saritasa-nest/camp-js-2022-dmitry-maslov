@@ -5,7 +5,7 @@ import {
   AnimeReversedOrder,
 } from '@js-camp/core/enums/anime/ordering';
 
-import { elementStyles, headerStyles, tableStyles } from './animeTable.styles';
+import { elementStyles, headerStyles, tableStyles } from '../../constants/styles/animeTable';
 
 interface AnimeTableHeaderProps {
 
@@ -13,9 +13,7 @@ interface AnimeTableHeaderProps {
   updateMethod(order: AnimeOrders): void;
 }
 
-/**
- * Created table headers, is responsible for sorting.
- */
+/** Created table headers, is responsible for sorting. */
 export class AnimeTableHeader {
   private root?: HTMLElement;
 
