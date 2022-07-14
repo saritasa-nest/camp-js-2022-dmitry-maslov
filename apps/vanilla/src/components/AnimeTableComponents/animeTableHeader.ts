@@ -63,10 +63,8 @@ export class AnimeTableHeader {
     });
   }
 
-  /**
-   * Updates header elements.
-   */
-  public update(): void {
+  /** Updates header elements.*/
+  public updateHeaders(): void {
     if (this.headers === undefined) {
       throw new Error(`${this} not mounted`);
     }
@@ -108,10 +106,8 @@ export class AnimeTableHeader {
     return this.root;
   }
 
-  /**
-   * Mount component in dom tree.
-   */
-  public mount(): void {
+  /** Initialize the table header component. */
+  public initializeTableHeader(): void {
     this.root = document.createElement('thead');
     this.root.classList.add(...tableStyles.thead);
 

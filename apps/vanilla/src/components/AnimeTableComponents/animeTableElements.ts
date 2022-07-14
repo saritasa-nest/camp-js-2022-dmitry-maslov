@@ -4,15 +4,11 @@ import { tableStyles } from '../../constants/styles/animeTable';
 
 import { createAnimeTableElement } from './animeTableElement';
 
-/**
- * Generates and updates table elements.
- */
+/** Generates and updates table elements. */
 export class TableElements {
   private root?: HTMLElement;
 
-  /**
-   * Getting html tbody tag.
-   */
+  /** Getting html tbody tag. */
   public getElement(): HTMLElement {
     if (this.root === undefined) {
       throw new Error(`${this} - method mount not called`);
@@ -25,7 +21,7 @@ export class TableElements {
    * Updates the table elements at the root element.
    * @param elementsData Array of objects to convert to table elements.
    */
-  public update(elementsData: Anime[]): void {
+  public updateTableElements(elementsData: Anime[]): void {
     if (this.root === undefined) {
       throw new Error(`${this} not mounted`);
     }
@@ -36,10 +32,8 @@ export class TableElements {
     });
   }
 
-  /**
-   * Creates a root html element.
-   */
-  public mount(): void {
+  /** Creates a root html element. */
+  public initializeTableBody(): void {
     this.root = document.createElement('tbody');
     this.root.classList.add(...tableStyles.tbody);
   }

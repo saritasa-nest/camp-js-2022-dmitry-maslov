@@ -8,11 +8,11 @@ import { animeApi } from '../../services/anime.service';
 
 import { tableStyles } from '../../constants/styles/animeTable';
 
+import { PaginationPanel } from '../paginationPanel';
+
 import { AnimeTableHeader } from './animeTableHeader';
 
 import { TableElements } from './animeTableElements';
-
-import { PaginationPanel } from './paginationPanel';
 
 interface AnimeTableState {
 
@@ -26,9 +26,7 @@ interface AnimeTableState {
   elements: Anime[];
 }
 
-/**
- * The class creates a sorted table with anime and pagination.
- */
+/** The class creates a sorted table with anime and pagination. */
 export class AnimeTable {
   private selector: string;
 
@@ -99,18 +97,16 @@ export class AnimeTable {
   }
 
   private updateTable({ elements, paginationParams }: AnimeTableUpdateParams): void {
-    this.tableElements.update(elements);
-    this.paginationPanel.update(paginationParams);
-    this.tableHeader.update();
+    this.tableElements.updateTableElements(elements);
+    this.paginationPanel.updatePagination(paginationParams);
+    this.tableHeader.updateHeaders();
   }
 
   private async didMount(): Promise<void> {
     await this.fetchDataAndUpdateElements();
   }
 
-  /**
-   * Mount the component on the root element.
-   */
+  /** Mount the component on the root element. */
   public mount(): void {
     const root = document.querySelector(this.selector);
 
@@ -122,9 +118,9 @@ export class AnimeTable {
     const table = document.createElement('table');
     table.classList.add(...tableStyles.tableClass);
 
-    this.tableElements.mount();
-    this.paginationPanel.mount();
-    this.tableHeader.mount();
+    this.tableElements.initializeTableBody();
+    this.paginationPanel.initializePagination();
+    this.tableHeader.initializeTableHeader();
 
     table.append(
       this.tableHeader.getElement(),

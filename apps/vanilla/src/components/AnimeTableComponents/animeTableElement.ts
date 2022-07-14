@@ -45,9 +45,7 @@ export function createAnimeTableElement(anime: Anime): HTMLElement {
   return row;
 }
 
-/**
- * Create column element.
- */
+/** Create column element. */
 function createCol(): HTMLElement {
   const col = document.createElement('td');
   col.classList.add(...elementStyles.col);
