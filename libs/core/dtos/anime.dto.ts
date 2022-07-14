@@ -24,8 +24,8 @@ export interface AnimeDTO {
 
   /** Aired. */
   readonly aired: {
-    readonly start: string;
-    readonly end: string;
+    readonly start: string | null;
+    readonly end: string | null;
   };
 
   /** Type. */
