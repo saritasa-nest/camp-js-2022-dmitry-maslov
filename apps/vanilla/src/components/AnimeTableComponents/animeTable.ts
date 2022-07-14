@@ -6,14 +6,13 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { animeApi } from '../../services/anime.service';
 
-import { FilterPanel } from './filterPanel';
+import { tableStyles } from '../../constants/styles/animeTable';
 
 import { AnimeTableHeader } from './animeTableHeader';
 
 import { TableElements } from './animeTableElements';
 
 import { PaginationPanel } from './paginationPanel';
-import { tableStyles } from './animeTable.styles';
 
 interface AnimeTableState {
 
@@ -132,11 +131,7 @@ export class AnimeTable {
       this.tableElements.getElement(),
     );
 
-    const filterPanel = new FilterPanel();
-    filterPanel.createHTML();
-
     this.root.append(
-      filterPanel.getElement(),
       this.paginationPanel.getElement(),
       table,
     );

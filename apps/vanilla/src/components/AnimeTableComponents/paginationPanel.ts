@@ -1,6 +1,6 @@
-import { PaginationRequestParams, PaginationResponseParams } from './animeTable';
+import { paginationStyles } from '../../constants/styles/animeTable';
 
-import { paginationStyles } from './animeTable.styles';
+import { PaginationRequestParams, PaginationResponseParams } from './animeTable';
 
 type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 
