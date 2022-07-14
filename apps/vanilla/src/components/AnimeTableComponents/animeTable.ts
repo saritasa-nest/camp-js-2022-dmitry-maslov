@@ -1,10 +1,12 @@
 import {
   AnimeNotOrder, AnimeOrders,
-} from '@js-camp/core/enums/anime/ordering.enum';
+} from '@js-camp/core/enums/anime/ordering';
 
-import { ListAnime } from '@js-camp/core/models/listAnime';
+import { Anime } from '@js-camp/core/models/listAnime';
 
 import { animeApi } from '../../services/anime.service';
+
+import { FilterPanel } from './filterPanel';
 
 import { AnimeTableHeader } from './animeTableHeader';
 
@@ -22,7 +24,7 @@ interface AnimeTableState {
   order: AnimeOrders;
 
   /** List anima array. */
-  elements: ListAnime[];
+  elements: Anime[];
 }
 
 /**
@@ -130,7 +132,11 @@ export class AnimeTable {
       this.tableElements.getElement(),
     );
 
+    const filterPanel = new FilterPanel();
+    filterPanel.createHTML();
+
     this.root.append(
+      filterPanel.getElement(),
       this.paginationPanel.getElement(),
       table,
     );
@@ -172,5 +178,5 @@ export interface AnimeTableUpdateParams {
   order: AnimeOrders;
 
   /** Elements. */
-  elements: ListAnime[];
+  elements: Anime[];
 }

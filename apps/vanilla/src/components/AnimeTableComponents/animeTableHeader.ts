@@ -3,7 +3,7 @@ import {
   AnimeOrders,
   AnimeNotOrder,
   AnimeReversedOrder,
-} from '@js-camp/core/enums/anime/ordering.enum';
+} from '@js-camp/core/enums/anime/ordering';
 
 import { elementStyles, headerStyles, tableStyles } from './animeTable.styles';
 
@@ -28,26 +28,24 @@ export class AnimeTableHeader {
 
     this.resetHeadersStatus();
 
-    if (order !== undefined && reverseOrder !== undefined) {
-      switch (status) {
-        case SortStatus.Not:
+    if (order !== undefined && reverseOrder !== undefined && status !== undefined) {
+
+      const updateByStatusMethod = {
+        [SortStatus.Not]: (): void => {
           this.updateMethod(order);
           header.status = SortStatus.Sort;
-          break;
-
-        case SortStatus.Sort:
+        },
+        [SortStatus.Sort]: (): void => {
           this.updateMethod(reverseOrder);
           header.status = SortStatus.Reverse;
-          break;
-
-        case SortStatus.Reverse:
+        },
+        [SortStatus.Reverse]: (): void => {
           this.updateMethod(AnimeNotOrder.NotOrder);
           header.status = SortStatus.Not;
-          break;
+        },
+      };
 
-        default:
-          break;
-      }
+      updateByStatusMethod[status]();
     }
   }
 
@@ -75,24 +73,28 @@ export class AnimeTableHeader {
       throw new Error(`${this} not mounted`);
     }
     this.headers.forEach(header => {
-        switch (header.status) {
-          case SortStatus.Sort:
+
+      if (header.status !== undefined) {
+        const changeStatusIndicator = {
+          [SortStatus.Sort](): void {
             if (header.statusIndicator) {
               header.statusIndicator.textContent = '(increase sort)';
             }
-            break;
-          case SortStatus.Reverse:
+          },
+          [SortStatus.Reverse](): void {
             if (header.statusIndicator) {
               header.statusIndicator.textContent = '(descending sort)';
             }
-            break;
-          case SortStatus.Not:
+          },
+          [SortStatus.Not](): void {
             if (header.statusIndicator) {
               header.statusIndicator.textContent = '';
             }
-            break;
-          default: break;
-        }
+          },
+        };
+
+        changeStatusIndicator[header.status]();
+      }
     });
   }
 

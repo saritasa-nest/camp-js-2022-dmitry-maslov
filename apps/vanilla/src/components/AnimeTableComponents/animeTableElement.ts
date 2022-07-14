@@ -1,4 +1,4 @@
-import { ListAnime } from '@js-camp/core/models/listAnime';
+import { Anime } from '@js-camp/core/models/listAnime';
 
 import { elementStyles, tableStyles } from './animeTable.styles';
 
@@ -7,7 +7,7 @@ import { elementStyles, tableStyles } from './animeTable.styles';
  * @param listAnime ListAnime prop.
  * @returns HTML element of anime table.
  */
-export function createAnimeTableElement(listAnime: ListAnime): HTMLElement {
+export function createAnimeTableElement(listAnime: Anime): HTMLElement {
 
   const image = document.createElement('img');
   image.classList.add(...elementStyles.image);

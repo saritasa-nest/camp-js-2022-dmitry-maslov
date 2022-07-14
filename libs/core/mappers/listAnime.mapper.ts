@@ -1,14 +1,14 @@
-import { ListAnimeDTO } from '../dtos/animeList.dto';
-import { ListAnime } from '../models/listAnime';
+import { AnimeDTO } from '../dtos/animeList.dto';
+import { Anime } from '../models/listAnime';
 
-export namespace ListAnimeMapper {
+export namespace AnimeMapper {
 
   /**
    * Maps dto to model.
    * @param dto ListAnime dto.
    */
-  export function fromDto(dto: ListAnimeDTO): ListAnime {
-    return new ListAnime({
+  export function fromDto(dto: AnimeDTO): Anime {
+    return new Anime({
       id: dto.id,
       image: dto.image,
       titleEng: dto.title_eng,

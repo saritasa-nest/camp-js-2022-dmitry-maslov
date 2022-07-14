@@ -1,8 +1,8 @@
-import { AnimeType } from './../enums/anime/type.enum';
-import { AnimeStatus } from './../enums/anime/status.enum';
+import { AnimeType } from '../enums/anime/type';
+import { AnimeStatus } from '../enums/anime/status';
 
 /** ListAnime DTO. */
-export interface ListAnimeDTO {
+export interface AnimeDTO {
 
   /** Id. */
   readonly id: number;

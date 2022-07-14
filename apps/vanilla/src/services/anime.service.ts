@@ -1,10 +1,10 @@
 import {
   AnimeOrders,
-} from '@js-camp/core/enums/anime/ordering.enum';
-import { ListAnimeDTO } from '@js-camp/core/dtos/animeList.dto';
+} from '@js-camp/core/enums/anime/ordering';
+import { AnimeDTO } from '@js-camp/core/dtos/animeList.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-import { ListAnimeMapper } from '@js-camp/core/mappers/listAnime.mapper';
-import { ListAnime } from '@js-camp/core/models/listAnime';
+import { AnimeMapper } from '@js-camp/core/mappers/listAnime.mapper';
+import { Anime } from '@js-camp/core/models/listAnime';
 
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
@@ -31,7 +31,7 @@ export class AnimeApi extends Api {
     offset,
     ordering,
   }: PaginatedListAnimeListRequest): Promise<PaginatedListAnimeListResponse> {
-    const response = await this.get<PaginationDto<ListAnimeDTO>>(`anime/anime/`, {
+    const response = await this.get<PaginationDto<AnimeDTO>>(`anime/anime/`, {
       params: {
         limit,
         offset,
@@ -40,9 +40,9 @@ export class AnimeApi extends Api {
     });
 
     const { count, results } = PaginationMapper.fromDto<
-      ListAnime,
-      ListAnimeDTO
-    >(ListAnimeMapper.fromDto, response.data);
+      Anime,
+      AnimeDTO
+    >(AnimeMapper.fromDto, response.data);
 
     return {
       count,
@@ -57,7 +57,7 @@ export class AnimeApi extends Api {
 export interface PaginatedListAnimeListResponse {
 
   /** Anime array in server.*/
-  results: ListAnime[];
+  results: Anime[];
 
   /** Count elements in server.*/
   count: number;

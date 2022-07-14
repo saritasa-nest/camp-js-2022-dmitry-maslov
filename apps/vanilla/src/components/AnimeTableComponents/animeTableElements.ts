@@ -1,4 +1,4 @@
-import { ListAnime } from '@js-camp/core/models/listAnime';
+import { Anime } from '@js-camp/core/models/listAnime';
 
 import { tableStyles } from './animeTable.styles';
 
@@ -25,7 +25,7 @@ export class TableElements {
    * Updates the table elements at the root element.
    * @param elementsData Array of objects to convert to table elements.
    */
-  public update(elementsData: ListAnime[]): void {
+  public update(elementsData: Anime[]): void {
     if (this.root === undefined) {
       throw new Error(`${this} not mounted`);
     }
