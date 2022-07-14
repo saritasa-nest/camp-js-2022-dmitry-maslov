@@ -6,22 +6,16 @@ type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 
 interface PaginationPanelProps {
 
-  /**
-   * Method to update pagination data in parent component.
-   */
+  /** Method to update pagination data in parent component. */
   updateMethod: (paginationParams: PaginationRequestParams) => void;
 
-  /**
-   * Default pagination parameters;.
-   */
+  /** Default pagination parameters. */
   defaultPaginationParams: PaginationResponseParams;
 }
 
 const buttonActiveClasses = ['bg-slate-300'];
 
-/**
- * The class creates a pagination panel.
- */
+/** The class creates a pagination panel. */
 export class PaginationPanel {
   private root?: Element;
 
@@ -198,9 +192,7 @@ export class PaginationPanel {
     }
   }
 
-  /**
-   * Mount the component on the root element.
-   */
+  /** Mount the component on the root element.*/
   public mount(): void {
     this.root = document.createElement('div');
     this.root.classList.add('flex', 'justify-center', 'm-1');
