@@ -134,6 +134,11 @@ export class AnimeTableHeader {
         status: SortStatus.Not,
       },
       {
+        headerEl: createColHeader({
+          headerTitle: 'Type',
+        }),
+      },
+      {
         headerEl: createColHeader({ headerTitle: 'Status', isSortHeader: true }),
         order: AnimeOrder.Status,
         reverseOrder: AnimeReversedOrder.ReversedStatus,
