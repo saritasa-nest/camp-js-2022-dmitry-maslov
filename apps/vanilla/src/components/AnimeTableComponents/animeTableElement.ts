@@ -1,6 +1,6 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { elementStyles, tableStyles } from './animeTable.styles';
+import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
 
 /**
  * Creates the HOME element of the anime table.
