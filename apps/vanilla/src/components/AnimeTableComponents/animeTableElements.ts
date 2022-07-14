@@ -1,6 +1,6 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { tableStyles } from './animeTable.styles';
+import { tableStyles } from '../../constants/styles/animeTable';
 
 import { createAnimeTableElement } from './animeTableElement';
 
