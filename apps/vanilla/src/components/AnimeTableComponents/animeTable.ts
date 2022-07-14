@@ -92,14 +92,14 @@ export class AnimeTable {
       },
     };
 
-    this.update({
+    this.updateTable({
       elements: this.state.elements,
       order: this.state.order,
       paginationParams: this.state.paginationParams,
     });
   }
 
-  private update({ elements, paginationParams }: AnimeTableUpdateParams): void {
+  private updateTable({ elements, paginationParams }: AnimeTableUpdateParams): void {
     this.tableElements.update(elements);
     this.paginationPanel.update(paginationParams);
     this.tableHeader.update();
