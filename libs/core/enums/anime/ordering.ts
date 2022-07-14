@@ -12,27 +12,16 @@ export enum AnimeNotOrder {
  */
 export enum AnimeOrder {
   TitleEng = 'title_eng',
-
   TitleJpn = 'title_jpn',
-
   Synopsis = 'synopsis',
-
   Status = 'status',
-
   Source = 'source',
-
   Rating = 'rating',
-
   Aired = 'aired',
-
   AiredStart = 'aired__startswith',
-
   AiredEnd = 'aired__endswith',
-
   Created = 'created',
-
   Modified = 'modified',
-
 }
 
 /**

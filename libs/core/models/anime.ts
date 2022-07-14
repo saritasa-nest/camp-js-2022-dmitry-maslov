@@ -4,7 +4,7 @@ import { AnimeType } from '../enums/anime/type';
 import { Immerable, OmitImmerable } from './immerable';
 
 /** ListAnime. */
-export class ListAnime extends Immerable {
+export class Anime extends Immerable {
 
   /** Id. */
   public readonly id: number;
@@ -39,4 +39,4 @@ export class ListAnime extends Immerable {
   }
 }
 
-type InitArgs = OmitImmerable<ListAnime>;
+type InitArgs = OmitImmerable<Anime>;

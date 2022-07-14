@@ -1,4 +1,4 @@
-import { Anime } from '@js-camp/core/models/listAnime';
+import { Anime } from '@js-camp/core/models/anime';
 
 import { elementStyles, tableStyles } from './animeTable.styles';
 

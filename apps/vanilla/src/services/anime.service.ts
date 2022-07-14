@@ -1,10 +1,10 @@
 import {
   AnimeOrders,
 } from '@js-camp/core/enums/anime/ordering';
-import { AnimeDTO } from '@js-camp/core/dtos/animeList.dto';
+import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-import { AnimeMapper } from '@js-camp/core/mappers/listAnime.mapper';
-import { Anime } from '@js-camp/core/models/listAnime';
+import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
+import { Anime } from '@js-camp/core/models/anime';
 
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
