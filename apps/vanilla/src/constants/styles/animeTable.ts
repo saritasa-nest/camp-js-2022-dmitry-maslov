@@ -12,7 +12,7 @@ export namespace headerStyles {
 export namespace elementStyles {
   export const image = ['w-40'];
 
-  export const col = ['border-r', 'w-40'];
+  export const column = ['border-r', 'w-40'];
 }
 
 export namespace tableStyles {
@@ -20,5 +20,5 @@ export namespace tableStyles {
   export const tbody = ['flex', 'flex-col', 'w-11/12'];
   export const thead = ['flex', 'w-11/12'];
   export const row = ['flex', 'border-y', 'my-1', 'w-full', 'justify-between'];
-  export const imageCol = ['w-40', 'text-center'];
+  export const imageColumn = ['w-40', 'text-center'];
 }

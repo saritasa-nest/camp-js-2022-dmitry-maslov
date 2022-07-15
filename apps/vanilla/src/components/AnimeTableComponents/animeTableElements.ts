@@ -2,7 +2,7 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { tableStyles } from '../../constants/styles/animeTable';
 
-import { createAnimeTableElement } from './animeTableElement';
+import { createAnimeColumn } from './animeTableElement';
 
 /** Generates and updates table elements. */
 export class TableElements {
@@ -28,7 +28,7 @@ export class TableElements {
 
     this.root.innerHTML = '';
     elementsData.forEach(elementData => {
-      this.root?.append(createAnimeTableElement(elementData));
+      this.root?.append(createAnimeColumn(elementData));
     });
   }
 

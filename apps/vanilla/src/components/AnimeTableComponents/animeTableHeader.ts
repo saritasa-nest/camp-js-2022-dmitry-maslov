@@ -116,30 +116,30 @@ export class AnimeTableHeader {
 
     this.headers = [
       {
-        headerEl: createColHeader({
+        headerEl: createColumnHeader({
           headerTitle: 'Photo',
-          styles: tableStyles.imageCol,
+          styles: tableStyles.imageColumn,
         }),
       },
       {
-        headerEl: createColHeader({ headerTitle: 'English title', isSortHeader: true }),
+        headerEl: createColumnHeader({ headerTitle: 'English title', isSortHeader: true }),
         order: AnimeOrder.TitleEng,
         reverseOrder: AnimeReversedOrder.ReversedTitleEng,
         status: SortStatus.Not,
       },
       {
-        headerEl: createColHeader({
+        headerEl: createColumnHeader({
           headerTitle: 'Type',
         }),
       },
       {
-        headerEl: createColHeader({ headerTitle: 'Status', isSortHeader: true }),
+        headerEl: createColumnHeader({ headerTitle: 'Status', isSortHeader: true }),
         order: AnimeOrder.Status,
         reverseOrder: AnimeReversedOrder.ReversedStatus,
         status: SortStatus.Not,
       },
       {
-        headerEl: createColHeader({ headerTitle: 'Aired start', isSortHeader: true }),
+        headerEl: createColumnHeader({ headerTitle: 'Aired start', isSortHeader: true }),
         order: AnimeOrder.AiredStart,
         reverseOrder: AnimeReversedOrder.ReversedAiredStart,
         status: SortStatus.Not,
@@ -172,20 +172,20 @@ export class AnimeTableHeader {
  * @param headerParams Title, styles?, isSortedHeader?: true.
  * @returns
  */
-function createColHeader({ headerTitle, styles, isSortHeader }:
+function createColumnHeader({ headerTitle, styles, isSortHeader }:
   {headerTitle: string; styles?: string[]; isSortHeader?: true;}): HTMLElement {
-  const colHeader = document.createElement('th');
-  colHeader.textContent = headerTitle;
+  const columnHeader = document.createElement('th');
+  columnHeader.textContent = headerTitle;
 
   if (isSortHeader) {
-    colHeader.classList.add(...headerStyles.sortedHeader, ...elementStyles.col);
+    columnHeader.classList.add(...headerStyles.sortedHeader, ...elementStyles.column);
   }
 
   if (styles !== undefined) {
-    colHeader.classList.add(...styles);
+    columnHeader.classList.add(...styles);
   }
 
-  return colHeader;
+  return columnHeader;
 
 }
 

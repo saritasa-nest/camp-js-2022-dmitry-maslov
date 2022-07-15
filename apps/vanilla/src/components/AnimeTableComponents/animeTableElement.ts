@@ -7,47 +7,47 @@ import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
  * @param anime ListAnime prop.
  * @returns HTML element of anime table.
  */
-export function createAnimeTableElement(anime: Anime): HTMLElement {
+export function createAnimeColumn(anime: Anime): HTMLElement {
 
   const image = document.createElement('img');
   image.classList.add(...elementStyles.image);
   image.src = anime.image;
 
-  const imageCol = createCol();
-  imageCol.classList.add(...tableStyles.imageCol);
-  imageCol.append(image);
+  const imageColumn = createColumn();
+  imageColumn.classList.add(...tableStyles.imageColumn);
+  imageColumn.append(image);
 
-  const titleCol = createCol();
+  const titleColumn = createColumn();
   const engTitle = document.createElement('span');
   engTitle.textContent = anime.titleEng;
-  titleCol.append(engTitle);
+  titleColumn.append(engTitle);
 
-  const statusCol = createCol();
+  const statusColumn = createColumn();
   const status = document.createElement('span');
   status.textContent = anime.status;
-  statusCol.append(status);
+  statusColumn.append(status);
 
-  const typeCol = createCol();
+  const typeColumn = createColumn();
   const type = document.createElement('span');
   type.textContent = anime.animeType;
-  typeCol.append(type);
+  typeColumn.append(type);
 
-  const airedStartCol = createCol();
+  const airedStartColumn = createColumn();
   const airedStart = document.createElement('span');
   airedStart.textContent =
     anime.airedStart !== null ? String(anime.airedStart.getFullYear()) : 'Not started';
-  airedStartCol.append(airedStart);
+  airedStartColumn.append(airedStart);
 
   const row = document.createElement('tr');
   row.classList.add(...tableStyles.row);
-  row.append(imageCol, titleCol, typeCol, statusCol, airedStartCol);
+  row.append(imageColumn, titleColumn, typeColumn, statusColumn, airedStartColumn);
 
   return row;
 }
 
 /** Create column element. */
-function createCol(): HTMLElement {
-  const col = document.createElement('td');
-  col.classList.add(...elementStyles.col);
-  return col;
+function createColumn(): HTMLElement {
+  const column = document.createElement('td');
+  column.classList.add(...elementStyles.column);
+  return column;
 }
