@@ -74,7 +74,7 @@ export class AnimeTable {
   }
 
   private async fetchDataAndUpdateElements(): Promise<void> {
-    const response = await animeApi.getPaginatedListAnimeList({
+    const response = await animeApi.getPaginatedAnime({
       limit: this.state.paginationParams.limit,
       offset: this.state.paginationParams.offset,
       ordering: this.state.order,

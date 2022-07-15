@@ -3,7 +3,7 @@ import { AnimeType } from '../enums/anime/type';
 
 import { Immerable, OmitImmerable } from './immerable';
 
-/** ListAnime. */
+/** Anime. */
 export class Anime extends Immerable {
 
   /** Id. */

@@ -1,7 +1,7 @@
 import { AnimeType } from '../enums/anime/type';
 import { AnimeStatus } from '../enums/anime/status';
 
-/** ListAnime DTO. */
+/** Anime DTO. */
 export interface AnimeDTO {
 
   /** Id. */

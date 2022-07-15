@@ -21,16 +21,16 @@ export class AnimeApi extends Api {
   }
 
   /**
-   * Get Paginated List Anime List.
+   * Get Paginated Anime List.
    * @param limit Limit data.
    * @param offset Offset.
    * @param ordering Ordering.
    */
-  public async getPaginatedListAnimeList({
+  public async getPaginatedAnime({
     limit,
     offset,
     ordering,
-  }: PaginatedListAnimeListRequest): Promise<PaginatedListAnimeListResponse> {
+  }: PaginatedAnimeRequest): Promise<PaginatedAnimeResponse> {
     const response = await this.get<PaginationDto<AnimeDTO>>(`anime/anime/`, {
       params: {
         limit,
@@ -54,7 +54,7 @@ export class AnimeApi extends Api {
 /**
  * Method response.
  */
-export interface PaginatedListAnimeListResponse {
+export interface PaginatedAnimeResponse {
 
   /** Anime array in server.*/
   results: Anime[];
@@ -64,7 +64,7 @@ export interface PaginatedListAnimeListResponse {
 }
 
 /** Request. */
-export interface PaginatedListAnimeListRequest {
+export interface PaginatedAnimeRequest {
 
   /** Limit results. */
   limit: number;
