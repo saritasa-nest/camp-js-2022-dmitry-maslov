@@ -1,16 +1,16 @@
 import {
   AnimeOrder,
-  AnimeOrders,
   AnimeNotOrder,
   AnimeReversedOrder,
 } from '@js-camp/core/enums/anime/ordering';
+import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
 
 import { elementStyles, headerStyles, tableStyles } from '../../constants/styles/animeTable';
 
 interface AnimeTableHeaderProps {
 
   /** Causes the parent component to change the sort option. */
-  updateMethod(order: AnimeOrders): void;
+  readonly updateMethod(order: AnimeOrders): void;
 }
 
 /** Created table headers, is responsible for sorting. */
@@ -19,7 +19,7 @@ export class AnimeTableHeader {
 
   private headers?: Header[];
 
-  private updateMethod: (order: AnimeOrders) => void;
+  private readonly updateMethod: (order: AnimeOrders) => void;
 
   private setOrderInHeader(header: Header): void {
     const { order, reverseOrder, status } = header;

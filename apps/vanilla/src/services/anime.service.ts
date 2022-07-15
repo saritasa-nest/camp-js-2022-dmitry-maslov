@@ -1,6 +1,3 @@
-import {
-  AnimeOrders,
-} from '@js-camp/core/enums/anime/ordering';
 import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
@@ -9,6 +6,12 @@ import { Anime } from '@js-camp/core/models/anime';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
 import { Api } from 'axios-es6-class';
+
+import { AnimeFilters } from '@js-camp/core/interfaces/filter';
+
+import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
+
+import { AnimeFilter } from '@js-camp/core/enums/anime/filters';
 
 import { apiConfig } from '../config/apiConfig';
 
@@ -30,12 +33,15 @@ export class AnimeApi extends Api {
     limit,
     offset,
     ordering,
+    filters,
   }: PaginatedAnimeRequest): Promise<PaginatedAnimeResponse> {
+
     const response = await this.get<PaginationDto<AnimeDTO>>(`anime/anime/`, {
       params: {
         limit,
         offset,
         ordering: `${ordering || 'id'}`.trim(),
+        type__in: filters[AnimeFilter.Type].join(' '),
       },
     });
 
@@ -74,6 +80,9 @@ export interface PaginatedAnimeRequest {
 
   /** Ordering. */
   ordering: AnimeOrders;
+
+  /** Filters. */
+  filters: AnimeFilters;
 }
 
 export const animeApi = new AnimeApi();

@@ -1,14 +1,22 @@
 import {
-  AnimeNotOrder, AnimeOrders,
+  AnimeNotOrder,
 } from '@js-camp/core/enums/anime/ordering';
 
+import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
+
 import { Anime } from '@js-camp/core/models/anime';
+
+import { AnimeFilter } from '@js-camp/core/types/anime/filters';
+
+import { AnimeFilters } from '@js-camp/core/interfaces/filter';
 
 import { animeApi } from '../../services/anime.service';
 
 import { tableStyles } from '../../constants/styles/animeTable';
 
 import { PaginationPanel } from '../paginationPanel';
+
+import { FilterPanel } from './../filterPanel';
 
 import { AnimeTableHeader } from './animeTableHeader';
 
@@ -24,6 +32,9 @@ interface AnimeTableState {
 
   /** List anima array. */
   elements: Anime[];
+
+  /** Filters. */
+  filters: AnimeFilters;
 }
 
 /** The class creates a sorted table with anime and pagination. */
@@ -38,35 +49,27 @@ export class AnimeTable {
     },
     order: AnimeNotOrder.NotOrder,
     elements: [],
+    filters: {
+      type: [],
+    },
   };
 
   private root?: Element;
 
   private tableElements: TableElements = new TableElements();
 
-  private updateOrderState = (newOrder: AnimeOrders): void => {
-    this.state.order = newOrder;
-
-    this.fetchDataAndUpdateElements();
-  };
-
-  private updatePaginationState = (paginationParams: PaginationRequestParams): void => {
-    this.state.paginationParams = {
-      ...this.state.paginationParams,
-      limit: paginationParams.limit,
-      offset: paginationParams.offset,
-    };
-
-    this.fetchDataAndUpdateElements();
-  };
-
   private paginationPanel: PaginationPanel = new PaginationPanel({
-    updateMethod: this.updatePaginationState,
+    updateMethod: this.updatePaginationState.bind(this),
     defaultPaginationParams: this.state.paginationParams,
   });
 
   private tableHeader: AnimeTableHeader = new AnimeTableHeader({
-    updateMethod: this.updateOrderState,
+    updateMethod: this.updateOrderState.bind(this),
+  });
+
+  private filterPanel: FilterPanel = new FilterPanel({
+    filters: this.state.filters,
+    updateMethod: this.updateFilterState.bind(this),
   });
 
   public constructor(selector: string) {
@@ -78,11 +81,12 @@ export class AnimeTable {
       limit: this.state.paginationParams.limit,
       offset: this.state.paginationParams.offset,
       ordering: this.state.order,
+      filters: this.state.filters,
     });
 
     this.state = {
+      ...this.state,
       elements: response.results,
-      order: this.state.order,
       paginationParams: {
         ...this.state.paginationParams,
         count: response.count,
@@ -90,9 +94,44 @@ export class AnimeTable {
     };
 
     this.updateTable({
-      elements: this.state.elements,
-      order: this.state.order,
-      paginationParams: this.state.paginationParams,
+      ...this.state,
+    });
+  }
+
+  private setState(newState: AnimeTableState): void {
+    this.state = newState;
+
+    this.fetchDataAndUpdateElements();
+  }
+
+  private updateFilterState(filters: AnimeFilter []): void {
+    this.setState({
+      ...this.state,
+      paginationParams: {
+        ...this.state.paginationParams,
+        offset: 0,
+      },
+      filters,
+    });
+
+    console.log(this.state);
+  }
+
+  private updateOrderState(order: AnimeOrders): void {
+    this.setState({
+      ...this.state,
+      order,
+    });
+  }
+
+  private updatePaginationState(paginationParams: PaginationRequestParams): void {
+    this.setState({
+      ...this.state,
+      paginationParams: {
+        ...this.state.paginationParams,
+        limit: paginationParams.limit,
+        offset: paginationParams.offset,
+      },
     });
   }
 
@@ -100,6 +139,7 @@ export class AnimeTable {
     this.tableElements.updateTableElements(elements);
     this.paginationPanel.updatePagination(paginationParams);
     this.tableHeader.updateHeaders();
+    this.filterPanel.updateFilterPanel();
   }
 
   private async didMount(): Promise<void> {
@@ -121,6 +161,7 @@ export class AnimeTable {
     this.tableElements.initializeTableBody();
     this.paginationPanel.initializePagination();
     this.tableHeader.initializeTableHeader();
+    this.filterPanel.initializeFilterPanel();
 
     table.append(
       this.tableHeader.getElement(),
@@ -128,6 +169,7 @@ export class AnimeTable {
     );
 
     this.root.append(
+      this.filterPanel.getElement(),
       this.paginationPanel.getElement(),
       table,
     );
