@@ -21,7 +21,7 @@ interface AnimeTableState {
   paginationParams: PaginationResponseParams;
 
   /** Filter params. */
-  filterParams: FiltersParams;
+  filterParams: FilterParams;
 
   /** Order. */
   order: AnimeOrders;
@@ -69,7 +69,7 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   };
 
-  private updateFiltersState = (filtersParams: FiltersParams): void => {
+  private updateFiltersState = (filtersParams: FilterParams): void => {
     this.state.filterParams = filtersParams;
     this.fetchDataAndUpdateElements();
   };
@@ -172,7 +172,7 @@ export interface PaginationRequestParams {
 }
 
 /** Filters request params. */
-export interface FiltersParams {
+export interface FilterParams {
 
   /** Search term. */
   searchTerm: string;

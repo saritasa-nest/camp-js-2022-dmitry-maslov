@@ -3,20 +3,20 @@ import debounce from 'lodash.debounce';
 import { filtersStyles } from '../../constants/styles/animeTable';
 
 import {
-  FiltersParams,
+  FilterParams,
 } from './animeTable';
 
 const SEARCH_DEBOUNCE_TIME = 1000;
 
-type UpdateMethod = (filtersParams: FiltersParams) => void;
+type UpdateMethod = (filtersParams: FilterParams) => void;
 
 interface FilterPanelProps {
 
   /** Method to update filters data in parent component. */
-  updateMethod: (filtersParams: FiltersParams) => void;
+  updateMethod: (filtersParams: FilterParams) => void;
 
   /** Default filter parameters. */
-  defaultFilterParams: FiltersParams;
+  defaultFilterParams: FilterParams;
 }
 
 /** Filters panel processor. */
@@ -27,7 +27,7 @@ export class FilterPanel {
 
   private updateMethod: UpdateMethod;
 
-  private filtersParams: FiltersParams;
+  private filtersParams: FilterParams;
 
   public constructor(props: FilterPanelProps) {
     this.updateMethod = props.updateMethod;
