@@ -1,10 +1,12 @@
-import { debounceTime, fromEvent } from 'rxjs';
+import debounce from 'lodash.debounce';
 
 import { filtersStyles } from '../../constants/styles/animeTable';
 
 import {
   FiltersParams,
 } from './animeTable';
+
+const SEARCH_DEBOUNCE_TIME = 1000;
 
 type UpdateMethod = (filtersParams: FiltersParams) => void;
 
@@ -57,12 +59,14 @@ export class FilterPanel {
       searchFilter,
     );
     this.searchFilter = searchFilter;
-    const searchFilterChangedEvent$ = fromEvent(searchFilter, 'input');
-    const searchFilterChangedEventResult$ = searchFilterChangedEvent$.pipe(
-      debounceTime(1000),
-    );
-    searchFilterChangedEventResult$.subscribe(() => this.handleSearchChanged());
 
+    this.searchFilter.addEventListener(
+      'input',
+      debounce(
+        () => this.handleSearchChanged(),
+        SEARCH_DEBOUNCE_TIME,
+      ),
+    );
     this.root.append(searchFilterContainer);
   }
 
