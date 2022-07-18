@@ -1,5 +1,6 @@
-import { AnimeType } from '../enums/anime/type';
-import { AnimeStatus } from '../enums/anime/status';
+import { AnimeTypeDto } from '../enums/anime/type';
+
+import { AnimeStatusDto } from './../enums/anime/status';
 
 /** Anime DTO. */
 export interface AnimeDTO {
@@ -29,8 +30,8 @@ export interface AnimeDTO {
   };
 
   /** Type. */
-  readonly type: AnimeType;
+  readonly type: AnimeTypeDto;
 
   /** Status. */
-  readonly status: AnimeStatus;
+  readonly status: AnimeStatusDto;
 }
