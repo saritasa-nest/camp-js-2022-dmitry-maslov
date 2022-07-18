@@ -151,7 +151,7 @@ export class AnimeTable {
 
     this.root = root;
     const table = document.createElement('table');
-    table.classList.add(...tableStyles.tableClass);
+    table.classList.add(...tableStyles.table);
 
     this.tableElements.initializeTableBody();
     this.paginationPanel.initializePagination();

@@ -1,4 +1,4 @@
-import { paginationStyles } from '../constants/styles/animeTable';
+import { paginationStyles } from '../constants/styles/pagination';
 
 import { nextButtonContent, prevButtonContent } from '../constants/pagination/buttons';
 

@@ -5,7 +5,10 @@ import {
 } from '@js-camp/core/enums/anime/ordering';
 import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
 
-import { elementStyles, headerStyles, tableStyles } from '../../constants/styles/animeTable';
+import { headerStyles, tableStyles } from '../../constants/styles/animeTable';
+import { decreaseContent } from '../../constants/tableHeaders/tableHeaders';
+
+import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
 
 interface AnimeTableHeaderProps {
 
@@ -74,12 +77,12 @@ export class AnimeTableHeader {
         const changeStatusIndicator = {
           [SortStatus.Sort](): void {
             if (header.statusIndicator) {
-              header.statusIndicator.textContent = '(increase sort)';
+              header.statusIndicator.textContent = increaseContent;
             }
           },
           [SortStatus.Reverse](): void {
             if (header.statusIndicator) {
-              header.statusIndicator.textContent = '(descending sort)';
+              header.statusIndicator.textContent = decreaseContent;
             }
           },
           [SortStatus.Not](): void {
@@ -119,7 +122,7 @@ export class AnimeTableHeader {
         }),
       },
       {
-        headerEl: createColumnHeader({ headerTitle: 'English title', isSortHeader: true }),
+        headerEl: createColumnHeader({ headerTitle: 'English title', isSortHeader: true, styles: tableStyles.titleColumn }),
         order: AnimeOrder.TitleEng,
         reverseOrder: AnimeReversedOrder.ReversedTitleEng,
         status: SortStatus.Not,
@@ -170,11 +173,13 @@ export class AnimeTableHeader {
  */
 function createColumnHeader({ headerTitle, styles, isSortHeader }:
   {headerTitle: string; styles?: string[]; isSortHeader?: true;}): HTMLElement {
+
   const columnHeader = document.createElement('th');
   columnHeader.textContent = headerTitle;
+  columnHeader.classList.add(...tableStyles.column);
 
   if (isSortHeader) {
-    columnHeader.classList.add(...headerStyles.sortedHeader, ...elementStyles.column);
+    columnHeader.classList.add(...headerStyles.sortedHeader);
   }
 
   if (styles !== undefined) {
