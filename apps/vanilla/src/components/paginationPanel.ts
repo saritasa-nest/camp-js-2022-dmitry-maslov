@@ -7,10 +7,10 @@ type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 interface PaginationPanelProps {
 
   /** Method to update pagination data in parent component. */
-  updateMethod: (paginationParams: PaginationRequestParams) => void;
+  readonly updateMethod: (paginationParams: PaginationRequestParams) => void;
 
   /** Default pagination parameters. */
-  defaultPaginationParams: PaginationResponseParams;
+  readonly defaultPaginationParams: PaginationResponseParams;
 }
 
 const buttonActiveClasses = ['bg-slate-300'];
@@ -34,10 +34,7 @@ export class PaginationPanel {
     this.paginationParams = props.defaultPaginationParams;
   }
 
-  /**
-   * Returns an instance HTML Element.
-   * @returns Element. Html Component element.
-   */
+  /** Returns an instance HTML Element.*/
   public getElement(): Element {
     if (this.root === undefined) {
       throw new Error(`${this} component not mount`);

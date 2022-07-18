@@ -6,12 +6,11 @@ import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
 
 import { Anime } from '@js-camp/core/models/anime';
 
-import { AnimeFilter } from '@js-camp/core/types/anime/filters';
-
 import { AnimeFilters } from '@js-camp/core/interfaces/filter';
 
-import { animeApi } from '../../services/anime.service';
+import { AnimeFilter } from '@js-camp/core/enums/anime/filters';
 
+import { animeApi } from '../../services/anime.service';
 import { tableStyles } from '../../constants/styles/animeTable';
 
 import { PaginationPanel } from '../paginationPanel';
@@ -19,7 +18,6 @@ import { PaginationPanel } from '../paginationPanel';
 import { FilterPanel } from './../filterPanel';
 
 import { AnimeTableHeader } from './animeTableHeader';
-
 import { TableElements } from './animeTableElements';
 
 interface AnimeTableState {
@@ -30,11 +28,11 @@ interface AnimeTableState {
   /** Order. */
   order: AnimeOrders;
 
-  /** List anima array. */
-  elements: Anime[];
+  /** List anime array. */
+  elements: readonly Anime[];
 
   /** Filters. */
-  filters: AnimeFilters;
+  readonly filters: AnimeFilters;
 }
 
 /** The class creates a sorted table with anime and pagination. */
@@ -50,24 +48,24 @@ export class AnimeTable {
     order: AnimeNotOrder.NotOrder,
     elements: [],
     filters: {
-      type: [],
+      [AnimeFilter.Type]: [],
     },
   };
 
   private root?: Element;
 
-  private tableElements: TableElements = new TableElements();
+  private tableElements = new TableElements();
 
-  private paginationPanel: PaginationPanel = new PaginationPanel({
+  private paginationPanel = new PaginationPanel({
     updateMethod: this.updatePaginationState.bind(this),
     defaultPaginationParams: this.state.paginationParams,
   });
 
-  private tableHeader: AnimeTableHeader = new AnimeTableHeader({
+  private tableHeader = new AnimeTableHeader({
     updateMethod: this.updateOrderState.bind(this),
   });
 
-  private filterPanel: FilterPanel = new FilterPanel({
+  private filterPanel = new FilterPanel({
     filters: this.state.filters,
     updateMethod: this.updateFilterState.bind(this),
   });
@@ -104,7 +102,7 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   }
 
-  private updateFilterState(filters: AnimeFilter []): void {
+  private updateFilterState(filters: AnimeFilters): void {
     this.setState({
       ...this.state,
       paginationParams: {
@@ -114,7 +112,6 @@ export class AnimeTable {
       filters,
     });
 
-    console.log(this.state);
   }
 
   private updateOrderState(order: AnimeOrders): void {
@@ -139,7 +136,6 @@ export class AnimeTable {
     this.tableElements.updateTableElements(elements);
     this.paginationPanel.updatePagination(paginationParams);
     this.tableHeader.updateHeaders();
-    this.filterPanel.updateFilterPanel();
   }
 
   private async didMount(): Promise<void> {
@@ -182,34 +178,34 @@ export class AnimeTable {
 export interface PaginationRequestParams {
 
   /** Limit. */
-  limit: number;
+  readonly limit: number;
 
   /** Offset. */
-  offset: number;
+  readonly offset: number;
 }
 
 /** Parameters for pagination. */
 export interface PaginationResponseParams {
 
   /** Limiting the amount of data. */
-  limit: number;
+  readonly limit: number;
 
   /** Offset. */
-  offset: number;
+  readonly offset: number;
 
   /** Number of elements on the server. */
-  count: number;
+  readonly count: number;
 }
 
 /** Parameters for update. */
 export interface AnimeTableUpdateParams {
 
   /** Parameters for pagination. */
-  paginationParams: PaginationResponseParams;
+  readonly paginationParams: PaginationResponseParams;
 
   /** Offset. */
-  order: AnimeOrders;
+  readonly order: AnimeOrders;
 
   /** Elements. */
-  elements: Anime[];
+  readonly elements: readonly Anime[];
 }

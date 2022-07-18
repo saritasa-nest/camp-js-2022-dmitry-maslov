@@ -21,7 +21,7 @@ export class TableElements {
    * Updates the table elements at the root element.
    * @param elementsData Array of objects to convert to table elements.
    */
-  public updateTableElements(elementsData: Anime[]): void {
+  public updateTableElements(elementsData: readonly Anime[]): void {
     if (this.root === undefined) {
       throw new Error(`${this} not mounted`);
     }

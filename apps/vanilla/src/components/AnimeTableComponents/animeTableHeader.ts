@@ -10,7 +10,7 @@ import { elementStyles, headerStyles, tableStyles } from '../../constants/styles
 interface AnimeTableHeaderProps {
 
   /** Causes the parent component to change the sort option. */
-  readonly updateMethod(order: AnimeOrders): void;
+  readonly updateMethod: (order: AnimeOrders) => void;
 }
 
 /** Created table headers, is responsible for sorting. */
@@ -96,7 +96,6 @@ export class AnimeTableHeader {
 
   /**
    * Return dom instance component.
-   * @returns Dom instance component.
    */
   public getElement(): HTMLElement {
     if (this.root === undefined) {
@@ -170,7 +169,6 @@ export class AnimeTableHeader {
 /**
  * Created header.
  * @param headerParams Title, styles?, isSortedHeader?: true.
- * @returns
  */
 function createColumnHeader({ headerTitle, styles, isSortHeader }:
   {headerTitle: string; styles?: string[]; isSortHeader?: true;}): HTMLElement {
