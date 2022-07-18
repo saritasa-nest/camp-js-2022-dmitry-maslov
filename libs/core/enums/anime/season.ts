@@ -2,9 +2,9 @@
  * Anime Season Enum.
  */
 export enum AnimeSeason {
-  SUMMER = 'SUMMER',
-  WINTER = 'WINTER',
-  SPRING = 'SPRING',
-  FALL = 'FALL',
-  NON_SEASONAL = 'NON_SEASONAL',
+  Summer = 'SUMMER',
+  Winter = 'WINTER',
+  Spring = 'SPRING',
+  Fall = 'FALL',
+  NonSeasonal = 'NON_SEASONAL',
 }

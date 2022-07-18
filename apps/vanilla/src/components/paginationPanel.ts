@@ -1,5 +1,7 @@
 import { paginationStyles } from '../constants/styles/animeTable';
 
+import { nextButtonContent, prevButtonContent } from '../constants/pagination/buttons';
+
 import { PaginationRequestParams, PaginationResponseParams } from './AnimeTableComponents/animeTable';
 
 type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
@@ -47,6 +49,7 @@ export class PaginationPanel {
 
     button.classList.add(...paginationStyles.button);
     button.textContent = text;
+    button.type = 'button';
 
     return button;
   }
@@ -198,8 +201,8 @@ export class PaginationPanel {
     otherButtonsContainer.classList.add('flex');
 
     this.buttons = {
-      next: this.createButton('>>'),
-      prev: this.createButton('<<'),
+      prev: this.createButton(prevButtonContent),
+      next: this.createButton(nextButtonContent),
       otherButtonsContainer,
     };
 
