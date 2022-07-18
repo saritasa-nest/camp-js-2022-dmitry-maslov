@@ -72,7 +72,7 @@ export class FilterPanel {
   }
 
   private getActualButtonText(): string {
-    return this.isOpen ? 'Close filter menu' : 'Open filter menu';
+    return this.isOpen ? 'Hide filter menu' : 'Show filter menu';
   }
 
   public constructor({ updateMethod }: FilterPanelProps) {
@@ -93,11 +93,11 @@ export class FilterPanel {
   /** Initialize the filter panel component. */
   public initializeFilterPanel(): void {
     this.root = document.createElement('div');
-    this.root.classList.add('flex', 'flex-col', 'justify-center');
+    this.root.classList.add('flex', 'flex-col', 'justify-center', 'a');
 
     const toggleMenuButton = document.createElement('button');
     toggleMenuButton.textContent = this.getActualButtonText();
-    toggleMenuButton.classList.add('block', 'border', 'rounded-xl', 'p-1', 'm-1');
+    toggleMenuButton.classList.add('border', 'rounded-xl', 'p-1', 'm-1');
     toggleMenuButton.addEventListener('click', () => {
       this.toggleFilterMenu();
       toggleMenuButton.textContent = this.getActualButtonText();
@@ -106,12 +106,17 @@ export class FilterPanel {
     this.filterMenu = document.createElement('div');
 
     this.filterForms = document.createElement('div');
-    this.filterForms.classList.add('w-10/12', 'border');
+    this.filterForms.classList.add('w-full', 'border', 'rounded-xl', 'p-1');
+
+    const submitButton = document.createElement('button');
+    submitButton.classList.add('w-20', 'border', 'rounded-xl', 'hover:bg-slate-200', 'active:bg-slate-300');
+    submitButton.textContent = 'Apply';
+    submitButton.type = 'button';
 
     this.filters.forEach(filter => {
       const filterForm = createFilterForm(filter);
 
-      filterForm.addEventListener('submit', e => {
+      submitButton.addEventListener('click', e => {
         e.preventDefault();
         const filters: AnimeFilters = {
           [AnimeFilterType.Type]: [],
@@ -130,14 +135,13 @@ export class FilterPanel {
       this.filterForms?.append(filterForm);
     });
 
+    this.filterForms.append(submitButton);
+
     if (this.isOpen) {
       this.filterMenu.append(this.filterForms);
     }
 
-    const title = document.createElement('span');
-    title.textContent = 'Add filters';
-
-    this.root.append(title, toggleMenuButton, this.filterMenu);
+    this.root.append(toggleMenuButton, this.filterMenu);
   }
 }
 
@@ -167,29 +171,29 @@ interface Filter {
  */
 function createFilterForm(filter: Filter): HTMLFormElement {
   const form = document.createElement('form');
-  form.classList.add('flex', 'flex-col');
+  form.classList.add('flex', 'flex-col', 'w-40', 'rounded-xl', 'border', 'mb-1', 'mr-1', 'p-1');
 
   const title = document.createElement('span');
+  title.classList.add('border-b-2', 'border-orange-100', 'font-semibold');
   title.textContent = filter.title;
   form.append(title);
 
   filter.filterFields.forEach(field => {
     const label = document.createElement('label');
-    label.textContent = field.fieldTitle;
+    label.classList.add('hover:bg-slate-200', 'rounded-xl', 'px-1', 'pl-2', 'my-[1px]');
+
+    const fieldTitle = document.createElement('span');
+    fieldTitle.textContent = field.fieldTitle;
 
     const checkbox = document.createElement('input');
     checkbox.name = field.fieldTitle;
     checkbox.type = 'checkbox';
     checkbox.setAttribute('data-filter', filter.filterType);
+    checkbox.classList.add('mr-1', 'border-4');
 
-    label.append(checkbox);
+    label.append(checkbox, fieldTitle);
     form.append(label);
   });
-
-  const submitButton = document.createElement('button');
-  submitButton.textContent = 'Submit';
-
-  form.append(submitButton);
 
   return form;
 }
