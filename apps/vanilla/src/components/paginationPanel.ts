@@ -201,8 +201,8 @@ export class PaginationPanel {
     otherButtonsContainer.classList.add('flex');
 
     this.buttons = {
-      next: this.createButton(prevButtonContent),
-      prev: this.createButton(nextButtonContent),
+      prev: this.createButton(prevButtonContent),
+      next: this.createButton(nextButtonContent),
       otherButtonsContainer,
     };
 
