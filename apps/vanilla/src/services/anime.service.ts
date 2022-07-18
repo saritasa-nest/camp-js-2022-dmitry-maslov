@@ -12,9 +12,7 @@ import { Api } from 'axios-es6-class';
 
 import { apiConfig } from '../config/apiConfig';
 
-/**
- * Anime API class.
- */
+/** Anime API class. */
 export class AnimeApi extends Api {
   public constructor() {
     super(apiConfig);
@@ -57,23 +55,23 @@ export class AnimeApi extends Api {
 export interface PaginatedAnimeResponse {
 
   /** Anime array in server.*/
-  results: Anime[];
+  results: readonly Anime[];
 
   /** Count elements in server.*/
-  count: number;
+  readonly count: number;
 }
 
 /** Request. */
 export interface PaginatedAnimeRequest {
 
   /** Limit results. */
-  limit: number;
+  readonly limit: number;
 
   /** Offset. */
-  offset: number;
+  readonly offset: number;
 
   /** Ordering. */
-  ordering: AnimeOrders;
+  readonly ordering: AnimeOrders;
 }
 
 export const animeApi = new AnimeApi();

@@ -6,8 +6,8 @@ export class Pagination<T> extends Immerable {
   /** Count. */
   public readonly count: number;
 
-  /** Name. */
-  public readonly results: T[];
+  /** Results. */
+  public readonly results: readonly T[];
 
   public constructor(data: InitArgs<T>) {
     super();

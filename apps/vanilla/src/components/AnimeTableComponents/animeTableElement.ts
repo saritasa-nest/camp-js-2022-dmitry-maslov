@@ -4,8 +4,7 @@ import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
 
 /**
  * Creates the HOME element of the anime table.
- * @param anime Anime prop.
- * @returns HTML element of anime table.
+ * @param anime ListAnime prop.
  */
 export function createAnimeColumn(anime: Anime): HTMLElement {
 
