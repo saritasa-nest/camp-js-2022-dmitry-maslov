@@ -78,8 +78,15 @@ export class AnimeTable {
     });
   }
 
-  private updateOrderState(newOrder: AnimeOrders): void {
-    this.state.order = newOrder;
+  private updateOrderState(order: AnimeOrders): void {
+    this.state = {
+      ...this.state,
+      paginationParams: {
+        ...this.state.paginationParams,
+        offset: 0,
+      },
+      order,
+    };
 
     this.fetchDataAndUpdateElements();
   }
@@ -114,7 +121,7 @@ export class AnimeTable {
 
     this.root = root;
     const table = document.createElement('table');
-    table.classList.add(...tableStyles.tableClass);
+    table.classList.add(...tableStyles.table);
 
     this.tableElements.initializeTableBody();
     this.paginationPanel.initializePagination();

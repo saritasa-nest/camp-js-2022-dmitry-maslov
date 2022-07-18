@@ -4,10 +4,9 @@ import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
 
 /**
  * Creates the HOME element of the anime table.
- * @param anime ListAnime prop.
+ * @param anime Anime.
  */
 export function createAnimeColumn(anime: Anime): HTMLElement {
-
   const image = document.createElement('img');
   image.classList.add(...elementStyles.image);
   image.src = anime.image;
@@ -17,9 +16,10 @@ export function createAnimeColumn(anime: Anime): HTMLElement {
   imageColumn.append(image);
 
   const titleColumn = createColumn();
-  const engTitle = document.createElement('span');
-  engTitle.textContent = anime.titleEng;
-  titleColumn.append(engTitle);
+  titleColumn.classList.add(...tableStyles.titleColumn);
+  const title = document.createElement('span');
+  title.textContent = `${anime.titleEng ? anime.titleEng : ''} (${anime.titleJpn})`.trim();
+  titleColumn.append(title);
 
   const statusColumn = createColumn();
   const status = document.createElement('span');
@@ -47,6 +47,6 @@ export function createAnimeColumn(anime: Anime): HTMLElement {
 /** Create column element. */
 function createColumn(): HTMLElement {
   const column = document.createElement('td');
-  column.classList.add(...elementStyles.column);
+  column.classList.add(...tableStyles.column);
   return column;
 }

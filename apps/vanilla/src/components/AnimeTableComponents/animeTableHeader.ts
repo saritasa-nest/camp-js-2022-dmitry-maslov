@@ -5,7 +5,10 @@ import {
   AnimeReversedOrder,
 } from '@js-camp/core/enums/anime/ordering';
 
-import { elementStyles, headerStyles, tableStyles } from '../../constants/styles/animeTable';
+import { headerStyles, tableStyles } from '../../constants/styles/animeTable';
+import { decreaseContent } from '../../constants/tableHeaders/tableHeaders';
+
+import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
 
 interface AnimeTableHeaderProps {
 
@@ -74,12 +77,12 @@ export class AnimeTableHeader {
         const changeStatusIndicator = {
           [SortStatus.Sort](): void {
             if (header.statusIndicator) {
-              header.statusIndicator.textContent = '(increase sort)';
+              header.statusIndicator.textContent = increaseContent;
             }
           },
           [SortStatus.Reverse](): void {
             if (header.statusIndicator) {
-              header.statusIndicator.textContent = '(descending sort)';
+              header.statusIndicator.textContent = decreaseContent;
             }
           },
           [SortStatus.Not](): void {
@@ -94,9 +97,7 @@ export class AnimeTableHeader {
     });
   }
 
-  /**
-   * Return dom instance component.
-   */
+  /** Return dom instance component. */
   public getElement(): HTMLElement {
     if (this.root === undefined) {
       throw new Error(`${this} not called mount`);
@@ -121,7 +122,7 @@ export class AnimeTableHeader {
         }),
       },
       {
-        headerEl: createColumnHeader({ headerTitle: 'English title', isSortHeader: true }),
+        headerEl: createColumnHeader({ headerTitle: 'English title', isSortHeader: true, styles: tableStyles.titleColumn }),
         order: AnimeOrder.TitleEng,
         reverseOrder: AnimeReversedOrder.ReversedTitleEng,
         status: SortStatus.Not,
@@ -172,11 +173,13 @@ export class AnimeTableHeader {
  */
 function createColumnHeader({ headerTitle, styles, isSortHeader }:
   {headerTitle: string; styles?: string[]; isSortHeader?: true;}): HTMLElement {
+
   const columnHeader = document.createElement('th');
   columnHeader.textContent = headerTitle;
+  columnHeader.classList.add(...tableStyles.column);
 
   if (isSortHeader) {
-    columnHeader.classList.add(...headerStyles.sortedHeader, ...elementStyles.column);
+    columnHeader.classList.add(...headerStyles.sortedHeader);
   }
 
   if (styles !== undefined) {
@@ -205,9 +208,7 @@ interface Header {
   reverseOrder?: AnimeOrders;
 }
 
-/**
- * Contains sort statuses. Used to change sort options.
- */
+/** Contains sort statuses. Used to change sort options. */
 enum SortStatus {
   Not = 0,
   Sort,
