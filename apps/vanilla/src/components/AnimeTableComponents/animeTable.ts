@@ -74,17 +74,17 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   };
 
-  private paginationPanel: PaginationPanel = new PaginationPanel({
+  private paginationPanel = new PaginationPanel({
     updateMethod: this.updatePaginationState,
     defaultPaginationParams: this.state.paginationParams,
   });
 
-  private filterPanel: FilterPanel = new FilterPanel({
+  private filterPanel = new FilterPanel({
     updateMethod: this.updateFiltersState,
     defaultFilterParams: this.state.filterParams,
   });
 
-  private tableHeader: AnimeTableHeader = new AnimeTableHeader({
+  private tableHeader = new AnimeTableHeader({
     updateMethod: this.updateOrderState,
   });
 
@@ -175,7 +175,7 @@ export interface PaginationRequestParams {
 export interface FilterParams {
 
   /** Search term. */
-  searchTerm: string;
+  readonly searchTerm: string;
 }
 
 /** Parameters for pagination. */
