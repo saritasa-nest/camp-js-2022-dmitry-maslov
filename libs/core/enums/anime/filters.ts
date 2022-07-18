@@ -1,3 +1,3 @@
-export enum AnimeFilter {
+export enum AnimeFilterType {
   Type = 'type',
 }

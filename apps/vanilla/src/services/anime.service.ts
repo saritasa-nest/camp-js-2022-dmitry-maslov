@@ -11,7 +11,7 @@ import { AnimeFilters } from '@js-camp/core/interfaces/filter';
 
 import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
 
-import { AnimeFilter } from '@js-camp/core/enums/anime/filters';
+import { AnimeFilterType } from '@js-camp/core/enums/anime/filters';
 
 import { apiConfig } from '../config/apiConfig';
 
@@ -39,7 +39,7 @@ export class AnimeApi extends Api {
         limit,
         offset,
         ordering: `${ordering || 'id'}`.trim(),
-        type__in: filters[AnimeFilter.Type].join(' '),
+        type__in: filters[AnimeFilterType.Type].join(', '),
       },
     });
 

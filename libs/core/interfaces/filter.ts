@@ -1,9 +1,9 @@
 import { AnimeType } from '../enums/anime/type';
 
-import { AnimeFilter } from './../enums/anime/filters';
+import { AnimeFilterType } from './../enums/anime/filters';
 
 export interface AnimeFilters {
 
   /**  */
-  [AnimeFilter.Type]: AnimeType[];
+  [AnimeFilterType.Type]: AnimeType[];
 }

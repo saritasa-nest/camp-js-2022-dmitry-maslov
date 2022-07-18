@@ -8,7 +8,7 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { AnimeFilters } from '@js-camp/core/interfaces/filter';
 
-import { AnimeFilter } from '@js-camp/core/enums/anime/filters';
+import { AnimeFilterType } from '@js-camp/core/enums/anime/filters';
 
 import { animeApi } from '../../services/anime.service';
 import { tableStyles } from '../../constants/styles/animeTable';
@@ -48,7 +48,7 @@ export class AnimeTable {
     order: AnimeNotOrder.NotOrder,
     elements: [],
     filters: {
-      [AnimeFilter.Type]: [],
+      [AnimeFilterType.Type]: [],
     },
   };
 
@@ -66,7 +66,6 @@ export class AnimeTable {
   });
 
   private filterPanel = new FilterPanel({
-    filters: this.state.filters,
     updateMethod: this.updateFilterState.bind(this),
   });
 

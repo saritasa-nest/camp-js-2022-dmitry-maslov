@@ -1,14 +1,12 @@
 import { AnimeFilters } from '@js-camp/core/interfaces/filter';
 import { AnimeType } from '@js-camp/core/enums/anime/type';
-import { AnimeFilter } from '@js-camp/core/types/anime/filters';
+import { AnimeFilterType } from '@js-camp/core/enums/anime/filters';
+import { AnimeFilterValue } from '@js-camp/core/types/anime/filters';
 
 interface FilterPanelProps {
 
   /** Update filters method. */
   readonly updateMethod: (filters: AnimeFilters) => void;
-
-  /** Filter params. */
-  readonly filters: AnimeFilters;
 }
 
 /** Filter Panel. */
@@ -21,13 +19,11 @@ export class FilterPanel {
 
   private isOpen: boolean;
 
-  private filterParams: AnimeFilters;
-
   private updateMethod: (filters: AnimeFilters) => void;
 
   private filters: Filter[] = [
     {
-
+      filterType: AnimeFilterType.Type,
       title: 'Anime type',
       filterFields: [
         {
@@ -79,17 +75,13 @@ export class FilterPanel {
     return this.isOpen ? 'Close filter menu' : 'Open filter menu';
   }
 
-  public constructor({ filters, updateMethod }: FilterPanelProps) {
-    this.filterParams = filters;
+  public constructor({ updateMethod }: FilterPanelProps) {
 
     this.isOpen = false;
     this.updateMethod = updateMethod;
   }
 
-  public updateFilterPanel(): void {
-
-  }
-
+  /** Get filter panel in html element format. */
   public getElement(): HTMLDivElement {
     if (this.root === undefined) {
       throw new Error('Filter panel is not initialized');
@@ -122,12 +114,13 @@ export class FilterPanel {
       filterForm.addEventListener('submit', e => {
         e.preventDefault();
         const filters: AnimeFilters = {
-          type: [],
+          [AnimeFilterType.Type]: [],
         };
         filter.filterFields.forEach(field => {
           const fieldEl = filterForm.elements.namedItem(field.fieldTitle) as HTMLInputElement;
           if (fieldEl.checked === true) {
-            filters.push(field.fieldValue);
+            const filterType = filter.filterType as AnimeFilterType;
+            filters[filterType].push(field.fieldValue);
           }
         });
 
@@ -151,6 +144,9 @@ export class FilterPanel {
 /** Filter. */
 interface Filter {
 
+  /** Filter Type. */
+  filterType: AnimeFilterType;
+
   /** Filter title. */
   title: string;
 
@@ -158,13 +154,17 @@ interface Filter {
   filterFields: {
 
     /** Filter value. */
-    fieldValue: AnimeFilter ;
+    fieldValue: AnimeFilterValue;
 
     /** Filter title. */
     fieldTitle: string;
   }[];
 }
 
+/**
+ * Create Filter Form.
+ * @param filter Filter.
+ */
 function createFilterForm(filter: Filter): HTMLFormElement {
   const form = document.createElement('form');
   form.classList.add('flex', 'flex-col');
@@ -180,6 +180,7 @@ function createFilterForm(filter: Filter): HTMLFormElement {
     const checkbox = document.createElement('input');
     checkbox.name = field.fieldTitle;
     checkbox.type = 'checkbox';
+    checkbox.setAttribute('data-filter', filter.filterType);
 
     label.append(checkbox);
     form.append(label);

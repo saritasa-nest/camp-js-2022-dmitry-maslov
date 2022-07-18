@@ -94,9 +94,7 @@ export class AnimeTableHeader {
     });
   }
 
-  /**
-   * Return dom instance component.
-   */
+  /** Return dom instance component. */
   public getElement(): HTMLElement {
     if (this.root === undefined) {
       throw new Error(`${this} not called mount`);
@@ -205,9 +203,7 @@ interface Header {
   reverseOrder?: AnimeOrders;
 }
 
-/**
- * Contains sort statuses. Used to change sort options.
- */
+/** Contains sort statuses. Used to change sort options. */
 enum SortStatus {
   Not = 0,
   Sort,
