@@ -1,5 +1,5 @@
 import {
-  AnimeNotOrder, AnimeOrders,
+  animeNotOrder, AnimeOrders,
 } from '@js-camp/core/enums/anime/ordering';
 
 import { Anime } from '@js-camp/core/models/anime/anime';
@@ -34,7 +34,7 @@ export class AnimeTable {
       offset: 0,
       count: 0,
     },
-    order: AnimeNotOrder.NotOrder,
+    order: animeNotOrder,
     elements: [],
   };
 

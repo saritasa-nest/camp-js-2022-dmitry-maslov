@@ -1,7 +1,7 @@
 import {
   AnimeOrder,
   AnimeOrders,
-  AnimeNotOrder,
+  animeNotOrder,
   AnimeReversedOrder,
 } from '@js-camp/core/enums/anime/ordering';
 
@@ -41,7 +41,7 @@ export class AnimeTableHeader {
           header.status = SortStatus.Reverse;
         },
         [SortStatus.Reverse]: (): void => {
-          this.changeOrder(AnimeNotOrder.NotOrder);
+          this.changeOrder(animeNotOrder);
           header.status = SortStatus.Not;
         },
       };
