@@ -4,7 +4,7 @@ import {
 import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
-import { Anime } from '@js-camp/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime/anime';
 
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 

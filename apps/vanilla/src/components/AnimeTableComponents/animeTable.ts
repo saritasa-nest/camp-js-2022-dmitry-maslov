@@ -2,7 +2,7 @@ import {
   AnimeNotOrder, AnimeOrders,
 } from '@js-camp/core/enums/anime/ordering';
 
-import { Anime } from '@js-camp/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime/anime';
 
 import { animeApi } from '../../services/anime.service';
 import { tableStyles } from '../../constants/styles/animeTable';
