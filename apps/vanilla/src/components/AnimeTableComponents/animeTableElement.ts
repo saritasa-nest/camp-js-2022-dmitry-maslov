@@ -1,9 +1,8 @@
 import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
+import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 
 import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
-
-import { AnimeStatus } from './../../../../../libs/core/models/anime/animeStatus';
 
 /**
  * Creates the HOME element of the anime table.
