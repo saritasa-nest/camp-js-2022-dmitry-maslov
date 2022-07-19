@@ -27,26 +27,17 @@ export class AnimeTableHeader {
   private setOrderInHeader(header: Header): void {
     const { order, reverseOrder, status } = header;
 
+    const newOrder = {
+      [SortStatus.Not]: order,
+      [SortStatus.Sort]: reverseOrder,
+      [SortStatus.Reverse]: animeNotOrder,
+    };
+
     this.resetHeadersStatus();
 
     if (order !== undefined && reverseOrder !== undefined && status !== undefined) {
-
-      const updateByStatusMethod = {
-        [SortStatus.Not]: (): void => {
-          this.changeOrder(order);
-          header.status = SortStatus.Sort;
-        },
-        [SortStatus.Sort]: (): void => {
-          this.changeOrder(reverseOrder);
-          header.status = SortStatus.Reverse;
-        },
-        [SortStatus.Reverse]: (): void => {
-          this.changeOrder(animeNotOrder);
-          header.status = SortStatus.Not;
-        },
-      };
-
-      updateByStatusMethod[status]();
+      header.status = nextStatus[status];
+      this.changeOrder(newOrder[status] as AnimeOrder);
     }
   }
 
@@ -72,27 +63,9 @@ export class AnimeTableHeader {
       throw new Error(`${this} not mounted`);
     }
     this.headers.forEach(header => {
-
-      if (header.status !== undefined) {
-        const changeStatusIndicator = {
-          [SortStatus.Sort](): void {
-            if (header.statusIndicator) {
-              header.statusIndicator.textContent = increaseContent;
-            }
-          },
-          [SortStatus.Reverse](): void {
-            if (header.statusIndicator) {
-              header.statusIndicator.textContent = decreaseContent;
-            }
-          },
-          [SortStatus.Not](): void {
-            if (header.statusIndicator) {
-              header.statusIndicator.textContent = '';
-            }
-          },
-        };
-
-        changeStatusIndicator[header.status]();
+      if (header.status !== undefined && header.statusIndicator !== undefined) {
+        const indicatorContent = statusIndicatorContent[header.status];
+        header.statusIndicator.textContent = indicatorContent;
       }
     });
   }
@@ -215,3 +188,15 @@ enum SortStatus {
   Sort,
   Reverse,
 }
+
+const nextStatus = {
+  [SortStatus.Not]: SortStatus.Sort,
+  [SortStatus.Sort]: SortStatus.Reverse,
+  [SortStatus.Reverse]: SortStatus.Not,
+};
+
+const statusIndicatorContent = {
+  [SortStatus.Not]: '',
+  [SortStatus.Sort]: increaseContent,
+  [SortStatus.Reverse]: decreaseContent,
+};
