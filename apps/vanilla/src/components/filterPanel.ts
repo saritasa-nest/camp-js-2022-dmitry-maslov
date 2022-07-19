@@ -27,27 +27,27 @@ export class FilterPanel {
       title: 'Anime type',
       filterFields: [
         {
-          fieldTitle: 'Ova',
+          fieldTitle: AnimeType.toReadable(AnimeType.OVA),
           fieldValue: AnimeType.OVA,
         },
         {
-          fieldTitle: 'Movie',
+          fieldTitle: AnimeType.toReadable(AnimeType.Movie),
           fieldValue: AnimeType.Movie,
         },
         {
-          fieldTitle: 'Music',
+          fieldTitle: AnimeType.toReadable(AnimeType.Music),
           fieldValue: AnimeType.Music,
         },
         {
-          fieldTitle: 'TV',
+          fieldTitle: AnimeType.toReadable(AnimeType.TV),
           fieldValue: AnimeType.TV,
         },
         {
-          fieldTitle: 'ONA',
+          fieldTitle: AnimeType.toReadable(AnimeType.ONA),
           fieldValue: AnimeType.ONA,
         },
         {
-          fieldTitle: 'Special',
+          fieldTitle: AnimeType.toReadable(AnimeType.Special),
           fieldValue: AnimeType.Special,
         },
       ],
@@ -154,15 +154,19 @@ interface Filter {
   /** Filter title. */
   title: string;
 
-  /** Filter params. */
-  filterFields: {
+  /** Filter fields. */
+  filterFields: FilterField[];
+}
 
-    /** Filter value. */
-    fieldValue: AnimeFilterValue;
+/** Filter field. */
+interface FilterField {
 
-    /** Filter title. */
-    fieldTitle: string;
-  }[];
+  /** Filter value. */
+  fieldValue: AnimeFilterValue;
+
+  /** Filter title. */
+  fieldTitle: string;
+
 }
 
 /**
