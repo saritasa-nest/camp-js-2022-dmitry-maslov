@@ -3,6 +3,8 @@ import { AnimeType } from '@js-camp/core/models/anime/animeType';
 
 import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
 
+import { AnimeStatus } from './../../../../../libs/core/models/anime/animeStatus';
+
 /**
  * Creates the HOME element of the anime table.
  * @param anime Anime.
@@ -24,7 +26,7 @@ export function createAnimeColumn(anime: Anime): HTMLElement {
 
   const statusColumn = createColumn();
   const status = document.createElement('span');
-  status.textContent = anime.status;
+  status.textContent = AnimeStatus.toReadable(anime.status);
   statusColumn.append(status);
 
   const typeColumn = createColumn();
