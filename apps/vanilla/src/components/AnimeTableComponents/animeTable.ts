@@ -38,6 +38,14 @@ export class AnimeTable {
     elements: [],
   };
 
+  /** Updates the state and causes a page refresh.
+   * @param state  New state.
+   */
+  private setState(state: AnimeTableState): void {
+    this.state = state;
+    this.fetchDataAndUpdateElements();
+  }
+
   private root?: Element;
 
   private tableElements = new TableElements();
@@ -79,26 +87,25 @@ export class AnimeTable {
   }
 
   private updateOrderState(order: AnimeOrders): void {
-    this.state = {
+    this.setState({
       ...this.state,
       paginationParams: {
         ...this.state.paginationParams,
         offset: 0,
       },
       order,
-    };
-
-    this.fetchDataAndUpdateElements();
+    });
   }
 
   private updatePaginationState(paginationParams: PaginationRequestParams): void {
-    this.state.paginationParams = {
-      ...this.state.paginationParams,
-      limit: paginationParams.limit,
-      offset: paginationParams.offset,
-    };
-
-    this.fetchDataAndUpdateElements();
+    this.setState({
+      ...this.state,
+      paginationParams: {
+        ...this.state.paginationParams,
+        limit: paginationParams.limit,
+        offset: paginationParams.offset,
+      },
+    });
   }
 
   private updateTable({ elements, paginationParams }: AnimeTableUpdateParams): void {
