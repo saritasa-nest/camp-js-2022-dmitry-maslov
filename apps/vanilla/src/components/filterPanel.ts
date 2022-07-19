@@ -1,5 +1,5 @@
 import { AnimeFilters } from '@js-camp/core/interfaces/filter';
-import { AnimeType } from '@js-camp/core/enums/anime/type';
+import { AnimeType } from '@js-camp/core/models/anime/animeType';
 import { AnimeFilterType } from '@js-camp/core/enums/anime/filters';
 import { AnimeFilterValue } from '@js-camp/core/types/anime/filters';
 

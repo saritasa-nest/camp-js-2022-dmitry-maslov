@@ -4,7 +4,7 @@ import {
 
 import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
 
-import { Anime } from '@js-camp/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime/anime';
 
 import { AnimeFilters } from '@js-camp/core/interfaces/filter';
 
@@ -65,12 +65,12 @@ export class AnimeTable {
   private tableElements = new TableElements();
 
   private paginationPanel = new PaginationPanel({
-    updateMethod: this.updatePaginationState.bind(this),
+    changePaginationMethod: this.updatePaginationState.bind(this),
     defaultPaginationParams: this.state.paginationParams,
   });
 
   private tableHeader = new AnimeTableHeader({
-    updateMethod: this.updateOrderState.bind(this),
+    changeParentOrderParams: this.updateOrderState.bind(this),
   });
 
   private filterPanel = new FilterPanel({
