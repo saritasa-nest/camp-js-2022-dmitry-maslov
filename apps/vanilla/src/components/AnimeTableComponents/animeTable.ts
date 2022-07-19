@@ -118,8 +118,8 @@ export class AnimeTable {
     await this.fetchDataAndUpdateElements();
   }
 
-  /** Mount the component on the root element. */
-  public mount(): void {
+  /** Render component on the root element. */
+  public render(): void {
     const root = document.querySelector(this.selector);
 
     if (root === null) {

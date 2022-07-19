@@ -190,6 +190,7 @@ function createColumnHeader({ headerTitle, styles, isSortHeader }:
 
 }
 
+/** Interface describing the table header. */
 interface Header {
 
   /** Dom Instance Header. */
