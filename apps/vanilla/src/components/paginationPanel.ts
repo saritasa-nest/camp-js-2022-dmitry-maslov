@@ -4,12 +4,12 @@ import { nextButtonContent, prevButtonContent } from '../constants/pagination/bu
 
 import { PaginationRequestParams, PaginationResponseParams } from './AnimeTableComponents/animeTable';
 
-type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
+type ChangePaginationMethod = (paginationParams: PaginationRequestParams) => void;
 
 interface PaginationPanelProps {
 
   /** Method to update pagination data in parent component. */
-  readonly updateMethod: (paginationParams: PaginationRequestParams) => void;
+  readonly changePaginationMethod: ChangePaginationMethod;
 
   /** Default pagination parameters. */
   readonly defaultPaginationParams: PaginationResponseParams;
@@ -29,10 +29,10 @@ export class PaginationPanel {
     otherButtonsContainer: HTMLElement;
   };
 
-  private updateMethod: UpdateMethod;
+  private changeMethod: ChangePaginationMethod;
 
   public constructor(props: PaginationPanelProps) {
-    this.updateMethod = props.updateMethod;
+    this.changeMethod = props.changePaginationMethod;
     this.paginationParams = props.defaultPaginationParams;
   }
 
@@ -168,14 +168,14 @@ export class PaginationPanel {
 
     switch (event.target) {
       case this.buttons.prev:
-        this.updateMethod({
+        this.changeMethod({
           ...this.paginationParams,
           offset: offset - limit,
         });
         break;
 
       case this.buttons.next:
-        this.updateMethod({
+        this.changeMethod({
           ...this.paginationParams,
           offset: offset + limit,
         });
@@ -183,7 +183,7 @@ export class PaginationPanel {
 
       default:
         if (event.target instanceof HTMLButtonElement) {
-          this.updateMethod({
+          this.changeMethod({
             ...this.paginationParams,
             offset: (Number(event.target.textContent) - 1) * limit,
           });

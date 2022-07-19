@@ -13,7 +13,7 @@ import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
 interface AnimeTableHeaderProps {
 
   /** Causes the parent component to change the sort option. */
-  readonly updateMethod: (order: AnimeOrders) => void;
+  readonly changeParentOrderParams: (order: AnimeOrders) => void;
 }
 
 /** Created table headers, is responsible for sorting. */
@@ -22,7 +22,7 @@ export class AnimeTableHeader {
 
   private headers?: Header[];
 
-  private updateMethod: (order: AnimeOrders) => void;
+  private changeOrder: (order: AnimeOrders) => void;
 
   private setOrderInHeader(header: Header): void {
     const { order, reverseOrder, status } = header;
@@ -33,15 +33,15 @@ export class AnimeTableHeader {
 
       const updateByStatusMethod = {
         [SortStatus.Not]: (): void => {
-          this.updateMethod(order);
+          this.changeOrder(order);
           header.status = SortStatus.Sort;
         },
         [SortStatus.Sort]: (): void => {
-          this.updateMethod(reverseOrder);
+          this.changeOrder(reverseOrder);
           header.status = SortStatus.Reverse;
         },
         [SortStatus.Reverse]: (): void => {
-          this.updateMethod(AnimeNotOrder.NotOrder);
+          this.changeOrder(AnimeNotOrder.NotOrder);
           header.status = SortStatus.Not;
         },
       };
@@ -51,7 +51,7 @@ export class AnimeTableHeader {
   }
 
   public constructor(props: AnimeTableHeaderProps) {
-    this.updateMethod = props.updateMethod;
+    this.changeOrder = props.changeParentOrderParams;
   }
 
   private resetHeadersStatus(): void {

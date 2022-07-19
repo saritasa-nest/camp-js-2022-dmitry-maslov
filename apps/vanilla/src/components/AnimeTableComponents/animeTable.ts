@@ -51,12 +51,12 @@ export class AnimeTable {
   private tableElements = new TableElements();
 
   private paginationPanel = new PaginationPanel({
-    updateMethod: this.updatePaginationState.bind(this),
+    changePaginationMethod: this.updatePaginationState.bind(this),
     defaultPaginationParams: this.state.paginationParams,
   });
 
   private tableHeader = new AnimeTableHeader({
-    updateMethod: this.updateOrderState.bind(this),
+    changeParentOrderParams: this.updateOrderState.bind(this),
   });
 
   public constructor(selector: string) {
