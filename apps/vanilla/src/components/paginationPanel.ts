@@ -1,27 +1,23 @@
-import { PaginationRequestParams, PaginationResponseParams } from './animeTable';
+import { paginationStyles } from '../constants/styles/pagination';
 
-import { paginationStyles } from './animeTable.styles';
+import { nextButtonContent, prevButtonContent } from '../constants/pagination/buttons';
+
+import { PaginationRequestParams, PaginationResponseParams } from './AnimeTableComponents/animeTable';
 
 type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
 
 interface PaginationPanelProps {
 
-  /**
-   * Method to update pagination data in parent component.
-   */
-  updateMethod: (paginationParams: PaginationRequestParams) => void;
+  /** Method to update pagination data in parent component. */
+  readonly updateMethod: (paginationParams: PaginationRequestParams) => void;
 
-  /**
-   * Default pagination parameters;.
-   */
-  defaultPaginationParams: PaginationResponseParams;
+  /** Default pagination parameters. */
+  readonly defaultPaginationParams: PaginationResponseParams;
 }
 
 const buttonActiveClasses = ['bg-slate-300'];
 
-/**
- * The class creates a pagination panel.
- */
+/** The class creates a pagination panel. */
 export class PaginationPanel {
   private root?: Element;
 
@@ -40,10 +36,7 @@ export class PaginationPanel {
     this.paginationParams = props.defaultPaginationParams;
   }
 
-  /**
-   * Returns an instance HTML Element.
-   * @returns Element. Html Component element.
-   */
+  /** Returns an instance HTML Element.*/
   public getElement(): Element {
     if (this.root === undefined) {
       throw new Error(`${this} component not mount`);
@@ -56,6 +49,7 @@ export class PaginationPanel {
 
     button.classList.add(...paginationStyles.button);
     button.textContent = text;
+    button.type = 'button';
 
     return button;
   }
@@ -66,7 +60,7 @@ export class PaginationPanel {
     const otherButtons: HTMLElement[] = [];
 
     const actualPageNumber = offset / limit + 1;
-    const lastPageNumber = Math.floor(count / limit + (count % limit > 0 ? 1 : 0));
+    const lastPageNumber = Math.ceil(count / limit);
 
     let isPenultNotButton = actualPageNumber + 3 !== lastPageNumber;
 
@@ -116,12 +110,12 @@ export class PaginationPanel {
    * Updated pagination buttons.
    * @param paginationParams Pagination Params.
    */
-  public update(paginationParams: PaginationResponseParams): void {
+  public updatePagination(paginationParams: PaginationResponseParams): void {
     this.paginationParams = paginationParams;
     const { limit, offset, count } = this.paginationParams;
 
     const actualPageNumber = offset / limit + 1;
-    const lastPageNumber = Math.floor(count / limit + (count % limit > 0 ? 1 : 0));
+    const lastPageNumber = Math.ceil(count / limit);
 
     if (this.buttons === undefined) {
       throw new Error('component not mounted');
@@ -198,10 +192,8 @@ export class PaginationPanel {
     }
   }
 
-  /**
-   * Mount the component on the root element.
-   */
-  public mount(): void {
+  /** Initialize the pagination component. */
+  public initializePagination(): void {
     this.root = document.createElement('div');
     this.root.classList.add('flex', 'justify-center', 'm-1');
 
@@ -209,8 +201,8 @@ export class PaginationPanel {
     otherButtonsContainer.classList.add('flex');
 
     this.buttons = {
-      next: this.createButton('>>'),
-      prev: this.createButton('<<'),
+      prev: this.createButton(prevButtonContent),
+      next: this.createButton(nextButtonContent),
       otherButtonsContainer,
     };
 

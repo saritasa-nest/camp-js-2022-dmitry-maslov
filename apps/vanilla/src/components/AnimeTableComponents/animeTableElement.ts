@@ -1,50 +1,52 @@
-import { ListAnime } from '@js-camp/core/models/listAnime';
+import { Anime } from '@js-camp/core/models/anime';
 
-import { elementStyles, tableStyles } from './animeTable.styles';
+import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
 
 /**
  * Creates the HOME element of the anime table.
- * @param listAnime ListAnime prop.
- * @returns HTML element of anime table.
+ * @param anime Anime.
  */
-export function createAnimeTableElement(listAnime: ListAnime): HTMLElement {
-
+export function createAnimeColumn(anime: Anime): HTMLElement {
   const image = document.createElement('img');
   image.classList.add(...elementStyles.image);
-  image.src = listAnime.image;
+  image.src = anime.image;
 
-  const imageCol = createCol();
-  imageCol.classList.add(...tableStyles.imageCol);
-  imageCol.append(image);
+  const imageColumn = createColumn();
+  imageColumn.classList.add(...tableStyles.imageColumn);
+  imageColumn.append(image);
 
-  const titleCol = createCol();
-  const engTitle = document.createElement('span');
-  engTitle.textContent = listAnime.titleEng;
-  titleCol.append(engTitle);
+  const titleColumn = createColumn();
+  titleColumn.classList.add(...tableStyles.titleColumn);
+  const title = document.createElement('span');
+  title.textContent = `${anime.titleEng ? anime.titleEng : ''} (${anime.titleJpn})`.trim();
+  titleColumn.append(title);
 
+  const statusColumn = createColumn();
   const status = document.createElement('span');
-  status.textContent = listAnime.status;
-  const statusCol = createCol();
-  statusCol.append(status);
+  status.textContent = anime.status;
+  statusColumn.append(status);
 
-  const airedStartCol = createCol();
+  const typeColumn = createColumn();
+  const type = document.createElement('span');
+  type.textContent = anime.animeType;
+  typeColumn.append(type);
+
+  const airedStartColumn = createColumn();
   const airedStart = document.createElement('span');
   airedStart.textContent =
-    listAnime.airedStart !== null ? String(listAnime.airedStart.getFullYear()) : 'Not started';
-  airedStartCol.append(airedStart);
+    anime.airedStart !== null ? String(anime.airedStart.getFullYear()) : 'Not started';
+  airedStartColumn.append(airedStart);
 
   const row = document.createElement('tr');
   row.classList.add(...tableStyles.row);
-  row.append(imageCol, titleCol, statusCol, airedStartCol);
+  row.append(imageColumn, titleColumn, typeColumn, statusColumn, airedStartColumn);
 
   return row;
 }
 
-/**
- * Create column element.
- */
-function createCol(): HTMLElement {
-  const col = document.createElement('td');
-  col.classList.add(...elementStyles.col);
-  return col;
+/** Create column element. */
+function createColumn(): HTMLElement {
+  const column = document.createElement('td');
+  column.classList.add(...tableStyles.column);
+  return column;
 }

@@ -1,10 +1,10 @@
 import {
   AnimeOrders,
-} from '@js-camp/core/enums/anime/ordering.enum';
-import { ListAnimeDTO } from '@js-camp/core/dtos/animeList.dto';
+} from '@js-camp/core/enums/anime/ordering';
+import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-import { ListAnimeMapper } from '@js-camp/core/mappers/listAnime.mapper';
-import { ListAnime } from '@js-camp/core/models/listAnime';
+import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
+import { Anime } from '@js-camp/core/models/anime';
 
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
@@ -12,26 +12,24 @@ import { Api } from 'axios-es6-class';
 
 import { apiConfig } from '../config/apiConfig';
 
-/**
- * Anime API class.
- */
+/** Anime API class. */
 export class AnimeApi extends Api {
   public constructor() {
     super(apiConfig);
   }
 
   /**
-   * Get Paginated List Anime List.
+   * Get Paginated Anime List.
    * @param limit Limit data.
    * @param offset Offset.
    * @param ordering Ordering.
    */
-  public async getPaginatedListAnimeList({
+  public async getPaginatedAnime({
     limit,
     offset,
     ordering,
-  }: GetPaginatedListAnimeListRequest): Promise<GetPaginatedListAnimeListResponse> {
-    const response = await this.get<PaginationDto<ListAnimeDTO>>(`anime/anime/`, {
+  }: PaginatedAnimeRequest): Promise<PaginatedAnimeResponse> {
+    const response = await this.get<PaginationDto<AnimeDTO>>(`anime/anime/`, {
       params: {
         limit,
         offset,
@@ -40,9 +38,9 @@ export class AnimeApi extends Api {
     });
 
     const { count, results } = PaginationMapper.fromDto<
-      ListAnime,
-      ListAnimeDTO
-    >(ListAnimeMapper.fromDto, response.data);
+      Anime,
+      AnimeDTO
+    >(AnimeMapper.fromDto, response.data);
 
     return {
       count,
@@ -54,32 +52,26 @@ export class AnimeApi extends Api {
 /**
  * Method response.
  */
-export interface GetPaginatedListAnimeListResponse {
+export interface PaginatedAnimeResponse {
 
-  /**
-   * Anime array in server.
-   */
-  results: ListAnime[];
+  /** Anime array in server.*/
+  results: readonly Anime[];
 
-  /**
-   * Count elements in server.
-   */
-  count: number;
+  /** Count elements in server.*/
+  readonly count: number;
 }
 
-/**
- * Request.
- */
-export interface GetPaginatedListAnimeListRequest {
+/** Request. */
+export interface PaginatedAnimeRequest {
 
   /** Limit results. */
-  limit: number;
+  readonly limit: number;
 
   /** Offset. */
-  offset: number;
+  readonly offset: number;
 
   /** Ordering. */
-  ordering: AnimeOrders;
+  readonly ordering: AnimeOrders;
 }
 
 export const animeApi = new AnimeApi();

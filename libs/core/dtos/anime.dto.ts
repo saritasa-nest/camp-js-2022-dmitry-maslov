@@ -1,8 +1,9 @@
-import { AnimeType } from './../enums/anime/type.enum';
-import { AnimeStatus } from './../enums/anime/status.enum';
+import { AnimeTypeDto } from '../enums/anime/type';
 
-/** ListAnime DTO. */
-export interface ListAnimeDTO {
+import { AnimeStatusDto } from './../enums/anime/status';
+
+/** Anime DTO. */
+export interface AnimeDTO {
 
   /** Id. */
   readonly id: number;
@@ -24,13 +25,13 @@ export interface ListAnimeDTO {
 
   /** Aired. */
   readonly aired: {
-    readonly start: string;
-    readonly end: string;
+    readonly start: string | null;
+    readonly end: string | null;
   };
 
   /** Type. */
-  readonly type: AnimeType;
+  readonly type: AnimeTypeDto;
 
   /** Status. */
-  readonly status: AnimeStatus;
+  readonly status: AnimeStatusDto;
 }

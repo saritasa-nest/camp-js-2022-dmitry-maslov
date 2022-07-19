@@ -1,18 +1,14 @@
-import { ListAnime } from '@js-camp/core/models/listAnime';
+import { Anime } from '@js-camp/core/models/anime';
 
-import { tableStyles } from './animeTable.styles';
+import { tableStyles } from '../../constants/styles/animeTable';
 
-import { createAnimeTableElement } from './animeTableElement';
+import { createAnimeColumn } from './animeTableElement';
 
-/**
- * Generates and updates table elements.
- */
+/** Generates and updates table elements. */
 export class TableElements {
   private root?: HTMLElement;
 
-  /**
-   * Getting html tbody tag.
-   */
+  /** Getting html tbody tag. */
   public getElement(): HTMLElement {
     if (this.root === undefined) {
       throw new Error(`${this} - method mount not called`);
@@ -25,21 +21,19 @@ export class TableElements {
    * Updates the table elements at the root element.
    * @param elementsData Array of objects to convert to table elements.
    */
-  public update(elementsData: ListAnime[]): void {
+  public updateTableElements(elementsData: readonly Anime[]): void {
     if (this.root === undefined) {
       throw new Error(`${this} not mounted`);
     }
 
     this.root.innerHTML = '';
     elementsData.forEach(elementData => {
-      this.root?.append(createAnimeTableElement(elementData));
+      this.root?.append(createAnimeColumn(elementData));
     });
   }
 
-  /**
-   * Creates a root html element.
-   */
-  public mount(): void {
+  /** Creates a root html element. */
+  public initializeTableBody(): void {
     this.root = document.createElement('tbody');
     this.root.classList.add(...tableStyles.tbody);
   }
