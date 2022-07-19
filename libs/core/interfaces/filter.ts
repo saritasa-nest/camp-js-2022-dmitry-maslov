@@ -1,4 +1,4 @@
-import { AnimeType } from '@js-camp/core/models/anime/animeType';
+import { AnimeType } from '../../core/models/anime/animeType';
 
 import { AnimeFilterType } from './../enums/anime/filters';
 
