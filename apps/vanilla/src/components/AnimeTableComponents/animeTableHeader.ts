@@ -6,9 +6,7 @@ import {
 import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
 
 import { headerStyles, tableStyles } from '../../constants/styles/animeTable';
-import { decreaseContent } from '../../constants/tableHeaders/tableHeaders';
-
-import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
+import { decreaseContent, increaseContent } from '../../constants/tableHeaders/tableHeaders';
 
 interface AnimeTableHeaderProps {
 

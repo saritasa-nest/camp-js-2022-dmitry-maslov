@@ -1,16 +1,12 @@
+import { Api } from 'axios-es6-class';
+
 import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { Anime } from '@js-camp/core/models/anime/anime';
-
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-
-import { Api } from 'axios-es6-class';
-
 import { AnimeFilters } from '@js-camp/core/interfaces/filter';
-
 import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
-
 import { AnimeFilterType } from '@js-camp/core/enums/anime/filters';
 
 import { apiConfig } from '../config/apiConfig';

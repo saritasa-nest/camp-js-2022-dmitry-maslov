@@ -3,20 +3,15 @@ import {
 } from '@js-camp/core/enums/anime/ordering';
 
 import { AnimeOrders } from '@js-camp/core/types/anime/ordering';
-
 import { Anime } from '@js-camp/core/models/anime/anime';
-
 import { AnimeFilters } from '@js-camp/core/interfaces/filter';
-
 import { AnimeFilterType } from '@js-camp/core/enums/anime/filters';
 
 import { animeApi } from '../../services/anime.service';
 import { tableStyles } from '../../constants/styles/animeTable';
-
 import { PaginationPanel } from '../paginationPanel';
 
 import { FilterPanel } from './../filterPanel';
-
 import { AnimeTableHeader } from './animeTableHeader';
 import { TableElements } from './animeTableElements';
 
