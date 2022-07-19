@@ -1,3 +1,4 @@
+/** Anime Types. */
 export enum AnimeType {
   TV = 'TV',
   OVA = 'OVA',
@@ -22,7 +23,7 @@ export namespace AnimeType {
 
   /**
    * Converts a certain anime type into readable equivalent.
-   * @param value AnimeListItem type.
+   * @param value Anime type.
    */
   export function toReadable(value: AnimeType): string {
     return TO_READABLE_MAP[value];
