@@ -1,6 +1,6 @@
 import {
-  animeNotOrder, AnimeOrders,
-} from '@js-camp/core/enums/anime/ordering';
+  SortDirection, AnimeSortField,
+} from '@js-camp/core/enums/anime/sort';
 
 import { Anime } from '@js-camp/core/models/anime/anime';
 
@@ -9,7 +9,7 @@ import { tableStyles } from '../../constants/styles/animeTable';
 
 import { PaginationPanel } from '../paginationPanel';
 
-import { AnimeTableHeader } from './animeTableHeader';
+import { AnimeTableHeader, SortParams } from './animeTableHeader';
 import { TableElements } from './animeTableElements';
 
 interface AnimeTableState {
@@ -18,7 +18,7 @@ interface AnimeTableState {
   paginationParams: PaginationResponseParams;
 
   /** Order. */
-  order: AnimeOrders;
+  sortParams: SortParams;
 
   /** List anime array. */
   elements: readonly Anime[];
@@ -34,7 +34,10 @@ export class AnimeTable {
       offset: 0,
       count: 0,
     },
-    order: animeNotOrder,
+    sortParams: {
+      sortDirection: SortDirection.NotSorted,
+      sortField: AnimeSortField.Id,
+    },
     elements: [],
   };
 
@@ -56,7 +59,7 @@ export class AnimeTable {
   });
 
   private tableHeader = new AnimeTableHeader({
-    changeParentOrderParams: this.updateOrderState.bind(this),
+    changeParentSortParams: this.updateOrderState.bind(this),
   });
 
   public constructor(selector: string) {
@@ -67,12 +70,12 @@ export class AnimeTable {
     const response = await animeApi.getPaginatedAnime({
       limit: this.state.paginationParams.limit,
       offset: this.state.paginationParams.offset,
-      ordering: this.state.order,
+      sortParams: this.state.sortParams,
     });
 
     this.state = {
       elements: response.results,
-      order: this.state.order,
+      sortParams: this.state.sortParams,
       paginationParams: {
         ...this.state.paginationParams,
         count: response.count,
@@ -81,19 +84,19 @@ export class AnimeTable {
 
     this.updateTable({
       elements: this.state.elements,
-      order: this.state.order,
+      order: this.state.sortParams,
       paginationParams: this.state.paginationParams,
     });
   }
 
-  private updateOrderState(order: AnimeOrders): void {
+  private updateOrderState(order: SortParams): void {
     this.setState({
       ...this.state,
       paginationParams: {
         ...this.state.paginationParams,
         offset: 0,
       },
-      order,
+      sortParams: order,
     });
   }
 
@@ -178,7 +181,7 @@ export interface AnimeTableUpdateParams {
   readonly paginationParams: PaginationResponseParams;
 
   /** Offset. */
-  readonly order: AnimeOrders;
+  readonly order: SortParams;
 
   /** Elements. */
   readonly elements: readonly Anime[];

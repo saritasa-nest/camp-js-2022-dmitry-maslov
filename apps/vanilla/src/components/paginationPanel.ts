@@ -47,7 +47,7 @@ export class PaginationPanel {
     this.root = document.createElement('div');
     this.root.classList.add('flex', 'justify-center', 'm-1');
 
-    this.root.addEventListener('click', (event): void => {
+    this.root.addEventListener('click', event => {
       event.preventDefault();
 
       if (!(event.target instanceof HTMLDivElement)) {
@@ -129,7 +129,7 @@ export class PaginationPanel {
       return [];
     }();
 
-    const itemList: PaginationElement[] = [
+    return [
       PaginationElements.PreviousButton,
       ...startPages,
       ...second,
@@ -138,14 +138,13 @@ export class PaginationPanel {
       ...endPages,
       PaginationElements.NextButton,
     ];
-    return itemList;
   }
 
   private getPaginationElementContent(paginationElement: PaginationElement): string {
     if (typeof paginationElement === 'number') {
       return String(paginationElement);
     }
-    return elementContents[paginationElement as PaginationElements];
+    return elementContents[paginationElement];
   }
 
   private getPaginationButtonValue(buttonElement: PaginationElement): string {
