@@ -22,12 +22,12 @@ export class AnimeApi extends Api {
    * Get Paginated Anime List.
    * @param limit Limit data.
    * @param offset Offset.
-   * @param ordering Ordering.
+   * @param sortParams SortPrams.
    */
   public async getPaginatedAnime({
     limit,
     offset,
-    ordering,
+    sortParams: ordering,
   }: PaginatedAnimeRequest): Promise<PaginatedAnimeResponse> {
     const response = await this.get<PaginationDto<AnimeDTO>>(`anime/anime/`, {
       params: {
@@ -59,9 +59,7 @@ export class AnimeApi extends Api {
   }
 }
 
-/**
- * Method response.
- */
+/** Method response. */
 export interface PaginatedAnimeResponse {
 
   /** Anime array in server.*/
@@ -81,7 +79,7 @@ export interface PaginatedAnimeRequest {
   readonly offset: number;
 
   /** Ordering. */
-  readonly ordering: SortParams;
+  readonly sortParams: SortParams;
 }
 
 export const animeApi = new AnimeApi();

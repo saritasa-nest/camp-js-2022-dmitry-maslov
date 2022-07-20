@@ -8,10 +8,32 @@ import { decreaseContent } from '../../constants/tableHeaders/tableHeaders';
 
 import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
 
+/** Sort Params. */
+export interface SortParams {
+
+  /** Sort field. */
+  readonly sortField: AnimeSortField;
+
+  /** Sort direction. */
+  sortDirection: SortDirection;
+}
 interface AnimeTableHeaderProps {
 
   /** Causes the parent component to change the sort option. */
-  readonly changeParentOrderParams: (order: SortParams) => void;
+  readonly changeParentSortParams: (sortParams: SortParams) => void;
+}
+
+/** Interface describing the table header. */
+interface Header {
+
+  /** Dom Instance Header. */
+  headerEl: HTMLElement;
+
+  /** Status indicator element. */
+  statusIndicator?: HTMLSpanElement;
+
+  /** Sort params. */
+  sortParams?: SortParams;
 }
 
 /** Created table headers, is responsible for sorting. */
@@ -20,21 +42,21 @@ export class AnimeTableHeader {
 
   private headers?: Header[];
 
-  private changeOrder: (order: SortParams) => void;
+  private changeSortParams: (sortParams: SortParams) => void;
 
-  private setOrderInHeader(header: Header): void {
+  private setSortIndicatorInHeader(header: Header): void {
     if (header.sortParams !== undefined) {
       const { sortDirection } = header.sortParams;
 
       this.resetHeadersStatus();
 
       header.sortParams.sortDirection = nextDirection[sortDirection];
-      this.changeOrder(header.sortParams);
+      this.changeSortParams(header.sortParams);
     }
   }
 
   public constructor(props: AnimeTableHeaderProps) {
-    this.changeOrder = props.changeParentOrderParams;
+    this.changeSortParams = props.changeParentSortParams;
   }
 
   private resetHeadersStatus(): void {
@@ -124,7 +146,7 @@ export class AnimeTableHeader {
 
         headerEl.append(statusIndicator);
         headerEl.addEventListener('click', () => {
-          this.setOrderInHeader(header);
+          this.setSortIndicatorInHeader(header);
         });
       }
 
@@ -158,19 +180,6 @@ function createColumnHeader({ headerTitle, styles, isSortHeader }:
 
 }
 
-/** Interface describing the table header. */
-interface Header {
-
-  /** Dom Instance Header. */
-  headerEl: HTMLElement;
-
-  /** Status indicator element. */
-  statusIndicator?: HTMLSpanElement;
-
-  /** Order type in this header.  */
-  sortParams?: SortParams;
-}
-
 const nextDirection = {
   [SortDirection.NotSorted]: SortDirection.Increase,
   [SortDirection.Increase]: SortDirection.Decrease,
@@ -182,13 +191,3 @@ const statusIndicatorContent = {
   [SortDirection.Increase]: increaseContent,
   [SortDirection.Decrease]: decreaseContent,
 };
-
-/** Sort Params. */
-export interface SortParams {
-
-  /** Sort field. */
-  readonly sortField: AnimeSortField;
-
-  /** Sort direction. */
-  sortDirection: SortDirection;
-}
