@@ -7,7 +7,7 @@ import { Anime } from '@js-camp/core/models/anime/anime';
 import { animeApi } from '../../services/anime.service';
 import { tableStyles } from '../../constants/styles/animeTable';
 
-import { PaginationPanel } from '../paginationPanel';
+import { PaginationPanel } from '../newPagination';
 
 import { AnimeTableHeader } from './animeTableHeader';
 import { TableElements } from './animeTableElements';
@@ -110,7 +110,7 @@ export class AnimeTable {
 
   private updateTable({ elements, paginationParams }: AnimeTableUpdateParams): void {
     this.tableElements.updateTableElements(elements);
-    this.paginationPanel.updatePagination(paginationParams);
+    this.paginationPanel.updatePaginationElements(paginationParams);
     this.tableHeader.updateHeaders();
   }
 
