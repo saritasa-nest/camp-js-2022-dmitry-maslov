@@ -1,9 +1,7 @@
 import {
-  AnimeOrder,
-  AnimeOrders,
-  animeNotOrder,
-  AnimeReversedOrder,
-} from '@js-camp/core/enums/anime/ordering';
+  AnimeSortField,
+  SortDirection,
+} from '@js-camp/core/enums/anime/sort';
 
 import { headerStyles, tableStyles } from '../../constants/styles/animeTable';
 import { decreaseContent } from '../../constants/tableHeaders/tableHeaders';
@@ -13,7 +11,7 @@ import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
 interface AnimeTableHeaderProps {
 
   /** Causes the parent component to change the sort option. */
-  readonly changeParentOrderParams: (order: AnimeOrders) => void;
+  readonly changeParentOrderParams: (order: SortParams) => void;
 }
 
 /** Created table headers, is responsible for sorting. */
@@ -22,23 +20,16 @@ export class AnimeTableHeader {
 
   private headers?: Header[];
 
-  private changeOrder: (order: AnimeOrders) => void;
+  private changeOrder: (order: SortParams) => void;
 
   private setOrderInHeader(header: Header): void {
-    const { order, reverseOrder, status } = header;
+    if (header.sortParams !== undefined) {
+      const { sortDirection } = header.sortParams;
 
-    this.resetHeadersStatus();
+      this.resetHeadersStatus();
 
-    if (order !== undefined && reverseOrder !== undefined && status !== undefined) {
-
-      const newOrder = {
-        [SortStatus.Not]: order,
-        [SortStatus.Sort]: reverseOrder,
-        [SortStatus.Reverse]: animeNotOrder,
-      } as const;
-
-      header.status = nextStatus[status];
-      this.changeOrder(newOrder[status]);
+      header.sortParams.sortDirection = nextDirection[sortDirection];
+      this.changeOrder(header.sortParams);
     }
   }
 
@@ -52,8 +43,8 @@ export class AnimeTableHeader {
     }
 
     this.headers.forEach(header => {
-      if (header.status) {
-        header.status = SortStatus.Not;
+      if (header.sortParams) {
+        header.sortParams.sortDirection = SortDirection.NotSorted;
       }
     });
   }
@@ -64,8 +55,8 @@ export class AnimeTableHeader {
       throw new Error(`${this} not mounted`);
     }
     this.headers.forEach(header => {
-      if (header.status !== undefined && header.statusIndicator !== undefined) {
-        const indicatorContent = statusIndicatorContent[header.status];
+      if (header.sortParams !== undefined && header.statusIndicator !== undefined) {
+        const indicatorContent = statusIndicatorContent[header.sortParams.sortDirection];
         header.statusIndicator.textContent = indicatorContent;
       }
     });
@@ -97,9 +88,10 @@ export class AnimeTableHeader {
       },
       {
         headerEl: createColumnHeader({ headerTitle: 'English title', isSortHeader: true, styles: tableStyles.titleColumn }),
-        order: AnimeOrder.TitleEng,
-        reverseOrder: AnimeReversedOrder.ReversedTitleEng,
-        status: SortStatus.Not,
+        sortParams: {
+          sortField: AnimeSortField.TitleEng,
+          sortDirection: SortDirection.NotSorted,
+        },
       },
       {
         headerEl: createColumnHeader({
@@ -108,22 +100,24 @@ export class AnimeTableHeader {
       },
       {
         headerEl: createColumnHeader({ headerTitle: 'Status', isSortHeader: true }),
-        order: AnimeOrder.Status,
-        reverseOrder: AnimeReversedOrder.ReversedStatus,
-        status: SortStatus.Not,
+        sortParams: {
+          sortDirection: SortDirection.NotSorted,
+          sortField: AnimeSortField.Status,
+        },
       },
       {
         headerEl: createColumnHeader({ headerTitle: 'Aired start', isSortHeader: true }),
-        order: AnimeOrder.AiredStart,
-        reverseOrder: AnimeReversedOrder.ReversedAiredStart,
-        status: SortStatus.Not,
+        sortParams: {
+          sortDirection: SortDirection.NotSorted,
+          sortField: AnimeSortField.AiredStart,
+        },
       },
     ];
 
     this.headers.forEach(header => {
-      const { headerEl, order } = header;
+      const { headerEl } = header;
 
-      if (order !== undefined) {
+      if (header.sortParams !== undefined) {
         const statusIndicator = document.createElement('span');
         statusIndicator.classList.add('text-sm');
         header.statusIndicator = statusIndicator;
@@ -170,34 +164,31 @@ interface Header {
   /** Dom Instance Header. */
   headerEl: HTMLElement;
 
-  /** Status. */
-  status?: SortStatus;
-
   /** Status indicator element. */
   statusIndicator?: HTMLSpanElement;
 
   /** Order type in this header.  */
-  order?: AnimeOrders;
-
-  /** Reverse Order type in this header. */
-  reverseOrder?: AnimeOrders;
+  sortParams?: SortParams;
 }
 
-/** Contains sort statuses. Used to change sort options. */
-enum SortStatus {
-  Not = 0,
-  Sort,
-  Reverse,
-}
-
-const nextStatus = {
-  [SortStatus.Not]: SortStatus.Sort,
-  [SortStatus.Sort]: SortStatus.Reverse,
-  [SortStatus.Reverse]: SortStatus.Not,
+const nextDirection = {
+  [SortDirection.NotSorted]: SortDirection.Increase,
+  [SortDirection.Increase]: SortDirection.Decrease,
+  [SortDirection.Decrease]: SortDirection.NotSorted,
 };
 
 const statusIndicatorContent = {
-  [SortStatus.Not]: '',
-  [SortStatus.Sort]: increaseContent,
-  [SortStatus.Reverse]: decreaseContent,
+  [SortDirection.NotSorted]: '',
+  [SortDirection.Increase]: increaseContent,
+  [SortDirection.Decrease]: decreaseContent,
 };
+
+/** Sort Params. */
+export interface SortParams {
+
+  /** Sort field. */
+  readonly sortField: AnimeSortField;
+
+  /** Sort direction. */
+  sortDirection: SortDirection;
+}

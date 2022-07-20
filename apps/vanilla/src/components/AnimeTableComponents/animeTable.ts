@@ -1,6 +1,6 @@
 import {
-  animeNotOrder, AnimeOrders,
-} from '@js-camp/core/enums/anime/ordering';
+  SortDirection, AnimeSortField,
+} from '@js-camp/core/enums/anime/sort';
 
 import { Anime } from '@js-camp/core/models/anime/anime';
 
@@ -9,7 +9,7 @@ import { tableStyles } from '../../constants/styles/animeTable';
 
 import { PaginationPanel } from '../paginationPanel';
 
-import { AnimeTableHeader } from './animeTableHeader';
+import { AnimeTableHeader, SortParams } from './animeTableHeader';
 import { TableElements } from './animeTableElements';
 
 interface AnimeTableState {
@@ -18,7 +18,7 @@ interface AnimeTableState {
   paginationParams: PaginationResponseParams;
 
   /** Order. */
-  order: AnimeOrders;
+  order: SortParams;
 
   /** List anime array. */
   elements: readonly Anime[];
@@ -34,7 +34,10 @@ export class AnimeTable {
       offset: 0,
       count: 0,
     },
-    order: animeNotOrder,
+    order: {
+      sortDirection: SortDirection.NotSorted,
+      sortField: AnimeSortField.Id,
+    },
     elements: [],
   };
 
@@ -86,7 +89,7 @@ export class AnimeTable {
     });
   }
 
-  private updateOrderState(order: AnimeOrders): void {
+  private updateOrderState(order: SortParams): void {
     this.setState({
       ...this.state,
       paginationParams: {
@@ -178,7 +181,7 @@ export interface AnimeTableUpdateParams {
   readonly paginationParams: PaginationResponseParams;
 
   /** Offset. */
-  readonly order: AnimeOrders;
+  readonly order: SortParams;
 
   /** Elements. */
   readonly elements: readonly Anime[];

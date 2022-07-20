@@ -1,6 +1,3 @@
-import {
-  AnimeOrders,
-} from '@js-camp/core/enums/anime/ordering';
 import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
@@ -10,7 +7,10 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
 import { Api } from 'axios-es6-class';
 
+import { SortDirection } from '@js-camp/core/enums/anime/sort';
+
 import { apiConfig } from '../config/apiConfig';
+import { SortParams } from '../components/AnimeTableComponents/animeTableHeader';
 
 /** Anime API class. */
 export class AnimeApi extends Api {
@@ -33,7 +33,7 @@ export class AnimeApi extends Api {
       params: {
         limit,
         offset,
-        ordering: `${ordering || 'id'}`.trim(),
+        ordering: this.orderMapper(ordering),
       },
     });
 
@@ -46,6 +46,16 @@ export class AnimeApi extends Api {
       count,
       results,
     };
+  }
+
+  private orderMapper(sortParams: SortParams): string {
+    const { sortDirection, sortField } = sortParams;
+
+    if (sortDirection === SortDirection.NotSorted) {
+      return 'id';
+    }
+
+    return `${sortDirection === SortDirection.Decrease ? '-' : ''}${sortField}`.trim();
   }
 }
 
@@ -71,7 +81,7 @@ export interface PaginatedAnimeRequest {
   readonly offset: number;
 
   /** Ordering. */
-  readonly ordering: AnimeOrders;
+  readonly ordering: SortParams;
 }
 
 export const animeApi = new AnimeApi();
