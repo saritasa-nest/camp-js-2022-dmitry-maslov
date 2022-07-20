@@ -144,7 +144,7 @@ export class PaginationPanel {
     if (typeof paginationElement === 'number') {
       return String(paginationElement);
     }
-    return elementContents[paginationElement as PaginationElements];
+    return elementContents[paginationElement];
   }
 
   private getPaginationButtonValue(buttonElement: PaginationElement): string {
