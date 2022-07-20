@@ -1,4 +1,4 @@
-/** JWT meta info. */
+/** JWT Dto. */
 export interface JWTDto {
 
   /** Refresh token. */
@@ -6,4 +6,7 @@ export interface JWTDto {
 
   /** Access token. */
   readonly access: string;
+
+  /** DTO type. */
+  readonly type: 'JWT';
 }
