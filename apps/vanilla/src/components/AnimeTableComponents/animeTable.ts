@@ -7,7 +7,7 @@ import { Anime } from '@js-camp/core/models/anime/anime';
 import { animeApi } from '../../services/anime.service';
 import { tableStyles } from '../../constants/styles/animeTable';
 
-import { PaginationPanel } from '../newPagination';
+import { PaginationPanel } from '../paginationPanel';
 
 import { AnimeTableHeader } from './animeTableHeader';
 import { TableElements } from './animeTableElements';
