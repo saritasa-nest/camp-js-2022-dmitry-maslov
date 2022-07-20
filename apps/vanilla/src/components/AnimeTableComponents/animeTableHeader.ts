@@ -27,17 +27,18 @@ export class AnimeTableHeader {
   private setOrderInHeader(header: Header): void {
     const { order, reverseOrder, status } = header;
 
-    const newOrder = {
-      [SortStatus.Not]: order,
-      [SortStatus.Sort]: reverseOrder,
-      [SortStatus.Reverse]: animeNotOrder,
-    };
-
     this.resetHeadersStatus();
 
     if (order !== undefined && reverseOrder !== undefined && status !== undefined) {
+
+      const newOrder = {
+        [SortStatus.Not]: order,
+        [SortStatus.Sort]: reverseOrder,
+        [SortStatus.Reverse]: animeNotOrder,
+      } as const;
+
       header.status = nextStatus[status];
-      this.changeOrder(newOrder[status] as AnimeOrder);
+      this.changeOrder(newOrder[status]);
     }
   }
 
