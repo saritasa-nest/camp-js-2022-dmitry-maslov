@@ -1,39 +1,37 @@
-import { paginationStyles } from '../constants/styles/pagination';
-
-import { nextButtonContent, prevButtonContent } from '../constants/pagination/buttons';
-
 import { PaginationRequestParams, PaginationResponseParams } from './AnimeTableComponents/animeTable';
 
-type UpdateMethod = (paginationParams: PaginationRequestParams) => void;
+type ChangePaginationMethod = (paginationParams: PaginationRequestParams) => void;
 
 interface PaginationPanelProps {
 
   /** Method to update pagination data in parent component. */
-  readonly updateMethod: (paginationParams: PaginationRequestParams) => void;
+  readonly changePaginationMethod: ChangePaginationMethod;
 
   /** Default pagination parameters. */
   readonly defaultPaginationParams: PaginationResponseParams;
 }
 
-const buttonActiveClasses = ['bg-slate-300'];
+const paginationStyles = {
+  button: ['w-12', 'border', 'disabled:opacity-50'],
+  activeButton: ['bg-slate-300'],
+  ellipsis: ['w-8', 'text-center'],
+};
 
 /** The class creates a pagination panel. */
 export class PaginationPanel {
-  private root?: Element;
+  private root?: HTMLDivElement;
 
   private paginationParams: PaginationResponseParams;
 
-  private buttons?: {
-    next: HTMLButtonElement;
-    prev: HTMLButtonElement;
-    otherButtonsContainer: HTMLElement;
-  };
-
-  private updateMethod: UpdateMethod;
+  private changeMethod: ChangePaginationMethod;
 
   public constructor(props: PaginationPanelProps) {
-    this.updateMethod = props.updateMethod;
+    this.changeMethod = props.changePaginationMethod;
     this.paginationParams = props.defaultPaginationParams;
+  }
+
+  private getPaginationParams(): PaginationResponseParams {
+    return this.paginationParams;
   }
 
   /** Returns an instance HTML Element.*/
@@ -44,183 +42,171 @@ export class PaginationPanel {
     return this.root;
   }
 
-  private createButton(text: string): HTMLButtonElement {
-    const button = document.createElement('button');
+  /** Initialize the pagination component. */
+  public initializePagination(): void {
+    this.root = document.createElement('div');
+    this.root.classList.add('flex', 'justify-center', 'm-1');
 
-    button.classList.add(...paginationStyles.button);
-    button.textContent = text;
-    button.type = 'button';
+    this.root.addEventListener('click', (event): void => {
+      event.preventDefault();
 
-    return button;
-  }
-
-  private generateOtherButtons(): HTMLElement[] {
-    const { limit, offset, count } = this.paginationParams;
-
-    const otherButtons: HTMLElement[] = [];
-
-    const actualPageNumber = offset / limit + 1;
-    const lastPageNumber = Math.ceil(count / limit);
-
-    let isPenultNotButton = actualPageNumber + 3 !== lastPageNumber;
-
-    let startIterNumber = 2;
-    let endIterNumber = startIterNumber + 3;
-
-    if (lastPageNumber !== 2) {
-      if (lastPageNumber < 7) {
-        endIterNumber = lastPageNumber - 1;
-      } else {
-        if (actualPageNumber > 4) {
-          const noButton = document.createElement('div');
-          noButton.classList.add(...paginationStyles.noButton);
-          noButton.textContent = '...';
-          otherButtons.push(noButton);
-          startIterNumber = actualPageNumber - 1;
-          endIterNumber = actualPageNumber + 1;
-        }
-        if (actualPageNumber + 3 >= lastPageNumber) {
-          isPenultNotButton = false;
-          startIterNumber = lastPageNumber - 4;
-          endIterNumber = lastPageNumber - 1;
-        }
+      if (!(event.target instanceof HTMLDivElement)) {
+        const targetButton = event.target as HTMLButtonElement;
+        this.changeMethod({
+          ...this.getPaginationParams(),
+            offset: Number(targetButton.value),
+        });
       }
-
-      for (let pageNumber = startIterNumber; pageNumber <= endIterNumber; pageNumber++) {
-        const button = this.createButton(String(pageNumber));
-        otherButtons.push(button);
-
-        if (pageNumber === actualPageNumber) {
-          button.classList.add(...paginationStyles.activeButton);
-        }
-      }
-
-      if (isPenultNotButton) {
-        const noButton = document.createElement('div');
-        noButton.classList.add(...paginationStyles.noButton);
-        noButton.textContent = '...';
-        otherButtons.push(noButton);
-      }
-    }
-
-    return otherButtons;
+    });
   }
 
   /**
    * Updated pagination buttons.
    * @param paginationParams Pagination Params.
    */
-  public updatePagination(paginationParams: PaginationResponseParams): void {
+  public updatePaginationElements(paginationParams: PaginationResponseParams): void {
+    if (this.root === undefined) {
+      throw new Error(`${this} component not initialized`);
+    }
+
     this.paginationParams = paginationParams;
-    const { limit, offset, count } = this.paginationParams;
 
-    const actualPageNumber = offset / limit + 1;
-    const lastPageNumber = Math.ceil(count / limit);
+    this.root.innerHTML = '';
 
-    if (this.buttons === undefined) {
-      throw new Error('component not mounted');
-    }
-
-    this.buttons.otherButtonsContainer.innerHTML = '';
-
-    const firstPageButton = this.createButton('1');
-    const lastPageButton = this.createButton(String(lastPageNumber));
-
-    if (actualPageNumber > 1) {
-      this.buttons.prev.disabled = false;
-    } else {
-      firstPageButton.classList.add(...buttonActiveClasses);
-      this.buttons.prev.disabled = true;
-    }
-
-    if (lastPageNumber === 1) {
-      this.buttons.otherButtonsContainer.append(firstPageButton);
-      this.buttons.next.disabled = true;
-      return void 0;
-    }
-
-    if (actualPageNumber === lastPageNumber) {
-      this.buttons.next.disabled = true;
-      lastPageButton.classList.add(...buttonActiveClasses);
-    } else {
-      this.buttons.next.disabled = false;
-    }
-
-    const otherButtons = this.generateOtherButtons();
-
-    this.buttons.otherButtonsContainer.append(
-      firstPageButton,
-      ...otherButtons,
-      lastPageButton,
-    );
+    const paginationElements = this.generatePaginationHtmlElements(this.generatePaginationElementsList());
+    this.root.append(...paginationElements);
   }
 
-  private onClick(event: MouseEvent): void {
-    const { offset, limit } = this.paginationParams;
-
-    if (this.buttons === undefined) {
-      throw new Error('buttons not created');
-    }
-
-    if (event.target === null) {
-      throw new Error('Target null');
-    }
-
-    switch (event.target) {
-      case this.buttons.prev:
-        this.updateMethod({
-          ...this.paginationParams,
-          offset: offset - limit,
-        });
-        break;
-
-      case this.buttons.next:
-        this.updateMethod({
-          ...this.paginationParams,
-          offset: offset + limit,
-        });
-        break;
-
-      default:
-        if (event.target instanceof HTMLButtonElement) {
-          this.updateMethod({
-            ...this.paginationParams,
-            offset: (Number(event.target.textContent) - 1) * limit,
-          });
-        }
-        break;
-    }
+  private range(start: number, end: number): number[] {
+    const length = end - start + 1;
+    return Array.from({ length }, (_, i) => start + i);
   }
 
-  /** Initialize the pagination component. */
-  public initializePagination(): void {
-    this.root = document.createElement('div');
-    this.root.classList.add('flex', 'justify-center', 'm-1');
+  private generatePaginationElementsList(): PaginationElement[] {
+    const { count, limit } = this.paginationParams;
 
-    const otherButtonsContainer = document.createElement('div');
-    otherButtonsContainer.classList.add('flex');
+    const pageCount = Math.ceil(count / limit);
+    const activePage = this.getActivePage();
+    const boundaryCount = 1;
+    const siblingCount = 1;
 
-    this.buttons = {
-      prev: this.createButton(prevButtonContent),
-      next: this.createButton(nextButtonContent),
-      otherButtonsContainer,
-    };
+    const startPages = this.range(1, Math.min(boundaryCount, pageCount));
+    const endPages = this.range(Math.max(pageCount - boundaryCount + 1, boundaryCount + 1), pageCount);
 
-    this.buttons.next.disabled = true;
-    this.buttons.prev.disabled = true;
-
-    this.buttons.otherButtonsContainer.append();
-
-    this.root.append(
-      this.buttons.prev,
-      this.buttons.otherButtonsContainer,
-      this.buttons.next,
+    const siblingsStart = Math.max(
+      Math.min(
+        activePage - siblingCount,
+        pageCount - boundaryCount - siblingCount * 2 - 1,
+      ),
+      boundaryCount + 2,
     );
 
-    this.root.addEventListener('click', event => {
-      if (event instanceof MouseEvent) {
-        this.onClick(event);
+    const siblingsEnd = Math.min(
+      Math.max(
+        activePage + siblingCount,
+        boundaryCount + siblingCount * 2 + 2,
+      ),
+      endPages.length > 0 ? endPages[0] - 2 : pageCount - 1,
+    );
+
+    const second = function(): PaginationElement[] {
+      if (siblingsStart > boundaryCount + 2) {
+        return [PaginationElements.Ellipsis];
       }
-    });
+      if (boundaryCount + 1 < pageCount - boundaryCount) {
+        return [boundaryCount + 1];
+      }
+      return [];
+    }();
+
+    const penult = function(): PaginationElement[] {
+      if (siblingsEnd < pageCount - boundaryCount - 1) {
+        return [PaginationElements.Ellipsis];
+      }
+      if (pageCount - boundaryCount > boundaryCount) {
+        return [pageCount - boundaryCount];
+      }
+      return [];
+    }();
+
+    const itemList: PaginationElement[] = [
+      PaginationElements.PreviousButton,
+      ...startPages,
+      ...second,
+      ...this.range(siblingsStart, siblingsEnd),
+      ...penult,
+      ...endPages,
+      PaginationElements.NextButton,
+    ];
+    return itemList;
+  }
+
+  private getPaginationElementContent(paginationElement: PaginationElement): string {
+    if (typeof paginationElement === 'number') {
+      return String(paginationElement);
+    }
+    return elementContents[paginationElement as PaginationElements];
+  }
+
+  private getPaginationButtonValue(buttonElement: PaginationElement): string {
+    if (buttonElement === PaginationElements.NextButton) {
+      return String(this.paginationParams.offset + this.paginationParams.limit);
+    }
+    if (buttonElement === PaginationElements.PreviousButton) {
+      return String(this.paginationParams.offset - this.paginationParams.limit);
+    }
+    return String(buttonElement as number * this.paginationParams.limit - this.paginationParams.limit);
+  }
+
+  private generatePaginationHtmlElements(elements: PaginationElement[]): HTMLElement[] {
+    return elements.map(element => this.createPaginationHtmlElement(element));
+  }
+
+  private getActivePage(): number {
+    return this.paginationParams.offset / this.paginationParams.limit + 1;
+  }
+
+  private createPaginationHtmlElement(paginationElement: PaginationElement): HTMLButtonElement | HTMLDivElement {
+    const content = this.getPaginationElementContent(paginationElement);
+
+    if (paginationElement === PaginationElements.Ellipsis) {
+      const element = document.createElement('div');
+      element.textContent = content;
+      element.classList.add(...paginationStyles.ellipsis);
+      return element;
+    }
+
+    const button = document.createElement('button');
+    button.classList.add(...paginationStyles.button);
+    button.type = 'button';
+    button.value = this.getPaginationButtonValue(paginationElement);
+    button.textContent = content;
+
+    const numberButtonValue = Number(button.value);
+
+    if (numberButtonValue === this.paginationParams.offset) {
+      button.classList.add(...paginationStyles.activeButton);
+    }
+
+    if (numberButtonValue < 0 || numberButtonValue >= this.paginationParams.count) {
+      button.disabled = true;
+    }
+
+    return button;
   }
 }
+
+type PaginationElement = PaginationElements | number;
+
+/** Describes the type of the pagination element if it is not number. */
+enum PaginationElements {
+  Ellipsis = 'ellipsis',
+  NextButton = 'next-button',
+  PreviousButton = 'previous-button',
+}
+
+const elementContents = {
+  [PaginationElements.Ellipsis]: '...',
+  [PaginationElements.NextButton]: '>>',
+  [PaginationElements.PreviousButton]: '<<',
+};

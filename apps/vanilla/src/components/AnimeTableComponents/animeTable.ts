@@ -1,8 +1,8 @@
 import {
-  AnimeNotOrder, AnimeOrders,
+  animeNotOrder, AnimeOrders,
 } from '@js-camp/core/enums/anime/ordering';
 
-import { Anime } from '@js-camp/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime/anime';
 
 import { animeApi } from '../../services/anime.service';
 import { tableStyles } from '../../constants/styles/animeTable';
@@ -34,7 +34,7 @@ export class AnimeTable {
       offset: 0,
       count: 0,
     },
-    order: AnimeNotOrder.NotOrder,
+    order: animeNotOrder,
     elements: [],
   };
 
@@ -51,12 +51,12 @@ export class AnimeTable {
   private tableElements = new TableElements();
 
   private paginationPanel = new PaginationPanel({
-    updateMethod: this.updatePaginationState.bind(this),
+    changePaginationMethod: this.updatePaginationState.bind(this),
     defaultPaginationParams: this.state.paginationParams,
   });
 
   private tableHeader = new AnimeTableHeader({
-    updateMethod: this.updateOrderState.bind(this),
+    changeParentOrderParams: this.updateOrderState.bind(this),
   });
 
   public constructor(selector: string) {
@@ -110,7 +110,7 @@ export class AnimeTable {
 
   private updateTable({ elements, paginationParams }: AnimeTableUpdateParams): void {
     this.tableElements.updateTableElements(elements);
-    this.paginationPanel.updatePagination(paginationParams);
+    this.paginationPanel.updatePaginationElements(paginationParams);
     this.tableHeader.updateHeaders();
   }
 
@@ -118,8 +118,8 @@ export class AnimeTable {
     await this.fetchDataAndUpdateElements();
   }
 
-  /** Mount the component on the root element. */
-  public mount(): void {
+  /** Render component on the root element. */
+  public render(): void {
     const root = document.querySelector(this.selector);
 
     if (root === null) {

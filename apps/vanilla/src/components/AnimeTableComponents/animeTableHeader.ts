@@ -1,7 +1,7 @@
 import {
   AnimeOrder,
   AnimeOrders,
-  AnimeNotOrder,
+  animeNotOrder,
   AnimeReversedOrder,
 } from '@js-camp/core/enums/anime/ordering';
 
@@ -13,7 +13,7 @@ import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
 interface AnimeTableHeaderProps {
 
   /** Causes the parent component to change the sort option. */
-  readonly updateMethod: (order: AnimeOrders) => void;
+  readonly changeParentOrderParams: (order: AnimeOrders) => void;
 }
 
 /** Created table headers, is responsible for sorting. */
@@ -22,36 +22,27 @@ export class AnimeTableHeader {
 
   private headers?: Header[];
 
-  private updateMethod: (order: AnimeOrders) => void;
+  private changeOrder: (order: AnimeOrders) => void;
 
   private setOrderInHeader(header: Header): void {
     const { order, reverseOrder, status } = header;
 
+    const newOrder = {
+      [SortStatus.Not]: order,
+      [SortStatus.Sort]: reverseOrder,
+      [SortStatus.Reverse]: animeNotOrder,
+    };
+
     this.resetHeadersStatus();
 
     if (order !== undefined && reverseOrder !== undefined && status !== undefined) {
-
-      const updateByStatusMethod = {
-        [SortStatus.Not]: (): void => {
-          this.updateMethod(order);
-          header.status = SortStatus.Sort;
-        },
-        [SortStatus.Sort]: (): void => {
-          this.updateMethod(reverseOrder);
-          header.status = SortStatus.Reverse;
-        },
-        [SortStatus.Reverse]: (): void => {
-          this.updateMethod(AnimeNotOrder.NotOrder);
-          header.status = SortStatus.Not;
-        },
-      };
-
-      updateByStatusMethod[status]();
+      header.status = nextStatus[status];
+      this.changeOrder(newOrder[status] as AnimeOrder);
     }
   }
 
   public constructor(props: AnimeTableHeaderProps) {
-    this.updateMethod = props.updateMethod;
+    this.changeOrder = props.changeParentOrderParams;
   }
 
   private resetHeadersStatus(): void {
@@ -72,27 +63,9 @@ export class AnimeTableHeader {
       throw new Error(`${this} not mounted`);
     }
     this.headers.forEach(header => {
-
-      if (header.status !== undefined) {
-        const changeStatusIndicator = {
-          [SortStatus.Sort](): void {
-            if (header.statusIndicator) {
-              header.statusIndicator.textContent = increaseContent;
-            }
-          },
-          [SortStatus.Reverse](): void {
-            if (header.statusIndicator) {
-              header.statusIndicator.textContent = decreaseContent;
-            }
-          },
-          [SortStatus.Not](): void {
-            if (header.statusIndicator) {
-              header.statusIndicator.textContent = '';
-            }
-          },
-        };
-
-        changeStatusIndicator[header.status]();
+      if (header.status !== undefined && header.statusIndicator !== undefined) {
+        const indicatorContent = statusIndicatorContent[header.status];
+        header.statusIndicator.textContent = indicatorContent;
       }
     });
   }
@@ -190,6 +163,7 @@ function createColumnHeader({ headerTitle, styles, isSortHeader }:
 
 }
 
+/** Interface describing the table header. */
 interface Header {
 
   /** Dom Instance Header. */
@@ -214,3 +188,15 @@ enum SortStatus {
   Sort,
   Reverse,
 }
+
+const nextStatus = {
+  [SortStatus.Not]: SortStatus.Sort,
+  [SortStatus.Sort]: SortStatus.Reverse,
+  [SortStatus.Reverse]: SortStatus.Not,
+};
+
+const statusIndicatorContent = {
+  [SortStatus.Not]: '',
+  [SortStatus.Sort]: increaseContent,
+  [SortStatus.Reverse]: decreaseContent,
+};

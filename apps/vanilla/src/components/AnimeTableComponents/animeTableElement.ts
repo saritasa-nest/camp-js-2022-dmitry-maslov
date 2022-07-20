@@ -1,4 +1,6 @@
-import { Anime } from '@js-camp/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime/anime';
+import { AnimeType } from '@js-camp/core/models/anime/animeType';
+import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 
 import { elementStyles, tableStyles } from '../../constants/styles/animeTable';
 
@@ -23,12 +25,12 @@ export function createAnimeColumn(anime: Anime): HTMLElement {
 
   const statusColumn = createColumn();
   const status = document.createElement('span');
-  status.textContent = anime.status;
+  status.textContent = AnimeStatus.toReadable(anime.status);
   statusColumn.append(status);
 
   const typeColumn = createColumn();
   const type = document.createElement('span');
-  type.textContent = anime.animeType;
+  type.textContent = AnimeType.toReadable(anime.animeType);
   typeColumn.append(type);
 
   const airedStartColumn = createColumn();
