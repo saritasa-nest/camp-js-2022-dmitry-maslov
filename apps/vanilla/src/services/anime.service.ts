@@ -10,7 +10,7 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
 import { Api } from 'axios-es6-class';
 
-import { apiConfig } from '../config/apiConfig';
+import { apiConfig } from '../api/config';
 
 /** Anime API class. */
 export class AnimeApi extends Api {
