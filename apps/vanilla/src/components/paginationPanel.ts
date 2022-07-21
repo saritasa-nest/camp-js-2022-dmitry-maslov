@@ -23,23 +23,11 @@ export class PaginationPanel {
 
   private paginationParams: PaginationResponseParams;
 
-  private changeMethod: ChangePaginationMethod;
+  private readonly changeMethod: ChangePaginationMethod;
 
   public constructor(props: PaginationPanelProps) {
     this.changeMethod = props.changePaginationMethod;
     this.paginationParams = props.defaultPaginationParams;
-  }
-
-  private getPaginationParams(): PaginationResponseParams {
-    return this.paginationParams;
-  }
-
-  /** Returns an instance HTML Element.*/
-  public getElement(): Element {
-    if (this.root === undefined) {
-      throw new Error(`${this} component not mount`);
-    }
-    return this.root;
   }
 
   /** Initialize the pagination component. */
@@ -60,6 +48,14 @@ export class PaginationPanel {
     });
   }
 
+  /** Returns an instance HTML Element.*/
+  public getElement(): Element {
+    if (this.root === undefined) {
+      throw new Error(`${this} component not mount`);
+    }
+    return this.root;
+  }
+
   /**
    * Updated pagination buttons.
    * @param paginationParams Pagination Params.
@@ -75,6 +71,10 @@ export class PaginationPanel {
 
     const paginationElements = this.generatePaginationHtmlElements(this.generatePaginationElementsList());
     this.root.append(...paginationElements);
+  }
+
+  private getPaginationParams(): PaginationResponseParams {
+    return this.paginationParams;
   }
 
   private range(start: number, end: number): number[] {

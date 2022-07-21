@@ -15,18 +15,18 @@ import { TableElements } from './animeTableElements';
 interface AnimeTableState {
 
   /** Pagination params. */
-  paginationParams: PaginationResponseParams;
+  readonly paginationParams: PaginationResponseParams;
 
   /** Order. */
-  sortParams: SortParams;
+  readonly sortParams: SortParams;
 
   /** List anime array. */
-  elements: readonly Anime[];
+  readonly elements: readonly Anime[];
 }
 
 /** The class creates a sorted table with anime and pagination. */
 export class AnimeTable {
-  private selector: string;
+  private readonly root: HTMLElement;
 
   private state: AnimeTableState = {
     paginationParams: {
@@ -41,6 +41,14 @@ export class AnimeTable {
     elements: [],
   };
 
+  public constructor(selector: string) {
+    const root = document.querySelector<HTMLElement>(selector);
+    if (root === null) {
+      throw new Error(`${selector} selector is not founded`);
+    }
+    this.root = root;
+  }
+
   /** Updates the state and causes a page refresh.
    * @param state  New state.
    */
@@ -49,22 +57,16 @@ export class AnimeTable {
     this.fetchDataAndUpdateElements();
   }
 
-  private root?: Element;
+  private readonly tableElements = new TableElements();
 
-  private tableElements = new TableElements();
-
-  private paginationPanel = new PaginationPanel({
+  private readonly paginationPanel = new PaginationPanel({
     changePaginationMethod: this.updatePaginationState.bind(this),
     defaultPaginationParams: this.state.paginationParams,
   });
 
-  private tableHeader = new AnimeTableHeader({
+  private readonly tableHeader = new AnimeTableHeader({
     changeParentSortParams: this.updateOrderState.bind(this),
   });
-
-  public constructor(selector: string) {
-    this.selector = selector;
-  }
 
   private async fetchDataAndUpdateElements(): Promise<void> {
     const response = await animeApi.getPaginatedAnime({
@@ -123,13 +125,6 @@ export class AnimeTable {
 
   /** Render component on the root element. */
   public render(): void {
-    const root = document.querySelector(this.selector);
-
-    if (root === null) {
-      throw new Error('Selector not found');
-    }
-
-    this.root = root;
     const table = document.createElement('table');
     table.classList.add(...tableStyles.table);
 

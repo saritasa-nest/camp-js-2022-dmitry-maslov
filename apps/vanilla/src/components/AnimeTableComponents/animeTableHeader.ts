@@ -27,7 +27,7 @@ interface AnimeTableHeaderProps {
 interface Header {
 
   /** Dom Instance Header. */
-  headerEl: HTMLElement;
+  readonly headerEl: HTMLElement;
 
   /** Status indicator element. */
   statusIndicator?: HTMLSpanElement;
@@ -42,7 +42,7 @@ export class AnimeTableHeader {
 
   private headers?: Header[];
 
-  private changeSortParams: (sortParams: SortParams) => void;
+  private readonly changeSortParams: (sortParams: SortParams) => void;
 
   private setSortIndicatorInHeader(header: Header): void {
     if (header.sortParams !== undefined) {

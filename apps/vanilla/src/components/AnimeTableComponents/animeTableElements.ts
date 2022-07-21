@@ -8,6 +8,12 @@ import { createAnimeColumn } from './animeTableElement';
 export class TableElements {
   private root?: HTMLElement;
 
+  /** Creates a root html element. */
+  public initializeTableBody(): void {
+    this.root = document.createElement('tbody');
+    this.root.classList.add(...tableStyles.tbody);
+  }
+
   /** Getting html tbody tag. */
   public getElement(): HTMLElement {
     if (this.root === undefined) {
@@ -32,9 +38,4 @@ export class TableElements {
     });
   }
 
-  /** Creates a root html element. */
-  public initializeTableBody(): void {
-    this.root = document.createElement('tbody');
-    this.root.classList.add(...tableStyles.tbody);
-  }
 }
