@@ -4,13 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./index.css" />
-    <title>Vite App</title>
+    <title>Anime</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/4/47/Anime_stub.svg"
+      type="image/x-icon"
+    />
   </head>
-  <body class="default-layout">
-    <h1 class="title">Main page ⚡</h1>
-    <div class="links">
-      <a href="/example/">Go to example page</a>
-    </div>
+  <body>
+    <header class="flex justify-between border-b bg-slate-500">
+      <a href="/">
+        <img
+          class="w-12 h-12"
+          src="https://upload.wikimedia.org/wikipedia/commons/4/47/Anime_stub.svg"
+          alt="Anime logo"
+        />
+      </a>
+      <nav class="flex items-center w-full">
+        <a class="flex flex-col w-full">Anime</a>
+      </nav>
+    </header>
+    <main>
+      <div id="table-root"></div>
+    </main>
     <script type="module" src="./index.ts"></script>
   </body>
 </html>
