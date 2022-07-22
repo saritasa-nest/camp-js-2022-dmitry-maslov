@@ -1,0 +1,35 @@
+<table *ngIf="animeList$ | async as animeList" mat-table [dataSource]="animeList" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef> Image </th>
+    <td mat-cell *matCellDef="let anime"> <img [src]="anime.image" style="width: 150px;"/></td>
+  </ng-container>
+
+  <ng-container matColumnDef="title_eng">
+    <th mat-header-cell *matHeaderCellDef> Eng Title </th>
+    <td mat-cell *matCellDef="let anime">{{anime.titleEng}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="title_jpn">
+    <th mat-header-cell *matHeaderCellDef> Jpn Title </th>
+    <td mat-cell *matCellDef="let anime">{{anime.titleJpn}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="aired_start">
+    <th mat-header-cell *matHeaderCellDef> Aired start </th>
+    <td mat-cell *matCellDef="let anime"> {{ (anime.airedStart | date: 'MMM yyyy') || 'Not started'}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef> Type </th>
+    <td mat-cell *matCellDef="let anime"> {{ toReadable.type(anime.type) }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <td mat-cell *matCellDef="let anime"> {{ toReadable.status(anime.status) }} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

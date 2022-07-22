@@ -22,7 +22,7 @@ export class Anime extends Immerable {
   public readonly airedStart: Date | null;
 
   /** Anime type. */
-  public readonly animeType: AnimeType;
+  public readonly type: AnimeType;
 
   /** Anime Status. */
   public readonly status: AnimeStatus;
@@ -34,7 +34,7 @@ export class Anime extends Immerable {
     this.titleEng = data.titleEng;
     this.titleJpn = data.titleJpn;
     this.airedStart = data.airedStart;
-    this.animeType = data.animeType;
+    this.type = data.type;
     this.status = data.status;
   }
 }

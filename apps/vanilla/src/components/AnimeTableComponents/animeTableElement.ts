@@ -30,7 +30,7 @@ export function createAnimeColumn(anime: Anime): HTMLElement {
 
   const typeColumn = createColumn();
   const type = document.createElement('span');
-  type.textContent = AnimeType.toReadable(anime.animeType);
+  type.textContent = AnimeType.toReadable(anime.type);
   typeColumn.append(type);
 
   const airedStartColumn = createColumn();

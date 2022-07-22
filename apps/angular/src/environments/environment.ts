@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
   production: false,
+  apiUrl: 'https://api.camp-js.saritasa.rocks/api/v1/',
+  version: 'v1',
+  apiKey: '519f134a-60a7-44de-83ef-7ef6badd9fda',
 };
 
 /*

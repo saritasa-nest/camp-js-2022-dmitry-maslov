@@ -68,6 +68,6 @@
   },
   "defaultProject": "react",
   "cli": {
-    "defaultCollection": "@nxext/vite"
+    "defaultCollection": "@nrwl/angular"
   }
 }
