@@ -7,6 +7,7 @@ import { ApiKeyInterceptor } from '../core/interceptors/api-key-interceptor';
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const httpInterceptorProviders = [
   {
@@ -19,7 +20,7 @@ const httpInterceptorProviders = [
 /** App module. */
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule],
   providers: [...httpInterceptorProviders],
   bootstrap: [AppComponent],
 })

@@ -5,9 +5,13 @@
   "targets": {
     "stylelint": {
       "executor": "nx-stylelint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/theme/src/**/*.css"]
+        "lintFilePatterns": [
+          "libs/theme/src/**/*.css"
+        ]
       }
     }
   }
