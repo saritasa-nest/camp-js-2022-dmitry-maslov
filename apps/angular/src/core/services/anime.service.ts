@@ -35,11 +35,7 @@ export class AnimeService {
     })
       .pipe(
         map(response => response.results),
-        map(animeDtoArray => {
-          const animeList: Anime[] = [];
-          animeDtoArray.forEach(animeDto => animeList.push(AnimeMapper.fromDto(animeDto)));
-          return animeList;
-        }),
+        map(animeDtoArray => animeDtoArray.map(animeDto => AnimeMapper.fromDto(animeDto))),
       );
   }
 }
