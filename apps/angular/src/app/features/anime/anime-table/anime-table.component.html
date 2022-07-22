@@ -1,4 +1,4 @@
-<table *ngIf="animeList$ | async as animeList" mat-table [dataSource]="animeList" class="mat-elevation-z8">
+<table *ngIf="animeList$ | async as animeList" mat-table [dataSource]="animeList" class="mat-elevation-z8" aria-describedby="Anime Table">
 
   <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef> Image </th>
