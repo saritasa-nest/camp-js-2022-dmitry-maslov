@@ -1,0 +1,16 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+:host {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}

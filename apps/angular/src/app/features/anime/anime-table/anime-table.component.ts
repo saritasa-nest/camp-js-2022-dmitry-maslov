@@ -1,13 +1,11 @@
-import { Anime } from '@js-camp/core/models/anime/anime';
 import { Component } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
-
 import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
-
-import { AnimeService } from './../../../../core/services/anime.service';
+import { AnimeService } from 'apps/angular/src/core/services/anime.service';
 
 /** Anime table component. */
 @Component({
@@ -36,7 +34,7 @@ export class AnimeTableComponent {
   };
 
   public constructor(
-    private animeService: AnimeService,
+    animeService: AnimeService,
   ) {
     this.animeList$ = animeService.getAnimeList();
   }
