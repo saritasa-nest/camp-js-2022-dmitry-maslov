@@ -13,14 +13,6 @@ import { AnimeService } from '../../../../../src/core/services/anime.service';
   selector: 'camp-anime-table',
   templateUrl: './anime-table.component.html',
   styleUrls: ['./anime-table.component.css'],
-  styles: [
-    `
-    :host {
-      display: flex;
-      justify-content: center;
-    }
-  `,
-  ],
 })
 export class AnimeTableComponent {
   /** Displayed columns. */
