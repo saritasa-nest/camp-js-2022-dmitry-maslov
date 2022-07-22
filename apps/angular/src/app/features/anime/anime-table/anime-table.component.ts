@@ -13,10 +13,18 @@ import { AnimeService } from '../../../../../src/core/services/anime.service';
   selector: 'camp-anime-table',
   templateUrl: './anime-table.component.html',
   styleUrls: ['./anime-table.component.css'],
+  styles: [
+    `
+    :host {
+      display: flex;
+      justify-content: center;
+    }
+  `,
+  ],
 })
 export class AnimeTableComponent {
   /** Displayed columns. */
-  public displayedColumns: string[] = [
+  public readonly displayedColumns: string[] = [
     'image',
     'title_eng',
     'title_jpn',
@@ -26,10 +34,10 @@ export class AnimeTableComponent {
   ];
 
   /** Anime list observer. */
-  public animeList$: Observable<Anime[]>;
+  public readonly animeList$: Observable<Anime[]>;
 
   /** Methods that result in a readable model. */
-  public toReadable = {
+  public readonly toReadable = {
     type: AnimeType.toReadable,
     status: AnimeStatus.toReadable,
   };

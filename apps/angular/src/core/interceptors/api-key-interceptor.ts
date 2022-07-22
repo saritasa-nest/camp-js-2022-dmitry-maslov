@@ -16,10 +16,7 @@ export class ApiKeyInterceptor implements HttpInterceptor {
     private readonly appConfigService: AppConfigService,
   ) {}
 
-  /**
-   * Appends Api-Key in header.
-   * @inheritdoc
-   */
+  /** @inheritdoc */
   public intercept(
     req: HttpRequest<unknown>,
     next: HttpHandler,
