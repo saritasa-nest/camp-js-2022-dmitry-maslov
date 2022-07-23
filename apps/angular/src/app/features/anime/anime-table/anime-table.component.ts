@@ -16,7 +16,7 @@ import { AnimeService } from '../../../../../src/core/services/anime.service';
 })
 export class AnimeTableComponent {
   /** Displayed columns. */
-  public displayedColumns: readonly string[] = [
+  public displayedColumns = [
     'image',
     'titleEng',
     'titleJpn',

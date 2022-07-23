@@ -1,4 +1,9 @@
 .table {
-  width: 90%;
+  /* padding: 0 20px; */
   margin: 0 auto;
+}
+
+.anime-image {
+  max-width: 150px;
+  max-height: 150px;
 }
