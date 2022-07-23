@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
@@ -26,7 +26,7 @@ export class AnimeTableComponent {
   ];
 
   /** Anime list observer. */
-  public readonly animeList$: Observable<Anime[]>;
+  public readonly animeList$: Observable<readonly Anime[]>;
 
   /** Methods that result in a readable model. */
   public readonly toReadable = {
@@ -37,6 +37,8 @@ export class AnimeTableComponent {
   public constructor(
     animeService: AnimeService,
   ) {
-    this.animeList$ = animeService.getAnimeList();
+    this.animeList$ = animeService.getPaginatedAnimeList().pipe(map(
+      paginatedAnimeList => paginatedAnimeList.results,
+    ));
   }
 }
