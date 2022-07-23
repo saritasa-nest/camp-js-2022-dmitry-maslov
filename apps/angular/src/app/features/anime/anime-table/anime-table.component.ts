@@ -16,17 +16,17 @@ import { AnimeService } from '../../../../../src/core/services/anime.service';
 })
 export class AnimeTableComponent {
   /** Displayed columns. */
-  public readonly displayedColumns: string[] = [
+  public displayedColumns: readonly string[] = [
     'image',
-    'title_eng',
-    'title_jpn',
-    'aired_start',
+    'titleEng',
+    'titleJpn',
+    'airedStart',
     'type',
     'status',
-  ];
+  ] as const;
 
   /** Anime list observer. */
-  public readonly animeList$: Observable<Anime[]>;
+  public readonly animeList$: Observable<readonly Anime[]>;
 
   /** Methods that result in a readable model. */
   public readonly toReadable = {

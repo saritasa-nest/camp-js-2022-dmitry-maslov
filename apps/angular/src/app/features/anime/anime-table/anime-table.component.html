@@ -7,17 +7,17 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="title_eng">
+  <ng-container matColumnDef="titleEng">
     <th mat-header-cell *matHeaderCellDef> Eng Title </th>
     <td mat-cell *matCellDef="let anime">{{anime.titleEng}}</td>
   </ng-container>
 
-  <ng-container matColumnDef="title_jpn">
+  <ng-container matColumnDef="titleJpn">
     <th mat-header-cell *matHeaderCellDef> Jpn Title </th>
     <td mat-cell *matCellDef="let anime">{{anime.titleJpn}}</td>
   </ng-container>
 
-  <ng-container matColumnDef="aired_start">
+  <ng-container matColumnDef="airedStart">
     <th mat-header-cell *matHeaderCellDef> Aired start </th>
     <td mat-cell *matCellDef="let anime"> {{ (anime.airedStart | date: 'MMM yyyy') || 'Not started'}} </td>
   </ng-container>
