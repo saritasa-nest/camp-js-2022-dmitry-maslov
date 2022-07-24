@@ -6,7 +6,7 @@ import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
 import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 
-import { AnimeService } from '../../../../../src/core/services/anime.service';
+import { AnimeService } from '../../../../../core/services/anime.service';
 
 /** Anime table component. */
 @Component({

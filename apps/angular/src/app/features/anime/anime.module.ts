@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 
 import { AnimeRoutingModule } from './anime-routing.module';
 
-import { AnimeTableComponent } from './anime-table/anime-table.component';
+import { AnimeTableComponent } from './components/anime-table/anime-table.component';
+import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.component';
 
 /** Anime module. */
 @NgModule({
-  declarations: [AnimeTableComponent],
+  declarations: [AnimeTableComponent, AnimeListPageComponent],
   imports: [CommonModule, AnimeRoutingModule, MatTableModule],
 })
 export class AnimeModule {}
