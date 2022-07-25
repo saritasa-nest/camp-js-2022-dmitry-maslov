@@ -36,10 +36,10 @@ export class AnimeTableComponent {
 
   /**
    * Track by method.
-   * @param index Index.
+   * @param _index Index.
    * @param anime Anime.
    */
-  public trackByAnimeList(index: number, anime: Anime): Anime['id'] {
+  public trackByAnimeList(_index: number, anime: Anime): Anime['id'] {
     return anime.id;
   }
 
