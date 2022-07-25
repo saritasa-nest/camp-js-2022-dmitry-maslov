@@ -19,7 +19,7 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": ["@js-camp/angular/*"],
+            "allow": ["@js-camp/angular", "@js-camp/angular/*"],
             "depConstraints": [
               {
                 "sourceTag": "*",
