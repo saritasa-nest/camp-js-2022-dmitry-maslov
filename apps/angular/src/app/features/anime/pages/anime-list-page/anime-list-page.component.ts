@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './anime-list-page.component.html',
   styleUrls: ['./anime-list-page.component.css'],
 })
-export class AnimeListPageComponent {
-  public constructor() {}
-}
+export class AnimeListPageComponent {}

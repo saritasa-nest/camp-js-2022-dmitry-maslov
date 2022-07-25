@@ -2,6 +2,7 @@
   *ngIf="animeList$ | async as animeList"
   mat-table
   [dataSource]="animeList"
+  [trackBy]="trackByAnimeList"
   class="table mat-elevation-z8"
   aria-describedby="Anime Table"
 >

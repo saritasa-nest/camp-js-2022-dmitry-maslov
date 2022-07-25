@@ -25,7 +25,7 @@ export class AnimeTableComponent {
     'status',
   ] as const;
 
-  /** Anime list observer. */
+  /** Anime list. */
   public readonly animeList$: Observable<readonly Anime[]>;
 
   /** Methods that result in a readable model. */
@@ -33,6 +33,15 @@ export class AnimeTableComponent {
     type: AnimeType.toReadable,
     status: AnimeStatus.toReadable,
   };
+
+  /**
+   * Track by method.
+   * @param index Index.
+   * @param anime Anime.
+   */
+  public trackByAnimeList(index: number, anime: Anime): Anime['id'] {
+    return anime.id;
+  }
 
   public constructor(
     animeService: AnimeService,

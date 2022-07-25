@@ -21,7 +21,9 @@ export class ApiKeyInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    req.headers.append('Api-Key', this.appConfigService.apiKey);
-    return next.handle(req);
+    const apiKeyReq = req.clone({
+      headers: req.headers.set('Api-Key', this.appConfigService.apiKey),
+    });
+    return next.handle(apiKeyReq);
   }
 }
