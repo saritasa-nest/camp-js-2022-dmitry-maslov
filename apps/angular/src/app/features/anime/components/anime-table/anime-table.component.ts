@@ -5,8 +5,7 @@ import { map, Observable } from 'rxjs';
 import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
 import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
-
-import { AnimeService } from '../../../../../src/core/services/anime.service';
+import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 
 /** Anime table component. */
 @Component({
@@ -16,16 +15,16 @@ import { AnimeService } from '../../../../../src/core/services/anime.service';
 })
 export class AnimeTableComponent {
   /** Displayed columns. */
-  public readonly displayedColumns: string[] = [
+  public readonly displayedColumns = [
     'image',
-    'title_eng',
-    'title_jpn',
-    'aired_start',
+    'titleEng',
+    'titleJpn',
+    'airedStart',
     'type',
     'status',
-  ];
+  ] as const;
 
-  /** Anime list observer. */
+  /** Anime list. */
   public readonly animeList$: Observable<readonly Anime[]>;
 
   /** Methods that result in a readable model. */
@@ -33,6 +32,15 @@ export class AnimeTableComponent {
     type: AnimeType.toReadable,
     status: AnimeStatus.toReadable,
   };
+
+  /**
+   * Track by method.
+   * @param _index Index.
+   * @param anime Anime.
+   */
+  public trackByAnimeList(_index: number, anime: Anime): Anime['id'] {
+    return anime.id;
+  }
 
   public constructor(
     animeService: AnimeService,
