@@ -1,19 +1,36 @@
-import { Pagination } from '../models/pagination';
+import { PaginatedData } from '../models/pagination';
+import { PaginationParams } from '../models/paginationParams';
 
-import { PaginationDto } from './../dtos/pagination.dto';
+import { PaginatedDataDto } from './../dtos/pagination.dto';
+import { PaginationParamsMapper } from './paginationParams.mapper';
 
-export namespace PaginationMapper {
+export namespace PaginatedDataMapper {
 
   /**
    * Converted pagination dto to pagination model.
-   * @param resultMapper Mapper function that converted the DTO
-  result to model result.
-   * @param dto Pagination dto.
+   * @param params {PaginatedDataFromDtoParams}.
    */
-  export function fromDto<T, TDto>(resultMapper: (resultDto: TDto) => T, dto: PaginationDto<TDto>): Pagination<T> {
-    return new Pagination<T>({
-      count: dto.count,
+  export function fromDto<T, TDto>({
+    dto,
+    paginationParams,
+    resultMapper,
+  }: PaginatedDataFromDtoParams<T, TDto>): PaginatedData<T> {
+    return new PaginatedData<T>({
+      total: dto.count,
+      paginationParams: PaginationParamsMapper.fromDto(dto, paginationParams),
       results: dto.results.map(res => resultMapper(res)),
     });
   }
+}
+
+interface PaginatedDataFromDtoParams<T, TDto> {
+
+  /** Paginated data dto.*/
+  dto: PaginatedDataDto<TDto>;
+
+  /** Pagination params. */
+  paginationParams: PaginationParams;
+
+  /** Mapper function that converted the DTO. Result to model result. */
+  resultMapper: (resultDto: TDto) => T;
 }
