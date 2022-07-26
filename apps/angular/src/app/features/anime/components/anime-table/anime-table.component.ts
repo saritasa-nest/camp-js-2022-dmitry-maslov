@@ -20,6 +20,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { PageEvent } from '@angular/material/paginator';
 
+/** QueryParams for table. */
+enum QueryParams {
+  Limit = 'limit',
+  Page = 'page',
+}
+
 /** Anime table component. */
 @Component({
   selector: 'camp-anime-table',
@@ -83,10 +89,11 @@ export class AnimeTableComponent implements OnDestroy {
     route.queryParams
       .pipe(
         map(params => {
-          const limit =
-            params['limit'] && params['limit'] >= 1 ? params['limit'] : 10;
-          const page =
-            params['page'] && params['page'] >= 1 ? params['page'] : 1;
+          const queryLimit = params[QueryParams.Limit];
+          const queryPage = params[QueryParams.Page];
+
+          const limit = queryLimit && queryLimit >= 1 ? queryLimit : 10;
+          const page = queryPage && queryPage >= 1 ? queryPage : 1;
 
           this.paginationParams$.next({
             limit,
