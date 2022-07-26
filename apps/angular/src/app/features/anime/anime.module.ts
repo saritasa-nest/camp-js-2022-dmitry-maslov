@@ -9,7 +9,15 @@ import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.
 
 /** Anime module. */
 @NgModule({
-  declarations: [AnimeTableComponent, AnimeListPageComponent],
-  imports: [CommonModule, AnimeRoutingModule, MatTableModule, MatPaginatorModule],
+  declarations: [
+    AnimeTableComponent,
+    AnimeListPageComponent,
+  ],
+  imports: [
+    CommonModule,
+    AnimeRoutingModule,
+    MatTableModule,
+    MatPaginatorModule,
+  ],
 })
 export class AnimeModule {}
