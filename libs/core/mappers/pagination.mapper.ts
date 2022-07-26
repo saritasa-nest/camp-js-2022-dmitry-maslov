@@ -1,5 +1,5 @@
 import { PaginatedData } from '../models/pagination';
-import { PaginationParams } from '../models/paginationParams';
+import { PaginationParams } from '../interfaces/paginationParams';
 
 import { PaginatedDataDto } from './../dtos/pagination.dto';
 import { PaginationParamsMapper } from './paginationParams.mapper';
@@ -18,7 +18,7 @@ export namespace PaginatedDataMapper {
     return new PaginatedData<T>({
       total: dto.count,
       paginationParams: PaginationParamsMapper.fromDto(dto, paginationParams),
-      results: dto.results.map(res => resultMapper(res)),
+      items: dto.results.map(res => resultMapper(res)),
     });
   }
 }

@@ -1,4 +1,4 @@
-import { PaginationParams } from './paginationParams';
+import { PaginationParams } from './../interfaces/paginationParams';
 import { Immerable, OmitImmerable } from './immerable';
 
 /** Pagination. */
@@ -11,12 +11,12 @@ export class PaginatedData<T> extends Immerable {
   public readonly paginationParams: PaginationParams;
 
   /** Results. */
-  public readonly results: readonly T[];
+  public readonly items: readonly T[];
 
   public constructor(data: InitArgs<T>) {
     super();
     this.paginationParams = data.paginationParams;
-    this.results = data.results;
+    this.items = data.items;
     this.total = data.total;
   }
 }

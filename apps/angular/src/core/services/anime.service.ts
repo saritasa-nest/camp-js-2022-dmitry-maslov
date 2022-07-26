@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime/anime';
 import { PaginatedDataDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginatedData } from '@js-camp/core/models/pagination';
-import { PaginationParams } from '@js-camp/core/models/paginationParams';
+import { PaginationParams } from '@js-camp/core/interfaces/paginationParams';
 import { PaginationParamsMapper } from '@js-camp/core/mappers/paginationParams.mapper';
-import { map, Observable } from 'rxjs';
+import { map, Observable, share } from 'rxjs';
 
 import { AppConfigService } from './app-config.service';
 
@@ -30,22 +30,27 @@ export class AnimeService {
    * Method for getting paginated anime list.
    * @param paginationParams {PaginationParams}.
    */
-  public getPaginatedAnimeList(paginationParams: PaginationParams): Observable<PaginatedData<Anime>> {
-
+  public getPaginatedAnimeList(
+    paginationParams: PaginationParams,
+  ): Observable<PaginatedData<Anime>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
-    return this.httpClient.get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
+    return this.httpClient
+      .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
         offset,
         limit,
         ordering: 'id',
       },
-    }).pipe(
-      map(paginatedDataDto => PaginatedDataMapper.fromDto<Anime, AnimeDTO>({
-        dto: paginatedDataDto,
-        paginationParams,
-        resultMapper: AnimeMapper.fromDto,
-      })),
-    );
+    })
+      .pipe(
+        map(paginatedDataDto =>
+          PaginatedDataMapper.fromDto<Anime, AnimeDTO>({
+            dto: paginatedDataDto,
+            paginationParams,
+            resultMapper: AnimeMapper.fromDto,
+          })),
+        share(),
+      );
   }
 }

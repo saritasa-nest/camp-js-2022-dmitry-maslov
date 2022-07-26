@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 
 import {
   BehaviorSubject,
   combineLatest,
   map,
   Observable,
+  Subject,
   switchMap,
+  takeUntil,
   tap,
 } from 'rxjs';
 
@@ -13,7 +15,10 @@ import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
 import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { PaginationParams } from '@js-camp/core/models/paginationParams';
+import { PaginationParams } from '@js-camp/core/interfaces/paginationParams';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PaginatedData } from '@js-camp/core/models/pagination';
+import { PageEvent } from '@angular/material/paginator';
 
 /** Anime table component. */
 @Component({
@@ -22,7 +27,12 @@ import { PaginationParams } from '@js-camp/core/models/paginationParams';
   styleUrls: ['./anime-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeTableComponent {
+export class AnimeTableComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  /** Paginated anime list. */
+  public paginatedAnimeList$: Observable<PaginatedData<Anime>>;
+
   /** Displayed columns. */
   public readonly displayedColumns = [
     'image',
@@ -33,25 +43,28 @@ export class AnimeTableComponent {
     'status',
   ] as const;
 
-  /** Total number of items on the server. */
-  public total$ = new BehaviorSubject(0);
-
-  /** Anime list. */
-  public readonly animeList$: Observable<readonly Anime[]>;
-
   /** Pagination Params. */
-  public readonly paginationParams$ = new BehaviorSubject<PaginationParams>(
-    new PaginationParams({
-      limit: 10,
-      page: 1,
-    }),
-  );
+  public readonly paginationParams$ = new BehaviorSubject<PaginationParams>({
+    limit: 0,
+    page: 0,
+  });
 
   /** Methods that result in a readable model. */
   public readonly toReadable = {
     type: AnimeType.toReadable,
     status: AnimeStatus.toReadable,
   };
+
+  /**
+   * Handlers pagination change.
+   * @param event Paginator event.
+   */
+  public handlePaginationChange(event: PageEvent): void {
+    this.paginationParams$.next({
+      limit: event.pageSize,
+      page: event.pageIndex + 1,
+    });
+  }
 
   /**
    * Track by method.
@@ -62,22 +75,47 @@ export class AnimeTableComponent {
     return anime.id;
   }
 
-  public constructor(animeService: AnimeService) {
-    const getPaginatedAnimeList$ = combineLatest({
+  public constructor(
+    router: Router,
+    route: ActivatedRoute,
+    animeService: AnimeService,
+  ) {
+    route.queryParams
+      .pipe(
+        map(params => {
+          const limit =
+            params['limit'] && params['limit'] >= 1 ? params['limit'] : 10;
+          const page =
+            params['page'] && params['page'] >= 1 ? params['page'] : 1;
+
+          this.paginationParams$.next({
+            limit,
+            page,
+          });
+        }),
+        takeUntil(this.destroy$),
+      )
+      .subscribe();
+
+    this.paginatedAnimeList$ = combineLatest({
       paginationParams$: this.paginationParams$,
     }).pipe(
       switchMap(params =>
         animeService.getPaginatedAnimeList(params.paginationParams$)),
-    );
-
-    const paginatedAnimeList$ = getPaginatedAnimeList$.pipe(
-      tap(paginatedData => {
-        this.total$.next(paginatedData.total);
+      tap(params => {
+        router.navigate([], {
+          queryParams: {
+            page: params.paginationParams.page,
+            limit: params.paginationParams.limit,
+          },
+        });
       }),
     );
+  }
 
-    this.animeList$ = paginatedAnimeList$.pipe(
-      map(paginatedData => paginatedData.results),
-    );
+  /** Unsubscribing from the router. */
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
