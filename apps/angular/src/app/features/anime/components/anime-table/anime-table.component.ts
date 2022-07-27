@@ -72,16 +72,18 @@ export class AnimeTableComponent implements OnInit {
   });
 
   /** Sort params. */
-  public readonly sortParams$ = new BehaviorSubject<SortParams<AnimeSortField>>({
-    sortBy: '',
-    direction: '',
-  });
+  public readonly sortParams$ = new BehaviorSubject<SortParams<AnimeSortField>>(
+    {
+      sortBy: '',
+      direction: '',
+    },
+  );
 
   /** Reset pagination params. */
   public resetPagination(): void {
     this.router.navigate([], {
       queryParams: {
-        [QueryParams.Page]: DEFAULT_QUERY_PARAMS.page,
+        [QueryParams.Page]: 1,
       },
       queryParamsHandling: 'merge',
     });
@@ -89,13 +91,13 @@ export class AnimeTableComponent implements OnInit {
     this.route.queryParams
       .pipe(
         map(params => {
-        const limit = params[QueryParams.Limit];
+          const limit = params[QueryParams.Limit];
 
-        this.paginationParams$.next({
-          limit,
-          page: 1,
-        });
-      }),
+          this.paginationParams$.next({
+            limit,
+            page: 1,
+          });
+        }),
         first(),
       )
       .subscribe();
@@ -119,6 +121,8 @@ export class AnimeTableComponent implements OnInit {
    * @param event SortEvent.
    */
   public handleSortChange(event: Sort): void {
+    this.resetPagination();
+
     this.router.navigate([], {
       queryParams: {
         [QueryParams.SortBy]: event.direction ? event.active : null,
@@ -127,13 +131,10 @@ export class AnimeTableComponent implements OnInit {
       queryParamsHandling: 'merge',
     });
 
-    this.resetPagination();
-
     this.sortParams$.next({
-      sortBy: event.direction ? event.active as AnimeSortField : '',
+      sortBy: event.direction ? (event.active as AnimeSortField) : '',
       direction: event.direction,
     });
-
   }
 
   /**
@@ -143,10 +144,11 @@ export class AnimeTableComponent implements OnInit {
   public handleSearchChange(event: KeyboardEvent): void {
     const searchValue = (event.target as HTMLInputElement).value;
 
+    this.resetPagination();
+
     this.router.navigate([], {
       queryParams: {
         [QueryParams.Search]: searchValue.length ? searchValue : null,
-        [QueryParams.Page]: 1,
       },
       queryParamsHandling: 'merge',
     });
@@ -154,8 +156,6 @@ export class AnimeTableComponent implements OnInit {
     this.filterParams$.next({
       search: searchValue,
     });
-
-    this.resetPagination();
   }
 
   /**
@@ -216,11 +216,22 @@ export class AnimeTableComponent implements OnInit {
           const querySortBy = params[QueryParams.SortBy];
           const queryDirection = params[QueryParams.Direction];
 
-          const limit = queryLimit && queryLimit >= 1 ? queryLimit : DEFAULT_QUERY_PARAMS[QueryParams.Limit];
-          const page = queryPage && queryPage >= 1 ? queryPage : DEFAULT_QUERY_PARAMS[QueryParams.Page];
-          const search = querySearch ?? DEFAULT_QUERY_PARAMS[QueryParams.Search];
-          const sortBy = querySortBy as AnimeSortField ?? DEFAULT_QUERY_PARAMS[QueryParams.SortBy];
-          const direction = queryDirection as SortDirection ?? DEFAULT_QUERY_PARAMS[QueryParams.Direction];
+          const limit =
+            queryLimit && queryLimit >= 1 ?
+              queryLimit :
+              DEFAULT_QUERY_PARAMS[QueryParams.Limit];
+          const page =
+            queryPage && queryPage >= 1 ?
+              queryPage :
+              DEFAULT_QUERY_PARAMS[QueryParams.Page];
+          const search =
+            querySearch ?? DEFAULT_QUERY_PARAMS[QueryParams.Search];
+          const sortBy =
+            (querySortBy as AnimeSortField) ??
+            DEFAULT_QUERY_PARAMS[QueryParams.SortBy];
+          const direction =
+            (queryDirection as SortDirection) ??
+            DEFAULT_QUERY_PARAMS[QueryParams.Direction];
 
           this.router.navigate([], {
             queryParams: {

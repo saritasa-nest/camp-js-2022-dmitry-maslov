@@ -10,6 +10,6 @@ const routes: Routes = [{ path: '', component: AnimeListPageComponent }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  // providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AnimeRoutingModule {}
