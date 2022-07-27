@@ -22,6 +22,7 @@ import {
   share,
   Subject,
   switchMap,
+  tap,
 } from 'rxjs';
 
 /** QueryParams for table. */
@@ -83,22 +84,11 @@ export class AnimeTableComponent implements OnInit {
 
   /** Reset pagination params. */
   public resetPagination(): void {
-    this.router.navigate([], {
-      queryParams: {
-        [QueryParams.Page]: 1,
-      },
-      queryParamsHandling: 'merge',
-    });
-
     this.route.queryParams
       .pipe(
         map(params => {
           const limit = params[QueryParams.Limit];
-
-          this.paginationParams$.next({
-            limit,
-            page: 1,
-          });
+          this.paginationParams$.next({ limit, page: 1 });
         }),
         first(),
       )
@@ -123,16 +113,6 @@ export class AnimeTableComponent implements OnInit {
    * @param event SortEvent.
    */
   public handleSortChange(event: Sort): void {
-    this.resetPagination();
-
-    this.router.navigate([], {
-      queryParams: {
-        [QueryParams.SortBy]: event.direction ? event.active : null,
-        [QueryParams.Direction]: event.direction || null,
-      },
-      queryParamsHandling: 'merge',
-    });
-
     this.sortParams$.next({
       sortBy: event.direction ? (event.active as AnimeSortField) : '',
       direction: event.direction,
@@ -145,16 +125,6 @@ export class AnimeTableComponent implements OnInit {
    */
   public handleSearchChange(event: KeyboardEvent): void {
     const searchValue = (event.target as HTMLInputElement).value;
-
-    this.resetPagination();
-
-    this.router.navigate([], {
-      queryParams: {
-        [QueryParams.Search]: searchValue.length ? searchValue : null,
-      },
-      queryParamsHandling: 'merge',
-    });
-
     this.filterParams$.next({
       search: searchValue,
     });
@@ -198,6 +168,18 @@ export class AnimeTableComponent implements OnInit {
       filterParams$: this.filterParams$,
       sortParams$: this.sortParams$,
     }).pipe(
+      tap(params => {
+        this.router.navigate([], {
+          queryParams: {
+            [QueryParams.Limit]: params.paginationParams$.limit,
+            [QueryParams.Page]: params.paginationParams$.page,
+            [QueryParams.Search]: params.filterParams$.search ? params.filterParams$.search : null,
+            [QueryParams.SortBy]: params.sortParams$.direction ? params.sortParams$.sortBy : null,
+            [QueryParams.Direction]: params.sortParams$.direction ? params.sortParams$.direction : null,
+          },
+          queryParamsHandling: 'merge',
+        });
+      }),
       switchMap(params =>
         animeService.getPaginatedAnimeList({
           paginationParams: params.paginationParams$,
@@ -236,17 +218,6 @@ export class AnimeTableComponent implements OnInit {
           const direction =
             (queryDirection as SortDirection) ??
             DEFAULT_QUERY_PARAMS[QueryParams.Direction];
-
-          this.router.navigate([], {
-            queryParams: {
-              [QueryParams.Limit]: limit,
-              [QueryParams.Page]: page,
-              [QueryParams.Search]: search,
-              [QueryParams.Direction]: direction,
-              [QueryParams.SortBy]: sortBy,
-            },
-            queryParamsHandling: 'merge',
-          });
 
           this.paginationParams$.next({ limit, page });
           this.filterParams$.next({ search: search ?? '' });
