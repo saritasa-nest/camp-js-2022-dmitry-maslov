@@ -2,9 +2,11 @@
   <mat-form-field>
     <mat-label>Search</mat-label>
     <input
+      *ngIf="filterParams$ | async as filterParams"
       matInput
       (keyup)="handleSearchChange($event)"
       placeholder="Anime title"
+      [value]="filterParams.search"
       #input
     />
   </mat-form-field>
@@ -72,15 +74,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-  <mat-paginator
-    *ngIf="paginationParams$ | async as paginationParams"
-    [length]="paginatedAnimeList.total"
-    [pageSizeOptions]="[5, 10, 20]"
-    [pageSize]="paginationParams.limit"
-    [pageIndex]="paginationParams.page - 1"
-    showFirstLastButtons
-    aria-label="Pagination panel"
-    (page)="handlePaginationChange($event)"
-  >
-  </mat-paginator>
 </div>

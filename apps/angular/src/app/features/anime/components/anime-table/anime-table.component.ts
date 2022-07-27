@@ -1,14 +1,3 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-
-import {
-  BehaviorSubject,
-  combineLatest,
-  first,
-  map,
-  Observable,
-  Subject,
-  switchMap,
-} from 'rxjs';
 
 import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
@@ -21,6 +10,18 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
 import { SortParams } from '@js-camp/angular/core/models/sortParams';
+
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+
+import {
+  BehaviorSubject,
+  combineLatest,
+  first,
+  map,
+  Observable,
+  Subject,
+  switchMap,
+} from 'rxjs';
 
 /** QueryParams for table. */
 enum QueryParams {
