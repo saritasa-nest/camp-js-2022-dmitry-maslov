@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
@@ -25,6 +26,7 @@ import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.
     MatFormFieldModule,
     MatInputModule,
     MatSortModule,
+    MatSelectModule,
   ],
 })
 export class AnimeModule {}

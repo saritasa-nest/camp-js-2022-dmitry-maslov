@@ -8,9 +8,9 @@ import { PaginatedDataDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { PaginationParams } from '@js-camp/core/models/paginationParams';
 import { PaginationParamsMapper } from '@js-camp/core/mappers/paginationParams.mapper';
-import { map, Observable } from 'rxjs';
-
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
+
+import { map, Observable } from 'rxjs';
 
 import { SortParams } from '../models/sortParams';
 
@@ -32,24 +32,19 @@ export class AnimeService {
 
   /**
    * Method for getting paginated anime list.
-   * @param paginationParams Pagination params.
-   * @param search Search params.
-   * @param sortParams Sort params.
+   * @param GetPaginatedAnimeListParams {GetPagintedAnimeListParams}.
    */
-  public getPaginatedAnimeList(
-    paginationParams: PaginationParams,
-    search: string,
-    sortParams: SortParams<AnimeSortField>,
-  ): Observable<PaginatedData<Anime>> {
+  public getPaginatedAnimeList({ sortParams, search, paginationParams }: GetPagintedAnimeListParams): Observable<PaginatedData<Anime>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
     return this.httpClient
       .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
-        offset,
-        limit,
-        ordering: sortParams.direction ? `${sortParams.direction === 'desc' ? '-' : ''}${sortParams.sortBy}` : 'id',
-        search,
+        [API_FIELDS.offset]: offset,
+        [API_FIELDS.limit]: limit,
+        [API_FIELDS.order]: sortParams.direction ? `${sortParams.direction === 'desc' ? '-' : ''}${sortParams.sortBy}` : 'id',
+        [API_FIELDS.search]: search,
+        [API_FIELDS.statusIn]: '',
       },
     })
       .pipe(
@@ -61,3 +56,24 @@ export class AnimeService {
       );
   }
 }
+
+/** Params for {getPaginatedAnimeList} method.*/
+export interface GetPagintedAnimeListParams {
+
+  /** Pagination params. */
+  paginationParams: PaginationParams;
+
+  /** Search. */
+  search: string;
+
+  /** Sort params. */
+  sortParams: SortParams<AnimeSortField>;
+}
+
+const API_FIELDS = {
+  offset: 'offset',
+  limit: 'limit',
+  order: 'ordering',
+  search: 'search',
+  statusIn: 'status__in',
+};

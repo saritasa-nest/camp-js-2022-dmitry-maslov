@@ -19,6 +19,7 @@ import {
   first,
   map,
   Observable,
+  share,
   Subject,
   switchMap,
 } from 'rxjs';
@@ -198,10 +199,12 @@ export class AnimeTableComponent implements OnInit {
       sortParams$: this.sortParams$,
     }).pipe(
       switchMap(params =>
-        animeService.getPaginatedAnimeList(
-          params.paginationParams$,
-          params.filterParams$.search ?? '',
-          params.sortParams$,
+        animeService.getPaginatedAnimeList({
+          paginationParams: params.paginationParams$,
+          search: params.filterParams$.search,
+          sortParams: params.sortParams$,
+        }).pipe(
+          share(),
         )),
     );
   }
@@ -246,7 +249,7 @@ export class AnimeTableComponent implements OnInit {
           });
 
           this.paginationParams$.next({ limit, page });
-          this.filterParams$.next({ search });
+          this.filterParams$.next({ search: search ?? '' });
           this.sortParams$.next({
             direction: direction ?? '',
             sortBy: sortBy ?? '',
