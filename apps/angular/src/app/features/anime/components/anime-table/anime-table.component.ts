@@ -1,30 +1,43 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import {
   BehaviorSubject,
   combineLatest,
+  first,
   map,
   Observable,
   Subject,
   switchMap,
-  takeUntil,
-  tap,
 } from 'rxjs';
 
 import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
 import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { PaginationParams } from '@js-camp/core/interfaces/paginationParams';
+import { PaginationParams } from '@js-camp/core/models/paginationParams';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { PageEvent } from '@angular/material/paginator';
+import { Sort, SortDirection } from '@angular/material/sort';
+import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
+import { SortParams } from '@js-camp/angular/core/models/sortParams';
 
 /** QueryParams for table. */
 enum QueryParams {
   Limit = 'limit',
   Page = 'page',
+  Search = 'search',
+  SortBy = 'sortBy',
+  Direction = 'direction',
 }
+
+const DEFAULT_QUERY_PARAMS = {
+  [QueryParams.Limit]: 10,
+  [QueryParams.Page]: 1,
+  [QueryParams.Search]: null,
+  [QueryParams.SortBy]: null,
+  [QueryParams.Direction]: null,
+};
 
 /** Anime table component. */
 @Component({
@@ -33,7 +46,10 @@ enum QueryParams {
   styleUrls: ['./anime-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeTableComponent implements OnDestroy {
+export class AnimeTableComponent implements OnInit {
+  /** Sorted fields. */
+  public sortedFields = AnimeSortField;
+
   private destroy$ = new Subject<void>();
 
   /** Paginated anime list. */
@@ -55,6 +71,43 @@ export class AnimeTableComponent implements OnDestroy {
     page: 0,
   });
 
+  /** Sort params. */
+  public readonly sortParams$ = new BehaviorSubject<SortParams<AnimeSortField>>({
+    sortBy: '',
+    direction: '',
+  });
+
+  /** Reset pagination params. */
+  public resetPagination(): void {
+    this.router.navigate([], {
+      queryParams: {
+        [QueryParams.Page]: DEFAULT_QUERY_PARAMS.page,
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    this.route.queryParams
+      .pipe(
+        map(params => {
+        const limit = params[QueryParams.Limit];
+
+        this.paginationParams$.next({
+          limit,
+          page: 1,
+        });
+      }),
+        first(),
+      )
+      .subscribe();
+  }
+
+  /** Filter params. */
+  public readonly filterParams$ = new BehaviorSubject<{
+    search: string;
+  }>({
+    search: '',
+  });
+
   /** Methods that result in a readable model. */
   public readonly toReadable = {
     type: AnimeType.toReadable,
@@ -62,10 +115,62 @@ export class AnimeTableComponent implements OnDestroy {
   };
 
   /**
+   * Update sort params.
+   * @param event SortEvent.
+   */
+  public handleSortChange(event: Sort): void {
+    this.router.navigate([], {
+      queryParams: {
+        [QueryParams.SortBy]: event.direction ? event.active : null,
+        [QueryParams.Direction]: event.direction || null,
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    this.resetPagination();
+
+    this.sortParams$.next({
+      sortBy: event.direction ? event.active as AnimeSortField : '',
+      direction: event.direction,
+    });
+
+  }
+
+  /**
+   * Change search params.
+   * @param event KeyboardEvent.
+   */
+  public handleSearchChange(event: KeyboardEvent): void {
+    const searchValue = (event.target as HTMLInputElement).value;
+
+    this.router.navigate([], {
+      queryParams: {
+        [QueryParams.Search]: searchValue.length ? searchValue : null,
+        [QueryParams.Page]: 1,
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    this.filterParams$.next({
+      search: searchValue,
+    });
+
+    this.resetPagination();
+  }
+
+  /**
    * Handlers pagination change.
    * @param event Paginator event.
    */
   public handlePaginationChange(event: PageEvent): void {
+    this.router.navigate([], {
+      queryParams: {
+        [QueryParams.Page]: event.pageIndex + 1,
+        [QueryParams.Limit]: event.pageSize,
+      },
+      queryParamsHandling: 'merge',
+    });
+
     this.paginationParams$.next({
       limit: event.pageSize,
       page: event.pageIndex + 1,
@@ -82,47 +187,61 @@ export class AnimeTableComponent implements OnDestroy {
   }
 
   public constructor(
-    router: Router,
-    route: ActivatedRoute,
+    public router: Router,
+    public route: ActivatedRoute,
     animeService: AnimeService,
   ) {
-    route.queryParams
+    this.paginatedAnimeList$ = combineLatest({
+      paginationParams$: this.paginationParams$,
+      filterParams$: this.filterParams$,
+      sortParams$: this.sortParams$,
+    }).pipe(
+      switchMap(params =>
+        animeService.getPaginatedAnimeList(
+          params.paginationParams$,
+          params.filterParams$.search ?? '',
+          params.sortParams$,
+        )),
+    );
+  }
+
+  /** Check if there are query parameters or set default.*/
+  public ngOnInit(): void {
+    this.route.queryParams
       .pipe(
         map(params => {
           const queryLimit = params[QueryParams.Limit];
           const queryPage = params[QueryParams.Page];
+          const querySearch = params[QueryParams.Search];
+          const querySortBy = params[QueryParams.SortBy];
+          const queryDirection = params[QueryParams.Direction];
 
-          const limit = queryLimit && queryLimit >= 1 ? queryLimit : 10;
-          const page = queryPage && queryPage >= 1 ? queryPage : 1;
+          const limit = queryLimit && queryLimit >= 1 ? queryLimit : DEFAULT_QUERY_PARAMS[QueryParams.Limit];
+          const page = queryPage && queryPage >= 1 ? queryPage : DEFAULT_QUERY_PARAMS[QueryParams.Page];
+          const search = querySearch ?? DEFAULT_QUERY_PARAMS[QueryParams.Search];
+          const sortBy = querySortBy as AnimeSortField ?? DEFAULT_QUERY_PARAMS[QueryParams.SortBy];
+          const direction = queryDirection as SortDirection ?? DEFAULT_QUERY_PARAMS[QueryParams.Direction];
 
-          this.paginationParams$.next({
-            limit,
-            page,
+          this.router.navigate([], {
+            queryParams: {
+              [QueryParams.Limit]: limit,
+              [QueryParams.Page]: page,
+              [QueryParams.Search]: search,
+              [QueryParams.Direction]: direction,
+              [QueryParams.SortBy]: sortBy,
+            },
+            queryParamsHandling: 'merge',
+          });
+
+          this.paginationParams$.next({ limit, page });
+          this.filterParams$.next({ search });
+          this.sortParams$.next({
+            direction: direction ?? '',
+            sortBy: sortBy ?? '',
           });
         }),
-        takeUntil(this.destroy$),
+        first(),
       )
       .subscribe();
-
-    this.paginatedAnimeList$ = combineLatest({
-      paginationParams$: this.paginationParams$,
-    }).pipe(
-      switchMap(params =>
-        animeService.getPaginatedAnimeList(params.paginationParams$)),
-      tap(params => {
-        router.navigate([], {
-          queryParams: {
-            page: params.paginationParams.page,
-            limit: params.paginationParams.limit,
-          },
-        });
-      }),
-    );
-  }
-
-  /** Unsubscribing from the router. */
-  public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

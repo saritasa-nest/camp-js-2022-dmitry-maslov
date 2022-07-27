@@ -1,21 +1,36 @@
-<div *ngIf="paginatedAnimeList$| async as paginatedAnimeList">
+<div *ngIf="paginatedAnimeList$ | async as paginatedAnimeList">
+  <mat-form-field>
+    <mat-label>Search</mat-label>
+    <input
+      matInput
+      (keyup)="handleSearchChange($event)"
+      placeholder="Anime title"
+      #input
+    />
+  </mat-form-field>
   <mat-paginator
+    *ngIf="paginationParams$ | async as paginationParams"
     [length]="paginatedAnimeList.total"
     [pageSizeOptions]="[5, 10, 20]"
-    [pageSize]="paginatedAnimeList.paginationParams.limit"
-    [pageIndex]="paginatedAnimeList.paginationParams.page - 1"
+    [pageSize]="paginationParams.limit"
+    [pageIndex]="paginationParams.page - 1"
     showFirstLastButtons
     aria-label="Pagination panel"
     (page)="handlePaginationChange($event)"
   >
   </mat-paginator>
   <table
+    *ngIf="sortParams$ | async as sortParams"
     mat-table
     [dataSource]="paginatedAnimeList.items"
     [trackBy]="trackByAnimeList"
     class="table mat-elevation-z8"
     aria-label="Anime Table"
-  >
+    matSort
+    (matSortChange)="handleSortChange($event)"
+    [matSortDirection]="sortParams.direction"
+    [matSortActive]="sortParams.sortBy"
+    >
     <ng-container matColumnDef="image">
       <th mat-header-cell *matHeaderCellDef>Image</th>
       <td mat-cell *matCellDef="let anime">
@@ -24,7 +39,7 @@
     </ng-container>
 
     <ng-container matColumnDef="titleEng">
-      <th mat-header-cell *matHeaderCellDef>Eng Title</th>
+      <th mat-header-cell *matHeaderCellDef [mat-sort-header]="sortedFields.TitleEng">Eng Title</th>
       <td mat-cell *matCellDef="let anime">{{ anime.titleEng }}</td>
     </ng-container>
 
@@ -34,7 +49,7 @@
     </ng-container>
 
     <ng-container matColumnDef="airedStart">
-      <th mat-header-cell *matHeaderCellDef>Aired start</th>
+      <th mat-header-cell *matHeaderCellDef [mat-sort-header]="sortedFields.AiredStart">Aired start</th>
       <td mat-cell *matCellDef="let anime">
         {{ (anime.airedStart | date: "MMM yyyy") || "Not started" }}
       </td>
@@ -48,7 +63,7 @@
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <th mat-header-cell *matHeaderCellDef [mat-sort-header]="sortedFields.Status">Status</th>
       <td mat-cell *matCellDef="let anime">
         {{ toReadable.status(anime.status) }}
       </td>
@@ -57,4 +72,15 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <mat-paginator
+    *ngIf="paginationParams$ | async as paginationParams"
+    [length]="paginatedAnimeList.total"
+    [pageSizeOptions]="[5, 10, 20]"
+    [pageSize]="paginationParams.limit"
+    [pageIndex]="paginationParams.page - 1"
+    showFirstLastButtons
+    aria-label="Pagination panel"
+    (page)="handlePaginationChange($event)"
+  >
+  </mat-paginator>
 </div>
