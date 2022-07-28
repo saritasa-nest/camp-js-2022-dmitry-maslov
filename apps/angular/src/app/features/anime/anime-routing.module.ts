@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.component';
 
-const routes: Routes = [{ path: '', component: AnimeListPageComponent }];
+const routes: Routes = [{ path: '', title: 'Anime List', component: AnimeListPageComponent }];
 
 /** Anime routing module. */
 @NgModule({
