@@ -10,7 +10,6 @@ export enum AnimeType {
 }
 
 export namespace AnimeType {
-
   const TO_READABLE_MAP: Readonly<Record<AnimeType, string>> = {
     [AnimeType.TV]: 'TV',
     [AnimeType.OVA]: 'OVA',
@@ -34,7 +33,11 @@ export namespace AnimeType {
    * @param value Value.
    */
   export function toAnimeType(value: string): AnimeType {
-    const type = value as AnimeType;
-    return TO_READABLE_MAP[type] ? type : AnimeType.Unknown;
+    for (const key in TO_READABLE_MAP) {
+      if (value === TO_READABLE_MAP[key as AnimeType]) {
+        return key as AnimeType;
+      }
+    }
+    return AnimeType.Unknown;
   }
 }

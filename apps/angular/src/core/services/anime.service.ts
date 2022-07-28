@@ -12,6 +12,8 @@ import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
 
 import { map, Observable } from 'rxjs';
 
+import { AnimeFilters } from '@js-camp/core/models/anime/animeFilters';
+
 import { SortParams } from '../models/sortParams';
 
 import { AppConfigService } from './app-config.service';
@@ -32,9 +34,13 @@ export class AnimeService {
 
   /**
    * Method for getting paginated anime list.
-   * @param GetPaginatedAnimeListParams {GetPagintedAnimeListParams}.
+   * @param GetPaginatedAnimeListParams {GetPaginatedAnimeListParams}.
    */
-  public getPaginatedAnimeList({ sortParams, search, paginationParams }: GetPagintedAnimeListParams): Observable<PaginatedData<Anime>> {
+  public getPaginatedAnimeList({
+    sortParams,
+    paginationParams,
+    filterParams,
+  }: GetPaginatedAnimeListParams): Observable<PaginatedData<Anime>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
     return this.httpClient
@@ -42,9 +48,13 @@ export class AnimeService {
       params: {
         [API_FIELDS.offset]: offset,
         [API_FIELDS.limit]: limit,
-        [API_FIELDS.order]: sortParams.direction ? `${sortParams.direction === 'desc' ? '-' : ''}${sortParams.sortBy}` : 'id',
-        [API_FIELDS.search]: search,
-        [API_FIELDS.statusIn]: '',
+        [API_FIELDS.order]: sortParams.direction ?
+          `${sortParams.direction === 'desc' ? '-' : ''}${
+            sortParams.sortBy
+          }` :
+          'id',
+        [API_FIELDS.search]: filterParams.search,
+        [API_FIELDS.typeIn]: `${filterParams.type.join(',')}`,
       },
     })
       .pipe(
@@ -58,13 +68,13 @@ export class AnimeService {
 }
 
 /** Params for {getPaginatedAnimeList} method.*/
-export interface GetPagintedAnimeListParams {
+export interface GetPaginatedAnimeListParams {
 
   /** Pagination params. */
   paginationParams: PaginationParams;
 
-  /** Search. */
-  search: string;
+  /** Anime Filters. */
+  filterParams: AnimeFilters;
 
   /** Sort params. */
   sortParams: SortParams<AnimeSortField>;
@@ -75,5 +85,5 @@ const API_FIELDS = {
   limit: 'limit',
   order: 'ordering',
   search: 'search',
-  statusIn: 'status__in',
+  typeIn: 'type__in',
 };

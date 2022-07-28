@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
 import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.component';
@@ -27,6 +29,7 @@ import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.
     MatInputModule,
     MatSortModule,
     MatSelectModule,
+    ReactiveFormsModule,
   ],
 })
 export class AnimeModule {}
