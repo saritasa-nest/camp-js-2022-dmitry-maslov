@@ -99,12 +99,7 @@
       "executor": "nx-stylelint:lint",
       "outputs": [
         "{options.outputFile}"
-      ],
-      "options": {
-        "lintFilePatterns": [
-          "apps/react/**/*.css"
-        ]
-      }
+      ]
     }
   },
   "tags": []

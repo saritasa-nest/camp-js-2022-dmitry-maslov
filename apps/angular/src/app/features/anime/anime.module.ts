@@ -10,9 +10,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { AnimeRoutingModule } from './anime-routing.module';
+import { RouterModule, Routes } from '@angular/router';
+
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
 import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.component';
+
+const routes: Routes = [{ path: '', title: 'Anime list', component: AnimeListPageComponent }];
 
 /** Anime module. */
 @NgModule({
@@ -22,7 +25,6 @@ import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.
   ],
   imports: [
     CommonModule,
-    AnimeRoutingModule,
     MatTableModule,
     MatPaginatorModule,
     MatFormFieldModule,
@@ -31,6 +33,7 @@ import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.
     MatSelectModule,
     ReactiveFormsModule,
     MatProgressBarModule,
+    RouterModule.forChild(routes),
   ],
 })
 export class AnimeModule {}

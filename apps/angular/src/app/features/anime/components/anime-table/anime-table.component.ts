@@ -4,11 +4,12 @@ import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { PaginationParams } from '@js-camp/core/models/paginationParams';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PaginatedData } from '@js-camp/core/models/pagination';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
+import { AnimeFilters } from '@js-camp/core/models/anime/animeFilters';
 import { SortParams } from '@js-camp/angular/core/models/sortParams';
+import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 
 import {
   ChangeDetectionStrategy,
@@ -31,7 +32,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { AnimeFilters } from '@js-camp/core/models/anime/animeFilters';
+import { PaginatedData } from '@js-camp/core/models/pagination';
 
 /** QueryParams for table. */
 enum QueryParams {
@@ -62,6 +63,9 @@ const RESET_PAGINATION_PAGE = 1;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeTableComponent implements OnInit, OnDestroy {
+  /** Month year format. */
+  public readonly mountYearFormat = MONTH_YEAR_FORMAT;
+
   /** Anime type map and functional. */
   public animeType = AnimeType;
 
@@ -92,9 +96,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Page limit options params. */
   public readonly pageSizeOptions = [5, 10, 15, 20] as const;
 
-  /** Paginated anime list. */
-  public paginatedAnimeList$: Observable<PaginatedData<Anime>>;
-
   /** Displayed columns. */
   public readonly displayedColumns = [
     'image',
@@ -104,6 +105,9 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     'type',
     'status',
   ] as const;
+
+  /** Paginated anime list. */
+  public readonly paginatedAnimeList$: Observable<PaginatedData<Anime>>;
 
   /** Filter forms. */
   public readonly filterForms = this.formBuilder.group<AnimeFilters>({
