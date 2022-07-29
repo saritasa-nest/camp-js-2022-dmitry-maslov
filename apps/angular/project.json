@@ -5,15 +5,21 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/angular",
         "index": "apps/angular/src/index.html",
         "main": "apps/angular/src/main.ts",
         "polyfills": "apps/angular/src/polyfills.ts",
         "tsConfig": "apps/angular/tsconfig.app.json",
-        "assets": ["apps/angular/src/favicon.ico", "apps/angular/src/assets"],
+        "assets": [
+          "apps/angular/src/favicon.ico",
+          "apps/angular/src/assets"
+        ],
         "styles": [
+          "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
           "apps/angular/src/theme/styles.css",
           "libs/theme/src/index.css"
         ],
@@ -81,7 +87,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/angular"],
+      "outputs": [
+        "coverage/apps/angular"
+      ],
       "options": {
         "jestConfig": "apps/angular/jest.config.ts",
         "passWithNoTests": true
@@ -89,10 +97,9 @@
     },
     "stylelint": {
       "executor": "nx-stylelint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/react/**/*.css"]
-      }
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   },
   "tags": []
