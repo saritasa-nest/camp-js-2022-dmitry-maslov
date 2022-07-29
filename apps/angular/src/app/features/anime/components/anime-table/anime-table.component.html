@@ -26,7 +26,7 @@
   <ng-container matColumnDef="airedStart">
     <th mat-header-cell *matHeaderCellDef>Aired start</th>
     <td mat-cell *matCellDef="let anime">
-      {{ (anime.airedStart | date: mountYearFormat) || "Not started" }}
+      {{ (anime.airedStart | date: monthYearFormat) || "Not started" }}
     </td>
   </ng-container>
 
