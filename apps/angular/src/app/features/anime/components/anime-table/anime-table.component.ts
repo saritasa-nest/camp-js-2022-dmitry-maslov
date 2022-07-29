@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 
-import { Observable } from 'rxjs';
-
 import { Anime } from '@js-camp/core/models/anime/anime';
 import { AnimeType } from '@js-camp/core/models/anime/animeType';
 import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { monthYearFormat } from '@js-camp/angular/shared/constants/dateFormats';
 
 /** Anime table component. */
 @Component({
@@ -14,6 +13,9 @@ import { AnimeService } from '@js-camp/angular/core/services/anime.service';
   styleUrls: ['./anime-table.component.css'],
 })
 export class AnimeTableComponent {
+  /** Month year format. */
+  public readonly mountYearFormat = monthYearFormat;
+
   /** Displayed columns. */
   public readonly displayedColumns = [
     'image',
@@ -32,12 +34,6 @@ export class AnimeTableComponent {
 
   /** AnimeStatus map and functional. */
   public readonly animeStatus = AnimeStatus;
-
-  /** Methods that result in a readable model. */
-  public readonly toReadable = {
-    type: AnimeType.toReadable,
-    status: AnimeStatus.toReadable,
-  };
 
   /**
    * Track by method.
