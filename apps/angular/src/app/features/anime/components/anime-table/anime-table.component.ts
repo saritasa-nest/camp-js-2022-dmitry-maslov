@@ -64,7 +64,7 @@ const RESET_PAGINATION_PAGE = 1;
 })
 export class AnimeTableComponent implements OnInit, OnDestroy {
   /** Month year format. */
-  public readonly mountYearFormat = MONTH_YEAR_FORMAT;
+  public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
   /** Anime type map and functional. */
   public animeType = AnimeType;
@@ -95,7 +95,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Page limit options params. */
   public readonly pageSizeOptions = [5, 10, 15, 20] as const;
-
+  
   /** Displayed columns. */
   public readonly displayedColumns = [
     'image',
@@ -199,10 +199,10 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   }
 
   public constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute,
-    animeService: AnimeService,
+    private readonly formBuilder: FormBuilder,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    readonly animeService: AnimeService,
   ) {
     this.paginatedAnimeList$ = combineLatest([
       this.paginationLimit$,

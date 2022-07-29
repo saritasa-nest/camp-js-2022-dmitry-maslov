@@ -79,7 +79,7 @@
         Aired start
       </th>
       <td mat-cell *matCellDef="let anime">
-        {{ (anime.airedStart | date: "MMM yyyy") || "Not started" }}
+        {{ (anime.airedStart | date: monthYearFormat) || "Not started" }}
       </td>
     </ng-container>
 
