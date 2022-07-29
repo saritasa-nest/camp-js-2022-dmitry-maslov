@@ -10,7 +10,12 @@ import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
 import { SortParams } from '@js-camp/angular/core/models/sortParams';
 
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
 import {
@@ -58,6 +63,9 @@ const RESET_PAGINATION_PAGE = 1;
 })
 export class AnimeTableComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
+
+  /** Is Loading. */
+  public isLoading$ = new BehaviorSubject<boolean>(true);
 
   /** Sorted fields. */
   public readonly sortedFields = AnimeSortField;
@@ -183,6 +191,8 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       sortParams$: this.sortParams$,
       filterParams$: this.filterParams$,
     }).pipe(
+      debounceTime(400),
+      tap(() => this.isLoading$.next(true)),
       tap(params => {
         this.router.navigate([], {
           queryParams: {
@@ -212,13 +222,16 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
             sortParams: params.sortParams$,
             filterParams: params.filterParams$,
           })
-          .pipe(share())),
+          .pipe(
+            tap(() => this.isLoading$.next(false)),
+            share(),
+          )),
     );
   }
 
   /** Check if there are query parameters or set default.*/
   public ngOnInit(): void {
-    this.filterForms.valueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe({
+    this.filterForms.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
       next: value => {
         this.filterParams$.next({
           search: value.search ?? '',

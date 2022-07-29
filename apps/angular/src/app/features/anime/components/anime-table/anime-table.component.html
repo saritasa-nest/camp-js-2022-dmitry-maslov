@@ -1,3 +1,4 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
 <div *ngIf="paginatedAnimeList$ | async as paginatedAnimeList">
   <form [formGroup]="filterForms">
   </form>
