@@ -1,3 +1,4 @@
+import { map, Observable } from 'rxjs';
 import { PaginatedDataMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
@@ -9,9 +10,6 @@ import { PaginatedData } from '@js-camp/core/models/pagination';
 import { PaginationParams } from '@js-camp/core/models/paginationParams';
 import { PaginationParamsMapper } from '@js-camp/core/mappers/paginationParams.mapper';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
-
-import { map, Observable } from 'rxjs';
-
 import { AnimeFilters } from '@js-camp/core/models/anime/animeFilters';
 
 import { SortParams } from '../models/sortParams';
@@ -43,16 +41,21 @@ export class AnimeService {
   }: GetPaginatedAnimeListParams): Observable<PaginatedData<Anime>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
+    let order = '';
+    if (sortParams.direction === '') {
+      order = 'id';
+    } else if (sortParams.direction === 'desc') {
+      order = `-{${sortParams.sortBy}}}`;
+    } else {
+      order = sortParams.sortBy;
+    }
+
     return this.httpClient
       .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
         [API_FIELDS.offset]: offset,
         [API_FIELDS.limit]: limit,
-        [API_FIELDS.order]: sortParams.direction ?
-          `${sortParams.direction === 'desc' ? '-' : ''}${
-            sortParams.sortBy
-          }` :
-          'id',
+        [API_FIELDS.order]: order,
         [API_FIELDS.search]: filterParams.search,
         [API_FIELDS.typeIn]: `${filterParams.type.join(',')}`,
       },

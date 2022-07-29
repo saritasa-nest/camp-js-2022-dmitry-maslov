@@ -37,7 +37,8 @@ export namespace AnimeType {
     return TO_READABLE_MAP[type] ? type : AnimeType.Unknown;
   }
 
-  /** Converts readable anime type to AnimeType.
+  /**
+   * Converts readable anime type to AnimeType.
    * @param value Readable anime.
    */
   export function fromReadableToAnimeType(value: string): AnimeType {
