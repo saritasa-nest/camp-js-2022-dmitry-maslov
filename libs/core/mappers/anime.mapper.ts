@@ -15,7 +15,7 @@ export namespace AnimeMapper {
       titleEng: dto.title_eng,
       titleJpn: dto.title_jpn,
       airedStart: dto.aired.start === null ? null : new Date(dto.aired.start),
-      type: dto.type as AnimeType,
+      type: AnimeType.toAnimeType(dto.type),
       status: dto.status,
     });
   }
