@@ -25,7 +25,13 @@ export class AnimeTableComponent {
   ] as const;
 
   /** Anime list. */
-  public readonly animeList$: Observable<readonly Anime[]>;
+  public readonly paginatedAnimeList$ = this.animeService.getPaginatedAnimeList();
+
+  /** AnimeType map and functional. */
+  public readonly animeType = AnimeType;
+
+  /** AnimeStatus map and functional. */
+  public readonly animeStatus = AnimeStatus;
 
   /** Methods that result in a readable model. */
   public readonly toReadable = {
@@ -42,9 +48,5 @@ export class AnimeTableComponent {
     return anime.id;
   }
 
-  public constructor(
-    animeService: AnimeService,
-  ) {
-    this.animeList$ = animeService.getAnimeList();
-  }
+  public constructor(private animeService: AnimeService) {}
 }

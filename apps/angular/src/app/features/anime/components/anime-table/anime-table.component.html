@@ -1,7 +1,7 @@
 <table
-  *ngIf="animeList$ | async as animeList"
+  *ngIf="paginatedAnimeList$ | async as paginatedAnimeList"
   mat-table
-  [dataSource]="animeList"
+  [dataSource]="paginatedAnimeList.results"
   [trackBy]="trackByAnimeList"
   class="table mat-elevation-z8"
   aria-label="Anime Table"
