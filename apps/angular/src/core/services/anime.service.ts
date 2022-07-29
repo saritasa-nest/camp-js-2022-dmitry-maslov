@@ -45,7 +45,7 @@ export class AnimeService {
     if (sortParams.direction === '') {
       order = 'id';
     } else if (sortParams.direction === 'desc') {
-      order = `-{${sortParams.sortBy}}}`;
+      order = `-${sortParams.sortBy}`;
     } else {
       order = sortParams.sortBy;
     }
