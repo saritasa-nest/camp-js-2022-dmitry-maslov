@@ -3,7 +3,7 @@ import { AnimeType } from '@js-camp/core/models/anime/animeType';
 import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { PaginationParams } from '@js-camp/core/models/paginationParams';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
@@ -35,22 +35,22 @@ import {
 import { PaginatedData } from '@js-camp/core/models/pagination';
 
 /** QueryParams for table. */
-enum QueryParams {
-  Limit = 'limit',
-  Page = 'page',
-  Search = 'search',
-  SortBy = 'sortBy',
-  Direction = 'direction',
-  FiltersType = 'type',
-}
+const QUERY_PARAMS_MAP = {
+  limit: 'limit',
+  page: 'page',
+  search: 'search',
+  sortBy: 'sortBy',
+  direction: 'direction',
+  filtersType: 'type',
+} as const;
 
 const DEFAULT_QUERY_PARAMS = {
-  [QueryParams.Limit]: 10,
-  [QueryParams.Page]: 1,
-  [QueryParams.Search]: null,
-  [QueryParams.SortBy]: null,
-  [QueryParams.Direction]: null,
-  [QueryParams.FiltersType]: null,
+  [QUERY_PARAMS_MAP.limit]: 10,
+  [QUERY_PARAMS_MAP.page]: 1,
+  [QUERY_PARAMS_MAP.search]: null,
+  [QUERY_PARAMS_MAP.sortBy]: null,
+  [QUERY_PARAMS_MAP.direction]: null,
+  [QUERY_PARAMS_MAP.filtersType]: null,
 };
 
 const RESET_PAGINATION_PAGE = 1;
@@ -171,22 +171,26 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     return anime.id;
   }
 
-  private updateQueryParams(paginationParams: PaginationParams, filterParams: AnimeFilters, sortParams: SortParams<AnimeSortField>): void {
+  private updateQueryParams(
+    paginationParams: PaginationParams,
+    filterParams: AnimeFilters,
+    sortParams: SortParams<AnimeSortField>,
+  ): void {
     this.router.navigate([], {
       queryParams: {
-        [QueryParams.Limit]: paginationParams.limit,
-        [QueryParams.Page]: paginationParams.page,
-        [QueryParams.Search]: filterParams.search ?
+        [QUERY_PARAMS_MAP.limit]: paginationParams.limit,
+        [QUERY_PARAMS_MAP.page]: paginationParams.page,
+        [QUERY_PARAMS_MAP.search]: filterParams.search ?
           filterParams.search :
           null,
-        [QueryParams.SortBy]: sortParams.direction ?
+        [QUERY_PARAMS_MAP.sortBy]: sortParams.direction ?
           sortParams.sortBy :
           null,
-        [QueryParams.Direction]: sortParams.direction ?
+        [QUERY_PARAMS_MAP.direction]: sortParams.direction ?
           sortParams.direction :
           null,
 
-        [QueryParams.FiltersType]:
+        [QUERY_PARAMS_MAP.filtersType]:
           filterParams.type.map(animeType =>
             AnimeType.toReadable(animeType)) ?? null,
       },
@@ -230,6 +234,59 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     );
   }
 
+  private getInitialValues(params: Params): {
+    page: number;
+    search: string;
+    limit: number;
+    sortBy: AnimeSortField | null;
+    direction: SortDirection | null;
+    filterType: AnimeType[];
+  } {
+
+    const queryLimit = params[QUERY_PARAMS_MAP.limit];
+    const limit =
+    queryLimit >= 1 ?
+      queryLimit :
+      DEFAULT_QUERY_PARAMS[QUERY_PARAMS_MAP.limit];
+
+    const queryPage = params[QUERY_PARAMS_MAP.page];
+    const page =
+    queryPage && queryPage >= 1 ?
+      queryPage :
+      DEFAULT_QUERY_PARAMS[QUERY_PARAMS_MAP.page];
+
+    const querySearch = params[QUERY_PARAMS_MAP.search];
+    const search = querySearch ?? DEFAULT_QUERY_PARAMS[QUERY_PARAMS_MAP.search];
+
+    const querySortBy = params[QUERY_PARAMS_MAP.sortBy];
+    const sortBy =
+      (querySortBy as AnimeSortField) ??
+      DEFAULT_QUERY_PARAMS[QUERY_PARAMS_MAP.sortBy];
+
+    const queryDirection = params[QUERY_PARAMS_MAP.direction];
+    const direction =
+      (queryDirection as SortDirection) ??
+      DEFAULT_QUERY_PARAMS[QUERY_PARAMS_MAP.direction];
+
+    const queryFilterType = params[QUERY_PARAMS_MAP.filtersType];
+    const filterType: AnimeType[] = [];
+    if (typeof queryFilterType === 'string') {
+      filterType.push(AnimeType.fromReadableToAnimeType(queryFilterType));
+    } else if (queryFilterType instanceof Array<string>) {
+      queryFilterType.forEach(readableAnimeType =>
+        filterType.push(AnimeType.fromReadableToAnimeType(readableAnimeType)));
+    }
+
+    return {
+      direction,
+      filterType,
+      limit,
+      page,
+      search,
+      sortBy,
+    };
+  }
+
   /** Check if there are query parameters or set default.*/
   public ngOnInit(): void {
     this.filterForms.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
@@ -244,40 +301,14 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
     this.route.queryParams
       .pipe(
         map(params => {
-          const queryLimit = params[QueryParams.Limit];
-          const queryPage = params[QueryParams.Page];
-          const querySearch = params[QueryParams.Search];
-          const querySortBy = params[QueryParams.SortBy];
-          const queryDirection = params[QueryParams.Direction];
-          const queryFilterType = params[QueryParams.FiltersType];
-
-          const limit =
-            queryLimit && queryLimit >= 1 ?
-              queryLimit :
-              DEFAULT_QUERY_PARAMS[QueryParams.Limit];
-          const page =
-            queryPage && queryPage >= 1 ?
-              queryPage :
-              DEFAULT_QUERY_PARAMS[QueryParams.Page];
-          const search =
-            querySearch ?? DEFAULT_QUERY_PARAMS[QueryParams.Search];
-          const sortBy =
-            (querySortBy as AnimeSortField) ??
-            DEFAULT_QUERY_PARAMS[QueryParams.SortBy];
-          const direction =
-            (queryDirection as SortDirection) ??
-            DEFAULT_QUERY_PARAMS[QueryParams.Direction];
-
-          const filterType: AnimeType[] = [];
-
-          if (typeof queryFilterType === 'string') {
-            filterType.push(AnimeType.fromReadableToAnimeType(queryFilterType));
-          } else if (queryFilterType instanceof Array<string>) {
-            queryFilterType.forEach(readableAnimeType =>
-              filterType.push(
-                AnimeType.fromReadableToAnimeType(readableAnimeType),
-              ));
-          }
+          const {
+            direction,
+            filterType,
+            limit,
+            page,
+            search,
+            sortBy,
+          } = this.getInitialValues(params);
 
           this.paginationLimit$.next(limit);
           this.paginationPage$.next(page);
