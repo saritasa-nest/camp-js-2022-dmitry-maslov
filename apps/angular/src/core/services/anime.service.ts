@@ -16,6 +16,8 @@ import { AnimeFilters } from '@js-camp/core/models/anime/animeFilters';
 
 import { SortParams } from '../models/sortParams';
 
+import { Pagination } from '@js-camp/core/models/pagination';
+
 import { AppConfigService } from './app-config.service';
 
 /** Anime service. */
@@ -63,6 +65,7 @@ export class AnimeService {
             dto: paginatedDataDto,
             resultMapper: AnimeMapper.fromDto,
           })),
+
       );
   }
 }
