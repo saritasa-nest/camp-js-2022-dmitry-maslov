@@ -1,29 +1,29 @@
-<mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
+<mat-progress-bar
+  mode="indeterminate"
+  *ngIf="isLoading$ | async"
+></mat-progress-bar>
+
 <div *ngIf="paginatedAnimeList$ | async as paginatedAnimeList">
   <form [formGroup]="filterForms">
-  </form>
     <mat-form-field>
       <mat-label>Search</mat-label>
-      <input
-        matInput
-        placeholder="Anime title"
-        [formControl]="filterForms.controls.search"
-      />
+      <input matInput placeholder="Anime title" formControlName="search" />
     </mat-form-field>
     <mat-form-field>
       <mat-select
         [multiple]="true"
         placeholder="Filter type"
-        [formControl]="filterForms.controls.type"
-        >
+        formControlName="type"
+      >
         <mat-option
-        *ngFor="let type of filterOptionsMap.type | keyvalue"
-        [value]="type.key"
+          *ngFor="let type of filterOptionsMap.type | keyvalue"
+          [value]="type.key"
         >
           {{ type.value }}
         </mat-option>
       </mat-select>
     </mat-form-field>
+  </form>
   <mat-paginator
     *ngIf="paginationPage$ | async as paginationPage"
     [length]="paginatedAnimeList.total"
@@ -53,7 +53,6 @@
         <img class="anime-image" [src]="anime.image" alt="" />
       </td>
     </ng-container>
-
 
     <ng-container matColumnDef="titleEng">
       <th
