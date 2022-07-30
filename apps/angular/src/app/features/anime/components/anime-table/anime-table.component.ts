@@ -14,7 +14,6 @@ import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats
 import {
   ChangeDetectionStrategy,
   Component,
-  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -27,12 +26,18 @@ import {
   map,
   Observable,
   share,
-  Subject,
+  startWith,
   switchMap,
-  takeUntil,
   tap,
 } from 'rxjs';
 import { PaginatedData } from '@js-camp/core/models/pagination';
+
+const DEFAULT_PARAMS = {
+  paginationParams: {
+    page: 1,
+    limit: 10,
+  },
+} as const;
 
 /** QueryParams for table. */
 const QUERY_PARAMS_MAP = {
@@ -45,8 +50,8 @@ const QUERY_PARAMS_MAP = {
 } as const;
 
 const DEFAULT_QUERY_PARAMS = {
-  [QUERY_PARAMS_MAP.limit]: 10,
-  [QUERY_PARAMS_MAP.page]: 1,
+  [QUERY_PARAMS_MAP.limit]: DEFAULT_PARAMS.paginationParams.limit,
+  [QUERY_PARAMS_MAP.page]: DEFAULT_PARAMS.paginationParams.page,
   [QUERY_PARAMS_MAP.search]: null,
   [QUERY_PARAMS_MAP.sortBy]: null,
   [QUERY_PARAMS_MAP.direction]: null,
@@ -62,7 +67,7 @@ const RESET_PAGINATION_PAGE = 1;
   styleUrls: ['./anime-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeTableComponent implements OnInit, OnDestroy {
+export class AnimeTableComponent implements OnInit {
   /** Month year format. */
   public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
@@ -71,8 +76,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Anime status map and functional. */
   public animeStatus = AnimeStatus;
-
-  private destroy$ = new Subject<boolean>();
 
   /** Is Loading. */
   public isLoading$ = new BehaviorSubject<boolean>(true);
@@ -95,7 +98,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Page limit options params. */
   public readonly pageSizeOptions = [5, 10, 15, 20] as const;
-  
+
   /** Displayed columns. */
   public readonly displayedColumns = [
     'image',
@@ -116,22 +119,29 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
   });
 
   /** FilterParams. */
-  public readonly filterParams$ = new BehaviorSubject<AnimeFilters>({
-    search: '',
-    type: [],
-  });
+  public readonly filterParams$: Observable<AnimeFilters> = this.filterForms.valueChanges.pipe(
+    startWith(this.filterForms.value),
+    map(value => ({
+      search: value.search ?? '',
+      type: value.type ?? [],
+    })),
+    tap(() => this.resetPagination()),
+  );
 
-  /** Actual page. */
-  public readonly paginationPage$ = new BehaviorSubject(0);
-
-  /** Limit elements to display on a page. */
-  public readonly paginationLimit$ = new BehaviorSubject(0);
-
-  /** Pagination Params. */
-  public readonly paginationParams$ = new BehaviorSubject<PaginationParams>({
-    limit: 0,
+  /** Pagination form. */
+  public readonly paginationForm = this.formBuilder.group<PaginationParams>({
+    limit: DEFAULT_PARAMS.paginationParams.limit,
     page: 0,
   });
+
+  /** PaginationParams. */
+  public readonly paginationParams$: Observable<PaginationParams> = this.paginationForm.valueChanges.pipe(
+    startWith(this.paginationForm.value),
+    map(paginationParams => ({
+      page: paginationParams.page ?? DEFAULT_PARAMS.paginationParams.page,
+      limit: paginationParams.limit ?? DEFAULT_PARAMS.paginationParams.limit,
+    })),
+  );
 
   /** Sort params. */
   public readonly sortParams$ = new BehaviorSubject<SortParams<AnimeSortField>>(
@@ -140,6 +150,45 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       direction: '',
     },
   );
+
+
+  public constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    animeService: AnimeService,
+  ) {
+    this.paginatedAnimeList$ = combineLatest([
+      this.paginationParams$,
+      this.sortParams$,
+      this.filterParams$,
+    ]).pipe(
+      debounceTime(300),
+      tap(() => this.isLoading$.next(true)),
+      switchMap(([paginationParams, sortParams, filterParams]) => {
+
+        this.updateQueryParams(paginationParams, filterParams, sortParams);
+
+        return animeService
+          .getPaginatedAnimeList({
+            paginationParams,
+            sortParams,
+            filterParams,
+          })
+          .pipe(
+            tap(() => this.isLoading$.next(false)),
+            share(),
+          );
+      }),
+    );
+  }
+
+  private resetPagination(): void {
+    this.paginationForm.setValue({
+      limit: this.paginationForm.value.limit ?? DEFAULT_PARAMS.paginationParams.limit,
+      page: RESET_PAGINATION_PAGE,
+    });
+  }
 
   /**
    * Update sort params.
@@ -150,7 +199,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       sortBy: event.direction ? (event.active as AnimeSortField) : '',
       direction: event.direction,
     });
-    this.paginationPage$.next(RESET_PAGINATION_PAGE);
+    this.resetPagination();
   }
 
   /**
@@ -158,8 +207,10 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
    * @param event Paginator event.
    */
   public handlePaginationChange(event: PageEvent): void {
-    this.paginationPage$.next(event.pageIndex + 1);
-    this.paginationLimit$.next(event.pageSize);
+    this.paginationForm.setValue({
+      limit: event.pageSize,
+      page: event.pageIndex + 1,
+    });
   }
 
   /**
@@ -196,42 +247,6 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: 'merge',
     });
-  }
-
-  public constructor(
-    private readonly formBuilder: FormBuilder,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    readonly animeService: AnimeService,
-  ) {
-    this.paginatedAnimeList$ = combineLatest([
-      this.paginationLimit$,
-      this.paginationPage$,
-      this.sortParams$,
-      this.filterParams$,
-    ]).pipe(
-      debounceTime(300),
-      tap(() => this.isLoading$.next(true)),
-      switchMap(([limit, page, sortParams, filterParams]) => {
-        const paginationParams: PaginationParams = {
-          limit,
-          page,
-        };
-
-        this.updateQueryParams(paginationParams, filterParams, sortParams);
-
-        return animeService
-          .getPaginatedAnimeList({
-            paginationParams,
-            sortParams,
-            filterParams,
-          })
-          .pipe(
-            tap(() => this.isLoading$.next(false)),
-            share(),
-          );
-      }),
-    );
   }
 
   private getInitialValues(params: Params): {
@@ -289,48 +304,21 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 
   /** Check if there are query parameters or set default.*/
   public ngOnInit(): void {
-    this.filterForms.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
-      next: value => {
-        this.filterParams$.next({
-          search: value.search ?? '',
-          type: value.type ?? [],
-        });
-        this.paginationPage$.next(RESET_PAGINATION_PAGE);
-      },
-    });
     this.route.queryParams
       .pipe(
         map(params => {
           const {
             direction,
-            filterType,
-            limit,
-            page,
-            search,
             sortBy,
           } = this.getInitialValues(params);
-
-          this.paginationLimit$.next(limit);
-          this.paginationPage$.next(page);
-
           this.sortParams$.next({
             direction: direction ?? '',
             sortBy: sortBy ?? '',
           });
-
-          this.filterForms.setValue({
-            search: search ?? '',
-            type: filterType,
-          });
         }),
         first(),
       )
-      .subscribe();
-  }
-
-  /** Unsubscribe. */
-  public ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+      .subscribe()
+      .unsubscribe();
   }
 }

@@ -25,11 +25,11 @@
     </mat-form-field>
   </form>
   <mat-paginator
-    *ngIf="paginationPage$ | async as paginationPage"
+    *ngIf="paginationParams$ | async as paginationParams"
     [length]="paginatedAnimeList.total"
     [pageSizeOptions]="pageSizeOptions"
-    [pageSize]="paginationLimit$ | async"
-    [pageIndex]="paginationPage - 1"
+    [pageSize]="paginationParams.limit"
+    [pageIndex]="paginationParams.page - 1"
     showFirstLastButtons
     aria-label="Pagination panel"
     (page)="handlePaginationChange($event)"
