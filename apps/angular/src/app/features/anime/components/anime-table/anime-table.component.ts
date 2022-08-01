@@ -151,7 +151,6 @@ export class AnimeTableComponent implements OnInit {
     },
   );
 
-
   public constructor(
     private readonly formBuilder: FormBuilder,
     private readonly router: Router,
@@ -253,8 +252,8 @@ export class AnimeTableComponent implements OnInit {
     page: number;
     search: string;
     limit: number;
-    sortBy: AnimeSortField | null;
-    direction: SortDirection | null;
+    sortBy: AnimeSortField | '';
+    direction: SortDirection;
     filterType: AnimeType[];
   } {
 
@@ -302,23 +301,33 @@ export class AnimeTableComponent implements OnInit {
     };
   }
 
+  private setInitialListParams(queryParams: Params): void {
+    const { direction, sortBy, search, filterType, limit, page } = this.getInitialValues(queryParams);
+
+    this.paginationForm.setValue({
+      limit,
+      page,
+    });
+
+    this.filterForms.setValue({
+      search,
+      type: filterType,
+    });
+
+    this.sortParams$.next({
+      direction: direction ?? '',
+      sortBy: sortBy ?? '',
+    });
+  }
+
   /** Check if there are query parameters or set default.*/
   public ngOnInit(): void {
     this.route.queryParams
       .pipe(
-        map(params => {
-          const {
-            direction,
-            sortBy,
-          } = this.getInitialValues(params);
-          this.sortParams$.next({
-            direction: direction ?? '',
-            sortBy: sortBy ?? '',
-          });
+        tap(params => {
+          this.setInitialListParams(params);
         }),
         first(),
-      )
-      .subscribe()
-      .unsubscribe();
+      ).subscribe();
   }
 }
