@@ -14,7 +14,6 @@ import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
