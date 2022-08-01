@@ -25,6 +25,7 @@ import {
   map,
   Observable,
   share,
+  skip,
   startWith,
   switchMap,
   tap,
@@ -90,6 +91,31 @@ export class AnimeTableComponent {
     'status',
   ] as const;
 
+  /** Filter forms. */
+  public readonly filterForms = this.formBuilder.group<AnimeFilters>({
+    search: '',
+    type: [],
+  });
+
+  /** FilterParams. */
+  public readonly filterParams$: Observable<AnimeFilters> = this.route.queryParams.pipe(
+    first(),
+    map(queryParams => {
+          const initialFilterParams = this.getFilterParamsFromQuery(queryParams);
+          this.filterForms.setValue(initialFilterParams);
+          return initialFilterParams;
+        }),
+    switchMap(initialFilterParams => this.filterForms.valueChanges.pipe(
+      tap(() => this.resetPagination()),
+      skip(1),
+      startWith(initialFilterParams),
+      map(value => ({
+        search: value.search ?? '',
+        type: value.type ?? [],
+      })),
+    )),
+  );
+
   /** Paginated anime list. */
   public readonly paginatedAnimeList$: Observable<PaginatedData<Anime>>;
 
@@ -105,30 +131,6 @@ export class AnimeTableComponent {
       [AnimeType.Unknown]: AnimeType.toReadable(AnimeType.Unknown),
     },
   } as const;
-
-  /** Filter forms. */
-  public readonly filterForms = this.formBuilder.group<AnimeFilters>({
-    search: '',
-    type: [],
-  });
-
-  /** FilterParams. */
-  public readonly filterParams$: Observable<AnimeFilters> = this.route.queryParams.pipe(
-    first(),
-    map(queryParams => {
-      const initialFilterParams = this.getFilterParamsFromQuery(queryParams);
-      this.filterForms.setValue(initialFilterParams);
-      return initialFilterParams;
-    }),
-    switchMap(initialFilterParams => this.filterForms.valueChanges.pipe(
-      startWith(initialFilterParams),
-      tap(() => this.resetPagination()),
-      map(value => ({
-        search: value.search ?? '',
-        type: value.type ?? [],
-      })),
-    )),
-  );
 
   /** Pagination params. */
   public paginationParams$ = this.route.queryParams.pipe(
