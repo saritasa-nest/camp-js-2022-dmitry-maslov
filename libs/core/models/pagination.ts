@@ -1,19 +1,19 @@
 import { Immerable, OmitImmerable } from './immerable';
 
 /** Pagination. */
-export class Pagination<T> extends Immerable {
+export class PaginatedData<T> extends Immerable {
 
-  /** Count. */
-  public readonly count: number;
+  /** Total number of items on the server. */
+  public readonly total: number;
 
   /** Results. */
-  public readonly results: readonly T[];
+  public readonly items: readonly T[];
 
   public constructor(data: InitArgs<T>) {
     super();
-    this.count = data.count;
-    this.results = data.results;
+    this.items = data.items;
+    this.total = data.total;
   }
 }
 
-type InitArgs<T> = OmitImmerable<Pagination<T>>;
+type InitArgs<T> = OmitImmerable<PaginatedData<T>>;

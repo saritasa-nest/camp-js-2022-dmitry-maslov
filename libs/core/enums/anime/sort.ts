@@ -1,6 +1,6 @@
 
 /** Not order param. */
-export const animeNotOrder = '';
+export const animeNotSort = '';
 
 /** Order params.*/
 export enum AnimeSortField {

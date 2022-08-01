@@ -1,5 +1,5 @@
 /** Pagination meta info. */
-export interface PaginationDto<T> {
+export interface PaginatedDataDto<T> {
 
   /** Total count of items. */
   readonly count: number;

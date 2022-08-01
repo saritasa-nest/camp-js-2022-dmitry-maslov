@@ -1,1 +1,1 @@
-export const monthYearFormat = 'MMM yyyy';
+export const MONTH_YEAR_FORMAT = 'MMM yyyy';
