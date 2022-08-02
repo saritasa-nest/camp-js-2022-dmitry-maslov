@@ -39,7 +39,7 @@
     *ngIf="sortParams$ | async as sortParams"
     mat-table
     [dataSource]="paginatedAnimeList.items"
-    [trackBy]="trackByAnimeList"
+    [trackBy]="trackById"
     class="table mat-elevation-z8"
     aria-label="Anime Table"
     matSort
