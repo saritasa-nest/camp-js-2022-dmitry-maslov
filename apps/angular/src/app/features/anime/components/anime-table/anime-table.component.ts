@@ -226,7 +226,7 @@ export class AnimeTableComponent {
    * @param _index Index.
    * @param anime Anime.
    */
-  public trackByAnimeList(_index: number, anime: Anime): Anime['id'] {
+  public trackById(_index: number, anime: Anime): Anime['id'] {
     return anime.id;
   }
 
