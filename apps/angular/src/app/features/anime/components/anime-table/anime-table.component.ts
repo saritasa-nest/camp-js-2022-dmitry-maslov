@@ -1,13 +1,13 @@
-import { Anime } from '@js-camp/core/models/anime/anime';
-import { AnimeType } from '@js-camp/core/models/anime/animeType';
-import { AnimeStatus } from '@js-camp/core/models/anime/animeStatus';
+import { Anime } from '@js-camp/core/models/anime';
+import { AnimeType } from '@js-camp/core/models/anime-type';
+import { AnimeStatus } from '@js-camp/core/models/anime-status';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { PaginationParams } from '@js-camp/core/models/paginationParams';
+import { PaginationParams } from '@js-camp/core/models/pagination-params';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
-import { AnimeFilters } from '@js-camp/core/models/anime/animeFilters';
+import { AnimeFilters } from '@js-camp/core/models/anime-filters';
 import { SortParams } from '@js-camp/angular/core/models/sortParams';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 
