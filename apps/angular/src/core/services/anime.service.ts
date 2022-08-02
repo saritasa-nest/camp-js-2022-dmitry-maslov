@@ -1,6 +1,6 @@
 import { map, Observable } from 'rxjs';
 import { PaginatedDataMapper } from '@js-camp/core/mappers/pagination.mapper';
-import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
+import { AnimeDTO } from '@js-camp/core/dtos/anime/anime.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -9,10 +9,13 @@ import { PaginatedDataDto } from '@js-camp/core/dtos/pagination.dto';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { PaginationParams } from '@js-camp/core/models/paginationParams';
 import { PaginationParamsMapper } from '@js-camp/core/mappers/paginationParams.mapper';
-import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
 import { AnimeFilters } from '@js-camp/core/models/anime/animeFilters';
 
-import { SortParams } from '../models/sortParams';
+import { AnimeFiltersMapper } from '@js-camp/core/mappers/anime/animeFilters.mapper';
+
+import { AnimeSortParams } from '../models/anime/animeSortParams';
+
+import { AnimeSortMapper } from '../mappers/anime/animeSortParams.mapper';
 
 import { AppConfigService } from './app-config.service';
 
@@ -32,32 +35,23 @@ export class AnimeService {
 
   /**
    * Method for getting paginated anime list.
-   * @param GetPaginatedAnimeListParams {GetPaginatedAnimeListParams}.
+   * @param PaginatedAnimeListParams {PaginatedAnimeListParams}.
    */
   public getPaginatedAnimeList({
     sortParams,
     paginationParams,
     filterParams,
-  }: GetPaginatedAnimeListParams): Observable<PaginatedData<Anime>> {
+  }: PaginatedAnimeListParams): Observable<PaginatedData<Anime>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
-
-    let order = '';
-    if (sortParams.direction === '') {
-      order = 'id';
-    } else if (sortParams.direction === 'desc') {
-      order = `-${sortParams.sortBy}`;
-    } else {
-      order = sortParams.sortBy;
-    }
 
     return this.httpClient
       .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
         [API_FIELDS.offset]: offset,
         [API_FIELDS.limit]: limit,
-        [API_FIELDS.order]: order,
+        [API_FIELDS.order]: AnimeSortMapper.toDto(sortParams),
         [API_FIELDS.search]: filterParams.search,
-        [API_FIELDS.typeIn]: `${filterParams.type.join(',')}`,
+        [API_FIELDS.typeIn]: AnimeFiltersMapper.filterTypeToDto(filterParams.type),
       },
     })
       .pipe(
@@ -72,7 +66,7 @@ export class AnimeService {
 }
 
 /** Params for {getPaginatedAnimeList} method.*/
-export interface GetPaginatedAnimeListParams {
+export interface PaginatedAnimeListParams {
 
   /** Pagination params. */
   paginationParams: PaginationParams;
@@ -81,7 +75,7 @@ export interface GetPaginatedAnimeListParams {
   filterParams: AnimeFilters;
 
   /** Sort params. */
-  sortParams: SortParams<AnimeSortField>;
+  sortParams: AnimeSortParams;
 }
 
 const API_FIELDS = {
