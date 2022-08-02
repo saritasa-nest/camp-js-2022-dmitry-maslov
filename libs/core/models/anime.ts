@@ -1,7 +1,7 @@
-import { AnimeStatus } from '../../models/anime/animeStatus';
-import { AnimeType } from '../../models/anime/animeType';
+import { Immerable, OmitImmerable } from './immerable';
 
-import { Immerable, OmitImmerable } from '../immerable';
+import { AnimeStatus } from './anime-status';
+import { AnimeType } from './anime-type';
 
 /** Anime. */
 export class Anime extends Immerable {

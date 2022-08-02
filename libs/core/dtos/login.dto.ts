@@ -1,12 +1,9 @@
 /** User login DTO. */
-export interface LoginParamsDto {
+export interface LoginDto {
 
   /** Email. */
   readonly email: string;
 
   /** Password. */
   readonly password: string;
-
-  /** DTO type. */
-  readonly type: 'LOGIN';
 }

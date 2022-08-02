@@ -1,4 +1,4 @@
-import { AnimeType } from '../../models/anime/animeType';
+import { AnimeType } from '../models/anime-type';
 
 export namespace AnimeFiltersMapper {
 

@@ -1,5 +1,5 @@
 /** User registration data. */
-export interface RegistrationParams {
+export interface Registration {
 
   /** Email. */
   readonly email: string;
@@ -12,5 +12,4 @@ export interface RegistrationParams {
 
   /** Password. */
   readonly password: string;
-
 }

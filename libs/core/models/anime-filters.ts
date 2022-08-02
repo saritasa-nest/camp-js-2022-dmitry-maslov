@@ -1,5 +1,5 @@
 
-import { AnimeType } from './animeType';
+import { AnimeType } from './anime-type';
 
 /** Anime Filters. */
 export interface AnimeFilters {

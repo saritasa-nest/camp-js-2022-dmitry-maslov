@@ -1,6 +1,6 @@
-import { PaginationParamsDto } from '../dtos/paginationParams.dto';
+import { PaginationParamsDto } from '../dtos/pagination-params.dto';
 
-import { PaginationParams } from '../models/paginationParams';
+import { PaginationParams } from '../models/pagination-params';
 
 export namespace PaginationParamsMapper {
 

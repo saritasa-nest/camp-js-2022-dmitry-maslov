@@ -6,5 +6,4 @@ export interface Login {
 
   /** Password. */
   readonly password: string;
-
 }
