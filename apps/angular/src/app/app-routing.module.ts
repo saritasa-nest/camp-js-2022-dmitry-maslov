@@ -15,6 +15,13 @@ const routes: Routes = [
         m => m.AnimeModule,
       ),
   },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./features/auth/auth.module').then(
+        m => m.AuthModule,
+      ),
+  },
 ];
 
 /** App routing module. */
