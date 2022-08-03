@@ -16,13 +16,21 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "stylelint"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "stylelint"
+        ]
       }
     }
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     }
   },
   "workspaceLayout": {
@@ -41,7 +49,24 @@
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {
-      "style": "css"
+      "style": "css",
+      "changeDetection": "OnPush",
+      "skipTests": true
+    },
+    "@nrwl/angular:directive": {
+      "skipTests": true
+    },
+    "@nrwl/angular:guard": {
+      "skipTests": true
+    },
+    "@nrwl/angular:interceptor": {
+      "skipTests": true
+    },
+    "@nrwl/angular:pipe": {
+      "skipTests": true
+    },
+    "@nrwl/angular:service": {
+      "skipTests": true
     },
     "@nrwl/react": {
       "application": {
@@ -68,6 +93,6 @@
   },
   "defaultProject": "react",
   "cli": {
-    "defaultCollection": "@nxext/vite"
+    "defaultCollection": "@nrwl/angular"
   }
 }
