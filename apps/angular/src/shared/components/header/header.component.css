@@ -1,0 +1,11 @@
+.header {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid black;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+}

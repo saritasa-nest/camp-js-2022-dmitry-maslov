@@ -9,7 +9,7 @@ import { map, Observable } from 'rxjs';
 
 import { AppConfigService } from './app-config.service';
 
-const AUTH_PREFIX = 'Token';
+const AUTH_PREFIX = 'Bearer';
 
 /** Anime service. */
 @Injectable({
@@ -33,10 +33,12 @@ export class AuthService {
    * @param secret Secret data.
    */
   public refreshSecret(secret: UserSecret): Observable<UserSecret> {
+
     return this.httpClient
       .post<UserSecretDto>(
-      this.refreshSecretUrl.toString(),
-      UserSecretDataMapper.toDto(secret).refresh,
+      this.refreshSecretUrl.toString(), {
+        refresh: UserSecretDataMapper.toDto(secret).refresh,
+      },
     )
       .pipe(
         map(refreshedSecret =>

@@ -1,4 +1,4 @@
-import { AnimeSortParams } from '../../models/anime/animeSortParams';
+import { AnimeSortParams } from '../models/animeSortParams';
 
 export namespace AnimeSortMapper {
 

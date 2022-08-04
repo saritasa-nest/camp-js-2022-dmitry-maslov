@@ -9,6 +9,7 @@ import { User } from '@js-camp/core/models/user';
 import {
   catchError,
   filter,
+  finalize,
   first,
   map,
   mapTo,
@@ -17,6 +18,7 @@ import {
   shareReplay,
   switchMap,
   switchMapTo,
+  tap,
   throwError,
 } from 'rxjs';
 
@@ -73,6 +75,15 @@ export class UserService {
   }
 
   /**
+   * Logout current user.
+   */
+  public logout(): Observable<void> {
+    return this.userSecretStorage
+      .removeSecret()
+      .pipe(finalize(() => this.navigateToAuthPage()));
+  }
+
+  /**
    * Login a user with email and password.
    * @param loginData Login data.
    */
@@ -80,10 +91,16 @@ export class UserService {
     return this.authService.login(loginData).pipe(
       switchMap(secret => this.userSecretStorage.saveSecret(secret)),
       switchMapTo(this.isAuthorized$),
-      filter(isAuthorized => isAuthorized),
 
-      // switchMap(() => this.redirectAfterAuthorization()),
+      filter(isAuthorized => isAuthorized),
+      tap(() => this.redirectAfterAuthorization()),
     );
+  }
+
+  private async redirectAfterAuthorization(): Promise<void> {
+    const DEFAULT_REDIRECT_URL = '/';
+    const route = this.router.createUrlTree([DEFAULT_REDIRECT_URL]);
+    await this.router.navigateByUrl(route);
   }
 
   private async navigateToAuthPage(): Promise<void> {
@@ -102,5 +119,4 @@ export class UserService {
       shareReplay({ bufferSize: 1, refCount: false }),
     );
   }
-
 }

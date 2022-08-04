@@ -1,10 +1,18 @@
-<form [formGroup]="loginForm" class="login-form" (submit)="login()">
+<form [formGroup]="loginForm" class="login-form" (submit)="handleLogin()">
+  <mat-progress-bar
+    mode="indeterminate"
+    *ngIf="isLoading$ | async"
+  ></mat-progress-bar>
+  <div *ngIf="error$ | async as error">
+    {{ error | json }}
+  </div>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Email</mat-label>
     <input
       matInput
       placeholder="pat@example.com"
       formControlName="email"
+      autocomplete="email"
       required
     />
   </mat-form-field>
@@ -12,6 +20,7 @@
     <mat-label>Enter your password</mat-label>
     <input
       matInput
+      autocomplete="current-password"
       formControlName="password"
       [type]="shouldShowPassword ? 'password' : 'text'"
     />
@@ -28,5 +37,15 @@
     </button>
   </mat-form-field>
 
-  <button mat-button type="submit" color="primary">Log-in</button>
+  <button
+    mat-button
+    type="submit"
+    [disabled]="isLoading$ | async"
+    color="primary"
+  >
+    Log-in
+  </button>
+  <a routerLink="registration">
+    Register
+  </a>
 </form>
