@@ -4,7 +4,7 @@ import { AnimeStatus } from './anime-status';
 import { AnimeType } from './anime-type';
 
 /** Anime. */
-export class Anime extends Immerable {
+export class AnimeBase extends Immerable {
 
   /** Id. */
   public readonly id: number;
@@ -27,9 +27,6 @@ export class Anime extends Immerable {
   /** Anime Status. */
   public readonly status: AnimeStatus;
 
-  /** Anime Source. */
-  public readonly source: AnimeSource;
-
   public constructor(data: InitArgs) {
     super();
     this.id = data.id;
@@ -42,4 +39,4 @@ export class Anime extends Immerable {
   }
 }
 
-type InitArgs = OmitImmerable<Anime>;
+type InitArgs = OmitImmerable<AnimeBase>;

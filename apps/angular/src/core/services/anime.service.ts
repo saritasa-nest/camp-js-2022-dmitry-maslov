@@ -4,7 +4,7 @@ import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Anime } from '@js-camp/core/models/anime';
+import { AnimeBase } from '@js-camp/core/models/anime-base';
 import { PaginatedDataDto } from '@js-camp/core/dtos/paginated-data.dto';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { PaginationParams } from '@js-camp/core/models/pagination-params';
@@ -39,7 +39,7 @@ export class AnimeService {
     sortParams,
     paginationParams,
     filterParams,
-  }: PaginatedAnimeListParams): Observable<PaginatedData<Anime>> {
+  }: PaginatedAnimeListParams): Observable<PaginatedData<AnimeBase>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
     return this.httpClient
@@ -54,9 +54,9 @@ export class AnimeService {
     })
       .pipe(
         map(paginatedDataDto =>
-          PaginatedDataMapper.fromDto<Anime, AnimeDTO>({
+          PaginatedDataMapper.fromDto<AnimeBase, AnimeDTO>({
             dto: paginatedDataDto,
-            resultMapper: AnimeMapper.fromDto,
+            resultMapper: AnimeMapper.fromDtoToAnimeBase,
           })),
 
       );

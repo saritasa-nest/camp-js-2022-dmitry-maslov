@@ -15,12 +15,16 @@ import { SharedModule } from '@js-camp/angular/shared/shared.module';
 
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
 import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.component';
+import { AnimePageComponent } from './pages/anime-page/anime-page.component';
 
-const routes: Routes = [{ path: '', title: 'Anime list', component: AnimeListPageComponent }];
+const routes: Routes = [
+  { path: '', title: 'Anime list', component: AnimeListPageComponent },
+  { path: ':id', title: 'Anime', component: AnimePageComponent },
+];
 
 /** Anime module. */
 @NgModule({
-  declarations: [AnimeTableComponent, AnimeListPageComponent],
+  declarations: [AnimeTableComponent, AnimeListPageComponent, AnimePageComponent],
   imports: [
     CommonModule,
     SharedModule,

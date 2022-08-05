@@ -40,7 +40,7 @@ export class AnimeApi extends Api {
     const { count, results } = PaginationMapper.fromDto<
       Anime,
       AnimeDTO
-    >(AnimeMapper.fromDto, response.data);
+    >(AnimeMapper.fromDtoToAnimeBase, response.data);
 
     return {
       count,
