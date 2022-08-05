@@ -18,13 +18,14 @@ import {
 import { FormBuilder } from '@angular/forms';
 
 import {
+  asapScheduler,
   BehaviorSubject,
   combineLatest,
   debounceTime,
   first,
   map,
   Observable,
-  share,
+  observeOn,
   skip,
   startWith,
   switchMap,
@@ -177,7 +178,10 @@ export class AnimeTableComponent {
       this.sortParams$,
       this.filterParams$,
     ]).pipe(
+
       debounceTime(300),
+
+      // observeOn(asapScheduler),
       tap(() => this.isLoading$.next(true)),
       switchMap(([paginationParams, sortParams, filterParams]) => {
 
@@ -191,7 +195,6 @@ export class AnimeTableComponent {
           })
           .pipe(
             tap(() => this.isLoading$.next(false)),
-            share(),
           );
       }),
     );

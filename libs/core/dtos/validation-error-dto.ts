@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 
 /**
  * Validation error DTO.
@@ -16,14 +15,13 @@ export type ValidationErrorDto<T> = {
       : string[];
 } & {
 
-  /**
-   * Non field errors.
-   */
-  readonly non_field_errors?: readonly string[];
+  /** Non field errors.*/
+  // eslint-disable-next-line no-restricted-syntax
+  readonly non_field_errors?: string[];
 };
 
 /**
- * Extract errors message from error data.
+ * Extract errors message from error data. As readonly string[].
  * @param errorData Error data.
  * @returns The first item if error data is a array of error messages.
  * Error message from non_field_errors if it presented.
@@ -32,7 +30,6 @@ export type ValidationErrorDto<T> = {
 export function extractErrorMessage<T>(
   errorData: ValidationErrorDto<T> | string[] | null | undefined,
 ): string | undefined {
-  // TODO (template preparation): Add current API specific way to extract error message.
   if (errorData == null) {
     return;
   }

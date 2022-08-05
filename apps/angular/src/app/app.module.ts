@@ -16,19 +16,22 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './../shared/shared.module';
 
 const httpInterceptorProviders: Provider[] = [
+
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ApiKeyInterceptor,
+    multi: true,
+  },
+
   {
     provide: HTTP_INTERCEPTORS,
     useClass: RefreshTokenInterceptor,
     multi: true,
   },
+
   {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
-    multi: true,
-  },
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: ApiKeyInterceptor,
     multi: true,
   },
 ];

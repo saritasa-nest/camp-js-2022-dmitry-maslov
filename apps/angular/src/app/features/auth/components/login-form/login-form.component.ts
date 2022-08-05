@@ -4,19 +4,23 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { UserService } from '@js-camp/angular/core/services/user.service';
 import { catchHttpErrorResponse } from '@js-camp/angular/core/utils/rxjs/catch-http-error-response';
-import { finalize, of, Subject } from 'rxjs';
+import { catchValidationData } from '@js-camp/angular/core/utils/rxjs/catch-validation-error';
+import { Destroyable, takeUntilDestroy } from '@js-camp/angular/core/utils/rxjs/destroyable';
+import { toggleExecutionState } from '@js-camp/angular/core/utils/rxjs/toggle-execution-state';
+import { BehaviorSubject, catchError, finalize, of, Subject, tap } from 'rxjs';
 
 /** Login form component. */
+@Destroyable()
 @Component({
   selector: 'camp-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginFormComponent implements OnDestroy {
+export class LoginFormComponent {
   private destroy$ = new Subject<boolean>();
 
-  public isLoading$ = new Subject<boolean>();
+  public isLoading$ = new BehaviorSubject<boolean>(false);
 
   /** Error message. */
   public error$ = new Subject<string>();
@@ -37,29 +41,24 @@ export class LoginFormComponent implements OnDestroy {
     }
 
     this.error$.next('');
-    this.isLoading$.next(true);
 
     this.userService.login({
       email: this.loginForm.value.email ?? '',
       password: this.loginForm.value.password ?? '',
     }).pipe(
-      catchHttpErrorResponse((err: HttpErrorResponse) => {
-        this.error$.next(err.error.detail);
-        return of(err);
-      }),
-      finalize(() => this.isLoading$.next(false)),
+      toggleExecutionState(this.isLoading$),
+      catchValidationData(this.loginForm),
+      catchError((e: unknown) => of(e)),
+      takeUntilDestroy(this),
     )
-      .subscribe();
+      .subscribe(() => {
+        console.log(this.loginForm.errors);
+      });
   }
 
   public constructor(
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
-    private readonly authService: AuthService,
   ) {}
 
-  public ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
-  }
 }

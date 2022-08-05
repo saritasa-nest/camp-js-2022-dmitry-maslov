@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 
 import { AppConfigService } from '../services/app-config.service';
 import { AuthService } from '../services/auth.service';
@@ -35,10 +35,10 @@ export class AuthInterceptor implements HttpInterceptor {
         map(userSecret =>
           userSecret ?
             req.clone({
-                headers: this.authService.appendAuthorizationHeader(
-                  req.headers,
-                  userSecret,
-                ),
+              headers: this.authService.appendAuthorizationHeader(
+                req.headers,
+                userSecret,
+              ),
             }) :
             req),
         switchMap(newReq => next.handle(newReq)),

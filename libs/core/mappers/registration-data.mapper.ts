@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { RegistrationDataDto } from '@js-camp/core/dtos/registration.dto';
-import { Registration } from '@js-camp/core/models/registration';
+import { RegistrationDataDto } from '../dtos/registration.dto';
+import { Registration } from '../models/registration';
 
 export namespace RegistrationMapper {
 

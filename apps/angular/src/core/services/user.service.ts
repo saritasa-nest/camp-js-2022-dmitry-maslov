@@ -5,6 +5,7 @@ import { UserDto } from '@js-camp/core/dtos/user.dto';
 import { UserMapper } from '@js-camp/core/mappers/user.mapper';
 import { AppError } from '@js-camp/core/models/app-error';
 import { Login } from '@js-camp/core/models/login';
+import { Registration } from '@js-camp/core/models/registration';
 import { User } from '@js-camp/core/models/user';
 import {
   catchError,
@@ -26,9 +27,7 @@ import { AppConfigService } from './app-config.service';
 import { AuthService } from './auth.service';
 import { UserSecretStorageService } from './user-secret-storage.service';
 
-/**
- * Stateful service for storing/managing information about the current user.
- */
+/** Stateful service for storing/managing information about the current user. */
 @Injectable({
   providedIn: 'root',
 })
@@ -54,6 +53,26 @@ export class UserService {
     this.isAuthorized$ = this.currentUser$.pipe(map(user => user != null));
   }
 
+  // /** Update user secret, supposed to be called when user data is outdated. */
+  // public refreshSecret(): Observable<void> {
+  //   return this.userSecretStorage.currentSecret$.pipe(
+  //     first(),
+  //     switchMap(secret =>
+  //       secret != null ?
+  //         this.authService.refreshSecret(secret) :
+  //         throwError(() => new AppError('Unauthorized'))),
+
+  //     catchError((error: unknown) =>
+  //       this.userSecretStorage
+  //         .removeSecret()
+  //         .pipe(
+  //           switchMapTo(throwError(() => error)),
+  //         )),
+  //     switchMap(newSecret => this.userSecretStorage.saveSecret(newSecret)),
+  //     mapTo(void 0),
+  //   );
+  // }
+
   /** Update user secret, supposed to be called when user data is outdated. */
   public refreshSecret(): Observable<void> {
     return this.userSecretStorage.currentSecret$.pipe(
@@ -63,10 +82,12 @@ export class UserService {
           this.authService.refreshSecret(secret) :
           throwError(() => new AppError('Unauthorized'))),
 
+      // In case token is invalid clear the storage and redirect to login page
       catchError((error: unknown) =>
         this.userSecretStorage
           .removeSecret()
           .pipe(
+            switchMapTo(this.navigateToAuthPage()),
             switchMapTo(throwError(() => error)),
           )),
       switchMap(newSecret => this.userSecretStorage.saveSecret(newSecret)),
@@ -74,13 +95,24 @@ export class UserService {
     );
   }
 
-  /**
-   * Logout current user.
-   */
+  /** Logout current user. */
   public logout(): Observable<void> {
     return this.userSecretStorage
       .removeSecret()
       .pipe(finalize(() => this.navigateToAuthPage()));
+  }
+
+  /**
+   * Register.
+   * @param registrationData Registration data.
+   */
+  public register(registrationData: Registration): Observable<unknown> {
+    return this.authService.register(registrationData).pipe(
+      switchMap(secret => this.userSecretStorage.saveSecret(secret)),
+      switchMap(() => this.isAuthorized$),
+      filter(isAuthorized => isAuthorized),
+      tap(() => this.redirectAfterAuthorization()),
+    );
   }
 
   /**

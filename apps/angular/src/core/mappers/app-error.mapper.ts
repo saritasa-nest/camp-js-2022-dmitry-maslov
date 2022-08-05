@@ -139,4 +139,23 @@ export namespace AppErrorMapper {
           mapper.validationErrorFromDto(httpError.error.data);
     return new AppValidationError<TEntity>(message, validationData);
   }
+
+  /**
+   * RxJS operator to catch and map HTTP API error response to the appropriate Api error model.
+   * @param mapper Mapper function that transform validation DTO errors to the application validation model.
+   * @returns AppError if httpError is not "Bad Request" error or AppValidationError if it is "Bad Request".
+   */
+  export function catchHttpErrorToAppErrorWithValidationSupport<
+    T,
+    TDto,
+    TEntity extends Record<string, unknown>,
+  >(mapper: ErrorMapper<TDto, TEntity>): MonoTypeOperatorFunction<T> {
+    return catchHttpErrorResponse(error => {
+     const appError = fromDtoWithValidationSupport<TDto, TEntity>(
+       error,
+       mapper,
+     );
+     return throwError(() => appError);
+   });
+  }
 }
