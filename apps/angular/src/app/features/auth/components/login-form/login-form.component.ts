@@ -48,11 +48,12 @@ export class LoginFormComponent {
     }).pipe(
       toggleExecutionState(this.isLoading$),
       catchValidationData(this.loginForm),
-      catchError((e: unknown) => of(e)),
       takeUntilDestroy(this),
     )
-      .subscribe(() => {
-        console.log(this.loginForm.errors);
+      .subscribe({
+        error(e: unknown) {
+          console.log(e);
+        },
       });
   }
 

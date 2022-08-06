@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '@js-camp/angular/core/services/user.service';
 import { catchHttpErrorResponse } from '@js-camp/angular/core/utils/rxjs/catch-http-error-response';
+import { catchValidationData } from '@js-camp/angular/core/utils/rxjs/catch-validation-error';
 import { Destroyable, takeUntilDestroy } from '@js-camp/angular/core/utils/rxjs/destroyable';
 import { toggleExecutionState } from '@js-camp/angular/core/utils/rxjs/toggle-execution-state';
 import { BehaviorSubject, catchError, EMPTY, finalize, first, map, of, Subject, tap } from 'rxjs';
@@ -42,7 +43,7 @@ export class RegistrationFormComponent {
     }
 
     const { email, firstName, lastName, password } =
-      this.registrationForm.value;
+    this.registrationForm.value;
 
     this.userService
       .register({
@@ -53,13 +54,28 @@ export class RegistrationFormComponent {
       })
       .pipe(
         toggleExecutionState(this.isLoading$),
+        catchValidationData(this.registrationForm),
         takeUntilDestroy(this),
       )
-      .subscribe();
+      .subscribe({
+        error: (e: unknown) => {
+          console.log(e);
+          console.log(this.registrationForm.errors);
+          console.log(this.registrationForm.controls.firstName.errors);
+          console.log(this.registrationForm.controls.password.errors);
+        },
+      });
   }
 
   public constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-  ) {}
+  ) {
+
+    this.registrationForm.valueChanges.pipe(
+      tap(() => {
+        console.log(this.registrationForm.hasError('password'));
+      }),
+    ).subscribe();
+  }
 }
