@@ -1,4 +1,8 @@
-<form [formGroup]="registrationForm" style="display: flex; flex-direction: column;" (submit)="handleRegistrationSubmit()">
+<form
+  [formGroup]="registrationForm"
+  style="display: flex; flex-direction: column"
+  (submit)="handleRegistrationSubmit()"
+>
   <mat-progress-bar
     mode="indeterminate"
     *ngIf="isLoading$ | async"
@@ -11,8 +15,10 @@
       formControlName="email"
       autocomplete="email"
     />
-
-    </mat-form-field>
+    <mat-error *ngIf="registrationForm.controls.email.hasError('appError')">
+      {{ registrationForm.controls.email.getError('appError').message }}
+    </mat-error>
+  </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>First name</mat-label>
     <input
@@ -21,6 +27,9 @@
       formControlName="firstName"
       autocomplete="additional-name"
     />
+    <mat-error *ngIf="registrationForm.controls.firstName.hasError('appError')">
+      {{ registrationForm.controls.firstName.getError('appError').message }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Last name</mat-label>
@@ -30,6 +39,9 @@
       formControlName="lastName"
       autocomplete="family-name"
     />
+    <mat-error *ngIf="registrationForm.controls.lastName.hasError('appError')">
+      {{ registrationForm.controls.lastName.getError('appError').message }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Password</mat-label>
@@ -39,8 +51,10 @@
       placeholder="password"
       formControlName="password"
       autocomplete="new-password"
-      
     />
+    <mat-error *ngIf="registrationForm.controls.password.hasError('appError')">
+      {{ registrationForm.controls.password.getError('appError').message }}
+    </mat-error>
   </mat-form-field>
   <button
     mat-button

@@ -1,8 +1,0 @@
-<label class="label">
-  <span class="label__content" *ngIf="labelText !== null">{{ labelText }}</span>
-  <div class="label__input">
-    <ng-content></ng-content>
-  </div>
-  <saanboc-validation-message class="error" [errors]="errors$ | async">
-  </saanboc-validation-message>
-</label>

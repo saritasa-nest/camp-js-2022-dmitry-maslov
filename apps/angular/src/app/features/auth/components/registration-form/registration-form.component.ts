@@ -57,25 +57,11 @@ export class RegistrationFormComponent {
         catchValidationData(this.registrationForm),
         takeUntilDestroy(this),
       )
-      .subscribe({
-        error: (e: unknown) => {
-          console.log(e);
-          console.log(this.registrationForm.errors);
-          console.log(this.registrationForm.controls.firstName.errors);
-          console.log(this.registrationForm.controls.password.errors);
-        },
-      });
+      .subscribe();
   }
 
   public constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-  ) {
-
-    this.registrationForm.valueChanges.pipe(
-      tap(() => {
-        console.log(this.registrationForm.hasError('password'));
-      }),
-    ).subscribe();
-  }
+  ) {}
 }
