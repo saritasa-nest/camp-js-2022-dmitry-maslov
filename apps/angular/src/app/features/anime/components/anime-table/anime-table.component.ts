@@ -180,7 +180,7 @@ export class AnimeTableComponent {
 
   /**
    * Update sort params.
-   * @param event SortEvent.
+   * @param event Sort event..
    */
   public handleSortChange(event: Sort): void {
     this.sortParams$.next({
@@ -231,7 +231,7 @@ export class AnimeTableComponent {
           sortParams.direction :
           null,
         [QUERY_PARAMS_MAP.filtersType]:
-          filterParams.type.map(animeType =>
+          filterParams.type.map((animeType: AnimeType) =>
             AnimeType.toReadable(animeType)) ?? null,
       },
       queryParamsHandling: 'merge',

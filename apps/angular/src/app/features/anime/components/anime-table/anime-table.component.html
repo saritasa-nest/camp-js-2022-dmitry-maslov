@@ -7,12 +7,12 @@
   <form [formGroup]="filterForms">
     <mat-form-field>
       <mat-label>Search</mat-label>
-      <input matInput placeholder="Anime title" formControlName="search" />
+      <input matInput placeholder="Naruto" formControlName="search" />
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Filter type</mat-label>
       <mat-select
         [multiple]="true"
-        placeholder="Filter type"
         formControlName="type"
       >
         <mat-option
