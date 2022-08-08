@@ -22,8 +22,8 @@ export namespace PaginatedDataMapper {
 interface PaginatedDataFromDtoParams<T, TDto> {
 
   /** Paginated data dto.*/
-  dto: PaginatedDataDto<TDto>;
+  readonly dto: PaginatedDataDto<TDto>;
 
   /** Mapper function that converted the DTO. Result to model result. */
-  resultMapper: (resultDto: TDto) => T;
+  readonly resultMapper: (resultDto: TDto) => T;
 }
