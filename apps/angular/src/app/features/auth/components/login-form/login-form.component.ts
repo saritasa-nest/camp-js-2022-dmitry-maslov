@@ -1,13 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '@js-camp/angular/core/services/auth.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '@js-camp/angular/core/services/user.service';
-import { catchHttpErrorResponse } from '@js-camp/angular/core/utils/rxjs/catch-http-error-response';
 import { catchValidationData } from '@js-camp/angular/core/utils/rxjs/catch-validation-error';
 import { Destroyable, takeUntilDestroy } from '@js-camp/angular/core/utils/rxjs/destroyable';
 import { toggleExecutionState } from '@js-camp/angular/core/utils/rxjs/toggle-execution-state';
-import { BehaviorSubject, catchError, finalize, of, Subject, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 /** Login form component. */
 @Destroyable()
@@ -18,12 +15,8 @@ import { BehaviorSubject, catchError, finalize, of, Subject, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent {
-  private destroy$ = new Subject<boolean>();
-
+  /** Is loading. */
   public isLoading$ = new BehaviorSubject<boolean>(false);
-
-  /** Error message. */
-  public error$ = new Subject<string>();
 
   /** Should show password. */
   public shouldShowPassword = true;
@@ -40,8 +33,6 @@ export class LoginFormComponent {
       return void 0;
     }
 
-    this.error$.next('');
-
     this.userService.login({
       email: this.loginForm.value.email ?? '',
       password: this.loginForm.value.password ?? '',
@@ -50,11 +41,7 @@ export class LoginFormComponent {
       catchValidationData(this.loginForm),
       takeUntilDestroy(this),
     )
-      .subscribe({
-        error(e: unknown) {
-          console.log(e);
-        },
-      });
+      .subscribe();
   }
 
   public constructor(

@@ -117,6 +117,7 @@ export namespace AppErrorMapper {
     mapper: ErrorMapper<TDto, TEntity>,
   ): AppError | AppValidationError<TEntity> {
     if (httpError.status !== 400) {
+
       // It is not a validation error. Return simple AppError.
       return fromDto(httpError);
     }
@@ -151,10 +152,11 @@ export namespace AppErrorMapper {
     TEntity extends Record<string, unknown>,
   >(mapper: ErrorMapper<TDto, TEntity>): MonoTypeOperatorFunction<T> {
     return catchHttpErrorResponse(error => {
-     const appError = fromDtoWithValidationSupport<TDto, TEntity>(
-       error,
-       mapper,
-     );
+
+      const appError = fromDtoWithValidationSupport<TDto, TEntity>(
+        error,
+        mapper,
+      );
      return throwError(() => appError);
    });
   }
