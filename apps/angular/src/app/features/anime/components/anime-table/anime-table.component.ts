@@ -221,15 +221,9 @@ export class AnimeTableComponent {
       queryParams: {
         [QUERY_PARAMS_MAP.limit]: paginationParams.limit,
         [QUERY_PARAMS_MAP.page]: paginationParams.page,
-        [QUERY_PARAMS_MAP.search]: filterParams.search ?
-          filterParams.search :
-          null,
-        [QUERY_PARAMS_MAP.sortBy]: sortParams.direction ?
-          sortParams.sortBy :
-          null,
-        [QUERY_PARAMS_MAP.direction]: sortParams.direction ?
-          sortParams.direction :
-          null,
+        [QUERY_PARAMS_MAP.search]: filterParams.search == null ? null : filterParams.search,
+        [QUERY_PARAMS_MAP.sortBy]: sortParams.direction ? sortParams.sortBy : null,
+        [QUERY_PARAMS_MAP.direction]: sortParams.direction == null ? null : sortParams.direction,
         [QUERY_PARAMS_MAP.filtersType]:
           filterParams.type.map((animeType: AnimeType) =>
             AnimeType.toReadable(animeType)) ?? null,
