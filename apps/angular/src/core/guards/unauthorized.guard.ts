@@ -27,7 +27,7 @@ export class UnauthorizedGuard implements CanActivate, CanLoad {
 
   private canNavigate(): Observable<boolean | UrlTree> {
     return this.userService.isAuthorized$.pipe(
-      map(isAuthorized => (isAuthorized ? true : this.router.parseUrl('/'))),
+      map(isAuthorized => (isAuthorized ? true : this.router.parseUrl('/auth'))),
       first(),
     );
   }

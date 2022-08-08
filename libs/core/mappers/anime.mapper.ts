@@ -29,6 +29,7 @@ export namespace AnimeMapper {
    */
   export function fromDtoToAnime(dto: AnimeDTO): Anime {
     return new Anime({
+      airing: dto.airing,
       id: dto.id,
       image: dto.image,
       titleEng: dto.title_eng,

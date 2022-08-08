@@ -22,8 +22,14 @@ export interface AnimeDTO {
     readonly end: string | null;
   };
 
+  /** Airing. */
+  readonly airing: boolean;
+
   /** Type. */
   readonly type: AnimeType;
+
+  /** Synopsis. */
+  readonly synopsis: string;
 
   /** Status. */
   readonly status: AnimeStatus;

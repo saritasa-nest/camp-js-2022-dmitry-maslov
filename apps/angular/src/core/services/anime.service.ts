@@ -1,4 +1,4 @@
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { PaginatedDataMapper } from '@js-camp/core/mappers/paginated-data.mapper';
 import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
@@ -11,6 +11,8 @@ import { PaginationParams } from '@js-camp/core/models/pagination-params';
 import { PaginationParamsMapper } from '@js-camp/core/mappers/pagination-params.mapper';
 import { AnimeFilters } from '@js-camp/core/models/anime-filters';
 import { AnimeFiltersMapper } from '@js-camp/core/mappers/anime-filters.mapper';
+
+import { Anime } from '@js-camp/core/models/anime';
 
 import { AnimeSortParams } from '../models/animeSortParams';
 import { AnimeSortMapper } from '../mappers/animeSortParams.mapper';
@@ -32,6 +34,16 @@ export class AnimeService {
   }
 
   /**
+   * Get anime.
+   * @param id Anime id.
+   */
+  public getAnime(id: number): Observable<Anime> {
+    return this.httpClient
+      .get<AnimeDTO>(`${this.animeUrl.toString()}${id}/`)
+      .pipe(map(animeDto => AnimeMapper.fromDtoToAnime(animeDto)));
+  }
+
+  /**
    * Method for getting paginated anime list.
    * @param PaginatedAnimeListParams {PaginatedAnimeListParams}.
    */
@@ -49,7 +61,9 @@ export class AnimeService {
         [API_FIELDS.limit]: limit,
         [API_FIELDS.order]: AnimeSortMapper.toDto(sortParams),
         [API_FIELDS.search]: filterParams.search,
-        [API_FIELDS.typeIn]: AnimeFiltersMapper.filterTypeToDto(filterParams.type),
+        [API_FIELDS.typeIn]: AnimeFiltersMapper.filterTypeToDto(
+          filterParams.type,
+        ),
       },
     })
       .pipe(
@@ -58,7 +72,6 @@ export class AnimeService {
             dto: paginatedDataDto,
             resultMapper: AnimeMapper.fromDtoToAnimeBase,
           })),
-
       );
   }
 }

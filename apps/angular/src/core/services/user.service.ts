@@ -135,7 +135,8 @@ export class UserService {
     await this.router.navigateByUrl(route);
   }
 
-  private async navigateToAuthPage(): Promise<void> {
+  /** Navigate to auth page. */
+  public async navigateToAuthPage(): Promise<void> {
     await this.router.navigate(['/auth']);
   }
 

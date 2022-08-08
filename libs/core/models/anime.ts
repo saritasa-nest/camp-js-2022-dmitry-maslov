@@ -27,12 +27,13 @@ export class Anime extends Immerable {
   /** Anime Status. */
   public readonly status: AnimeStatus;
 
-  /** Anime Source. */
-  public readonly source: AnimeSource;
+  /** Airing. */
+  public readonly airing: boolean;
 
   public constructor(data: InitArgs) {
     super();
     this.id = data.id;
+    this.airing = data.airing;
     this.image = data.image;
     this.titleEng = data.titleEng;
     this.titleJpn = data.titleJpn;

@@ -18,20 +18,19 @@ import {
 import { FormBuilder } from '@angular/forms';
 
 import {
-  asapScheduler,
   BehaviorSubject,
   combineLatest,
   debounceTime,
   first,
   map,
   Observable,
-  observeOn,
   skip,
   startWith,
   switchMap,
   tap,
 } from 'rxjs';
 import { PaginatedData } from '@js-camp/core/models/pagination';
+import { AnimeBase } from '@js-camp/core/models/anime-base';
 
 const DEFAULT_PARAMS = {
   paginationParams: {
@@ -118,7 +117,7 @@ export class AnimeTableComponent {
   );
 
   /** Paginated anime list. */
-  public readonly paginatedAnimeList$: Observable<PaginatedData<Anime>>;
+  public readonly paginatedAnimeList$: Observable<PaginatedData<AnimeBase>>;
 
   /** Anime type options. */
   public readonly filterOptionsMap = {
@@ -229,7 +228,7 @@ export class AnimeTableComponent {
    * @param _index Index.
    * @param anime Anime.
    */
-  public trackById(_index: number, anime: Anime): Anime['id'] {
+  public trackById(_index: number, anime: AnimeBase): AnimeBase['id'] {
     return anime.id;
   }
 

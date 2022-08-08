@@ -1,1 +1,4 @@
-anime page
+<camp-anime-details
+  *ngIf="animeId$ | async as animeId"
+  [animeId]="animeId"
+></camp-anime-details>

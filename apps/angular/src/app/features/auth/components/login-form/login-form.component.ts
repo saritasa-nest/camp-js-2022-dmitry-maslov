@@ -51,9 +51,7 @@ export class LoginFormComponent {
       catchError((e: unknown) => of(e)),
       takeUntilDestroy(this),
     )
-      .subscribe(() => {
-        console.log(this.loginForm.errors);
-      });
+      .subscribe();
   }
 
   public constructor(
