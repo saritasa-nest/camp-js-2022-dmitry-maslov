@@ -1,5 +1,5 @@
-import { AnimeStatus } from '../models/anime/animeStatus';
-import { AnimeType } from '../models/anime/animeType';
+import { AnimeStatus } from '../../models/anime/animeStatus';
+import { AnimeType } from '../../models/anime/animeType';
 
 /** Anime DTO. */
 export interface AnimeDTO {

@@ -1,4 +1,4 @@
-import { AnimeDTO } from '../dtos/anime.dto';
+import { AnimeDTO } from '../dtos/anime/anime.dto';
 import { Anime } from '../models/anime/anime';
 import { AnimeType } from '../models/anime/animeType';
 
