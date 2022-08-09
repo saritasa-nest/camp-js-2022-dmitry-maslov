@@ -7,16 +7,11 @@ export namespace AnimeSortMapper {
    * @param sortParams Anime sortParams.
    */
   export function toDto(sortParams: AnimeSortParams): string {
-    let order = '';
-
     if (sortParams.direction === '') {
-      order = 'id';
+      return 'id';
     } else if (sortParams.direction === 'desc') {
-      order = `-${sortParams.sortBy}`;
-    } else {
-      order = sortParams.sortBy;
+      return `-${sortParams.sortBy}`;
     }
-
-    return order;
+    return sortParams.sortBy;
   }
 }

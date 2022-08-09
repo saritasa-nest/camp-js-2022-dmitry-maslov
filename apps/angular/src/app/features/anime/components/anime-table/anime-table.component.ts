@@ -1,20 +1,15 @@
-import { Anime } from '@js-camp/core/models/anime';
 import { AnimeType } from '@js-camp/core/models/anime-type';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { AnimeService, PaginatedAnimeListParams } from '@js-camp/angular/core/services/anime.service';
 import { PaginationParams } from '@js-camp/core/models/pagination-params';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
 import { AnimeFilters } from '@js-camp/core/models/anime-filters';
-import { SortParams } from '@js-camp/angular/core/models/sortParams';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
 import {
@@ -31,6 +26,7 @@ import {
 } from 'rxjs';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { AnimeBase } from '@js-camp/core/models/anime-base';
+import { AnimeSortParams } from '@js-camp/angular/core/models/animeSortParams';
 
 const DEFAULT_PARAMS = {
   paginationParams: {
@@ -67,13 +63,13 @@ export class AnimeTableComponent {
   public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
   /** Anime type map and functional. */
-  public animeType = AnimeType;
+  public readonly animeType = AnimeType;
 
   /** Anime status map and functional. */
-  public animeStatus = AnimeStatus;
+  public readonly animeStatus = AnimeStatus;
 
   /** Is Loading. */
-  public isLoading$ = new BehaviorSubject<boolean>(true);
+  public readonly isLoading$ = new BehaviorSubject<boolean>(true);
 
   /** Sorted fields. */
   public readonly sortedFields = AnimeSortField;
@@ -91,31 +87,6 @@ export class AnimeTableComponent {
     'status',
   ] as const;
 
-  /** Filter forms. */
-  public readonly filterForms = this.formBuilder.group<AnimeFilters>({
-    search: '',
-    type: [],
-  });
-
-  /** FilterParams. */
-  public readonly filterParams$: Observable<AnimeFilters> = this.route.queryParams.pipe(
-    first(),
-    map(queryParams => {
-          const initialFilterParams = this.getFilterParamsFromQuery(queryParams);
-          this.filterForms.setValue(initialFilterParams);
-          return initialFilterParams;
-        }),
-    switchMap(initialFilterParams => this.filterForms.valueChanges.pipe(
-      tap(() => this.resetPagination()),
-      skip(1),
-      startWith(initialFilterParams),
-      map(value => ({
-        search: value.search ?? '',
-        type: value.type ?? [],
-      })),
-    )),
-  );
-
   /** Paginated anime list. */
   public readonly paginatedAnimeList$: Observable<PaginatedData<AnimeBase>>;
 
@@ -132,38 +103,22 @@ export class AnimeTableComponent {
     },
   } as const;
 
-  /** Pagination params. */
-  public paginationParams$ = this.route.queryParams.pipe(
-    first(),
-    switchMap(initialQueryParams => this.paginationForm.valueChanges.pipe(
-      startWith(this.getPaginationParamsFromQuery(initialQueryParams)),
-      map(paginationParams => ({
-        page: paginationParams.page ?? DEFAULT_PARAMS.paginationParams.page,
-        limit: paginationParams.limit ?? DEFAULT_PARAMS.paginationParams.limit,
-      })),
-    )),
-  );
+  /** Pagination limit. */
+  public readonly paginationLimit$ = new BehaviorSubject<number>(DEFAULT_PARAMS.paginationParams.limit);
+
+  /** Pagination page. */
+  public readonly paginationPage$ = new BehaviorSubject<number>(DEFAULT_PARAMS.paginationParams.page);
 
   /** Sort params. */
-  public readonly sortParams$: Observable<SortParams<AnimeSortField>> = this.route.queryParams.pipe(
-    first(),
-    switchMap(queryParams => this.sortForm.valueChanges.pipe(
-      startWith(this.getSortParamsFromQuery(queryParams)),
-      map(value => ({
-        direction: value.direction ?? DEFAULT_PARAMS.sortParams.direction,
-        sortBy: value.sortBy ?? DEFAULT_PARAMS.sortParams.direction,
-      })),
-    )),
-  );
-
-  private readonly paginationForm = this.formBuilder.group<PaginationParams>({
-    limit: DEFAULT_PARAMS.paginationParams.limit,
-    page: DEFAULT_PARAMS.paginationParams.page,
-  });
-
-  private readonly sortForm = this.formBuilder.group<SortParams<AnimeSortField>>({
+  public readonly sortParams$ = new BehaviorSubject<AnimeSortParams>({
     direction: '',
     sortBy: '',
+  });
+
+  /** Filter forms. */
+  public readonly filterForms = this.formBuilder.nonNullable.group<AnimeFilters>({
+    search: '',
+    type: [],
   });
 
   public constructor(
@@ -172,19 +127,41 @@ export class AnimeTableComponent {
     private readonly route: ActivatedRoute,
     animeService: AnimeService,
   ) {
+
+    this.setInitialParams();
+
+    const filterParams$ = this.filterForms.valueChanges.pipe(
+      tap(() => this.resetPagination()),
+      skip(1),
+      startWith(this.filterForms.value),
+      map(({ search, type }) => ({
+        search: search ?? '',
+        type: type ?? [],
+      })),
+    );
+
     this.paginatedAnimeList$ = combineLatest([
-      this.paginationParams$,
+      this.paginationPage$,
+      this.paginationLimit$,
       this.sortParams$,
-      this.filterParams$,
+      filterParams$,
     ]).pipe(
 
       debounceTime(300),
 
       // observeOn(asapScheduler),
       tap(() => this.isLoading$.next(true)),
-      switchMap(([paginationParams, sortParams, filterParams]) => {
+      switchMap(([page, limit, sortParams, filterParams]) => {
+        const paginationParams: PaginationParams = {
+          page,
+          limit,
+        };
 
-        this.updateQueryParams(paginationParams, filterParams, sortParams);
+        this.updateQueryParams({
+          paginationParams,
+          filterParams,
+          sortParams,
+        });
 
         return animeService
           .getPaginatedAnimeList({
@@ -201,12 +178,12 @@ export class AnimeTableComponent {
 
   /**
    * Update sort params.
-   * @param event SortEvent.
+   * @param event Sort event..
    */
   public handleSortChange(event: Sort): void {
-    this.sortForm.setValue({
+    this.sortParams$.next({
       direction: event.direction,
-      sortBy: event.direction ? (event.active as AnimeSortField) : DEFAULT_PARAMS.sortParams.sortBy,
+      sortBy: event.active as AnimeSortField,
     });
     this.resetPagination();
   }
@@ -216,11 +193,8 @@ export class AnimeTableComponent {
    * @param event Paginator event.
    */
   public handlePaginationChange(event: PageEvent): void {
-    this.paginationForm.setValue({
-      limit: event.pageSize,
-      page: event.pageIndex + 1,
-    });
-
+    this.paginationLimit$.next(event.pageSize);
+    this.paginationPage$.next(event.pageIndex + 1);
   }
 
   /**
@@ -233,41 +207,48 @@ export class AnimeTableComponent {
   }
 
   private resetPagination(): void {
-    this.paginationForm.setValue({
-      limit: this.paginationForm.value.limit ?? DEFAULT_PARAMS.paginationParams.limit,
-      page: RESET_PAGINATION_PAGE,
-    });
+    this.paginationPage$.next(RESET_PAGINATION_PAGE);
   }
 
-  private updateQueryParams(
-    paginationParams: PaginationParams,
-    filterParams: AnimeFilters,
-    sortParams: SortParams<AnimeSortField>,
-  ): void {
+  private updateQueryParams({
+    paginationParams,
+    filterParams,
+    sortParams,
+  }: PaginatedAnimeListParams): void {
     this.router.navigate([], {
       queryParams: {
         [QUERY_PARAMS_MAP.limit]: paginationParams.limit,
         [QUERY_PARAMS_MAP.page]: paginationParams.page,
-        [QUERY_PARAMS_MAP.search]: filterParams.search ? filterParams.search : null,
+        [QUERY_PARAMS_MAP.search]: filterParams.search == null ? null : filterParams.search,
         [QUERY_PARAMS_MAP.sortBy]: sortParams.direction ? sortParams.sortBy : null,
-        [QUERY_PARAMS_MAP.direction]: sortParams.direction ? sortParams.direction : null,
-        [QUERY_PARAMS_MAP.filtersType]: filterParams.type.map(animeType => AnimeType.toReadable(animeType)) ?? null,
+        [QUERY_PARAMS_MAP.direction]: sortParams.direction == null ? null : sortParams.direction,
+        [QUERY_PARAMS_MAP.filtersType]:
+          filterParams.type.map((animeType: AnimeType) =>
+            AnimeType.toReadable(animeType)) ?? null,
       },
       queryParamsHandling: 'merge',
     });
   }
 
-  private getSortParamsFromQuery(queryParams: Params): SortParams<AnimeSortField> {
+  private getSortParamsFromQuery(queryParams: Params): AnimeSortParams {
     return {
-      direction: queryParams[QUERY_PARAMS_MAP.direction] as SortDirection ?? DEFAULT_PARAMS.sortParams.direction,
-      sortBy: queryParams[QUERY_PARAMS_MAP.sortBy] as AnimeSortField ?? DEFAULT_PARAMS.sortParams.sortBy,
+      direction:
+        (queryParams[QUERY_PARAMS_MAP.direction] as SortDirection) ??
+        DEFAULT_PARAMS.sortParams.direction,
+      sortBy:
+        (queryParams[QUERY_PARAMS_MAP.sortBy] as AnimeSortField) ??
+        DEFAULT_PARAMS.sortParams.sortBy,
     };
   }
 
   private getPaginationParamsFromQuery(queryParams: Params): PaginationParams {
     return {
-      limit: queryParams[QUERY_PARAMS_MAP.limit] as number ?? DEFAULT_PARAMS.paginationParams.limit,
-      page: queryParams[QUERY_PARAMS_MAP.page] as number ?? DEFAULT_PARAMS.paginationParams.page,
+      limit:
+        (queryParams[QUERY_PARAMS_MAP.limit] as number) ??
+        DEFAULT_PARAMS.paginationParams.limit,
+      page:
+        (queryParams[QUERY_PARAMS_MAP.page] as number) ??
+        DEFAULT_PARAMS.paginationParams.page,
     };
   }
 
@@ -283,8 +264,27 @@ export class AnimeTableComponent {
     }
 
     return {
-      search: queryParams[QUERY_PARAMS_MAP.search] as string ?? '',
+      search: (queryParams[QUERY_PARAMS_MAP.search] as string) ?? '',
       type: filterType,
     };
+  }
+
+  private setInitialParams(): void {
+    this.route.queryParams
+      .pipe(
+        first(),
+        tap(initialQueryParams => {
+          this.setInitialParamsFromQuery(initialQueryParams);
+        }),
+      ).subscribe();
+  }
+
+  private setInitialParamsFromQuery(initialQueryParams: Params): void {
+    const paginationParams = this.getPaginationParamsFromQuery(initialQueryParams);
+
+    this.paginationPage$.next(paginationParams.page);
+    this.paginationLimit$.next(paginationParams.limit);
+    this.sortParams$.next(this.getSortParamsFromQuery(initialQueryParams));
+    this.filterForms.setValue(this.getFilterParamsFromQuery(initialQueryParams));
   }
 }
