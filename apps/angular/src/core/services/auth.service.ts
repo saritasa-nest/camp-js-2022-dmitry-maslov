@@ -44,7 +44,10 @@ export class AuthService {
       .post<UserSecretDto>(this.registerUrl.toString(), {
       ...RegistrationMapper.toDto(registrationData),
     })
-      .pipe(map(dto => UserSecretDataMapper.fromDto(dto)));
+      .pipe(
+        map(dto => UserSecretDataMapper.fromDto(dto)),
+        AppErrorMapper.catchHttpErrorToAppErrorWithValidationSupport(RegistrationMapper.validationErrorFromDto),
+      );
   }
 
   /**

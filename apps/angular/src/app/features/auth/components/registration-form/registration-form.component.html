@@ -1,16 +1,27 @@
-<form [formGroup]="registrationForm" style="display: flex; flex-direction: column;" (submit)="handleRegistrationSubmit()">
+<form
+  [formGroup]="registrationForm"
+  style="display: flex; flex-direction: column"
+  (submit)="handleRegistrationSubmit()"
+>
   <mat-progress-bar
     mode="indeterminate"
     *ngIf="isLoading$ | async"
   ></mat-progress-bar>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Email</mat-label>
+
     <input
       matInput
       placeholder="pat@example.com"
       formControlName="email"
       autocomplete="email"
     />
+    <mat-error *ngIf="registrationForm.controls.email.hasError('email')">
+      Must be an email address 
+    </mat-error>
+    <mat-error *ngIf="registrationForm.controls.email.hasError('appError')">
+      {{ registrationForm.controls.email.getError('appError').message }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>First name</mat-label>
@@ -20,6 +31,9 @@
       formControlName="firstName"
       autocomplete="additional-name"
     />
+    <mat-error *ngIf="registrationForm.controls.firstName.hasError('appError')">
+      {{ registrationForm.controls.firstName.getError('appError').message }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Last name</mat-label>
@@ -29,16 +43,35 @@
       formControlName="lastName"
       autocomplete="family-name"
     />
+    <mat-error *ngIf="registrationForm.controls.lastName.hasError('appError')">
+      {{ registrationForm.controls.lastName.getError('appError').message }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Password</mat-label>
     <input
       matInput
       type="password"
-      placeholder="password"
+      placeholder="••••••••"
       formControlName="password"
       autocomplete="new-password"
     />
+    <mat-error *ngIf="registrationForm.controls.password.hasError('appError')">
+      {{ registrationForm.controls.password.getError('appError').message }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="form__field">
+    <mat-label>Password confirm</mat-label>
+    <input
+      matInput
+      type="password"
+      placeholder="••••••••"
+      formControlName="passwordConfirm"
+      autocomplete="new-password"
+    />
+    <mat-error *ngIf="registrationForm.controls.passwordConfirm.hasError('match')">
+      Passwords not matched
+    </mat-error>
   </mat-form-field>
   <button
     mat-button
@@ -49,55 +82,3 @@
     Register
   </button>
 </form>
-
-<!-- <form [formGroup]="loginForm" class="login-form" (submit)="handleLogin()">
-  <mat-progress-bar
-    mode="indeterminate"
-    *ngIf="isLoading$ | async"
-  ></mat-progress-bar>
-  <div *ngIf="error$ | async as error">
-    {{ error | json }}
-  </div>
-  <mat-form-field appearance="fill" class="form__field">
-    <mat-label>Email</mat-label>
-    <input
-      matInput
-      placeholder="pat@example.com"
-      formControlName="email"
-      autocomplete="email"
-      required
-    />
-  </mat-form-field>
-  <mat-form-field appearance="fill" class="form__field">
-    <mat-label>Enter your password</mat-label>
-    <input
-      matInput
-      autocomplete="current-password"
-      formControlName="password"
-      [type]="shouldShowPassword ? 'password' : 'text'"
-    />
-    <button
-      type="button"
-      matSuffix
-      (click)="shouldShowPassword = !shouldShowPassword"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="shouldShowPassword"
-    >
-      <mat-icon appearance="fill">{{
-        shouldShowPassword ? "visibility_off" : "visibility"
-      }}</mat-icon>
-    </button>
-  </mat-form-field>
-
-  <button
-    mat-button
-    type="submit"
-    [disabled]="isLoading$ | async"
-    color="primary"
-  >
-    Log-in
-  </button>
-  <a routerLink="registration">
-    Register
-  </a>
-</form> -->

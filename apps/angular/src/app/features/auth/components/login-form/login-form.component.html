@@ -1,11 +1,11 @@
 <form [formGroup]="loginForm" class="login-form" (submit)="handleLogin()">
+  <mat-error *ngIf="loginForm.hasError('login')">
+    {{ loginForm.getError("login") }}
+  </mat-error>
   <mat-progress-bar
     mode="indeterminate"
     *ngIf="isLoading$ | async"
   ></mat-progress-bar>
-  <div *ngIf="error$ | async as error">
-    {{ error | json }}
-  </div>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Email</mat-label>
     <input
@@ -15,11 +15,15 @@
       autocomplete="email"
       required
     />
+    <mat-error *ngIf="loginForm.controls.email.hasError('appError')">
+      {{ loginForm.controls.email.getError("appError") }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Enter your password</mat-label>
     <input
       matInput
+      placeholder="••••••••"
       autocomplete="current-password"
       formControlName="password"
       [type]="shouldShowPassword ? 'password' : 'text'"
@@ -35,17 +39,19 @@
         shouldShowPassword ? "visibility_off" : "visibility"
       }}</mat-icon>
     </button>
+    <mat-error *ngIf="loginForm.controls.password.hasError('appError')">
+      {{ loginForm.controls.password.getError("appError") }}
+    </mat-error>
   </mat-form-field>
-
-  <button
-    mat-button
-    type="submit"
-    [disabled]="isLoading$ | async"
-    color="primary"
-  >
-    Log-in
-  </button>
-  <a routerLink="registration">
-    Register
-  </a>
+  <div>
+    <button
+      mat-button
+      type="submit"
+      [disabled]="isLoading$ | async"
+      color="primary"
+    >
+      Log-in
+    </button>
+    <a routerLink="registration"> Register </a>
+  </div>
 </form>

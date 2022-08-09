@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { AppConfigService } from '../services/app-config.service';
 import { UserService } from '../services/user.service';

@@ -3,9 +3,7 @@
  */
 export enum ValidationErrorCode {
 
-  /**
-   * Wrong email.
-   */
+  /** Wrong email.*/
   Email = 'email',
 
   /**
@@ -38,67 +36,43 @@ export enum ValidationErrorCode {
    */
   Max = 'max',
 
-  /**
-   * Pattern restriction.
-   */
+  /** Pattern restriction. */
   Pattern = 'pattern',
 
-  /**
-   * Custom error.
-   */
+  /** Custom error. */
   AppError = 'appError',
 
-  /**
-   * Value is greater than the compared one.
-   */
+  /** Value is greater than the compared one. */
   Greater = 'greater',
 }
 
-/**
- * Match validation error data.
- */
+/** Match validation error data. */
 export interface MatchErrorData {
 
-  /**
-   * Control name.
-   */
+  /** Control name. */
   controlName: string;
 
-  /**
-   * Control title.
-   */
+  /** Control title. */
   controlTitle: string;
 }
 
-/**
- * Length validation error data.
- */
+/** Length validation error data. */
 export interface LengthErrorData {
 
-  /**
-   * Actual length.
-   */
+  /** Actual length. */
   actualLength: number;
 
-  /**
-   * Required length.
-   */
+  /** Required length. */
   requiredLength: number;
 }
 
-/**
- * Pattern validation error data.
- */
+/** Pattern validation error data. */
 export interface PatternErrorData {
 
-  /**
-   * Actual length.
-   */
+  /** Actual length. */
   actualValue: string;
 
-  /**
-   * Required length.
-   */
+  /** Required length. */
   requiredPattern: string;
 }
 

@@ -2,7 +2,6 @@
   display: block;
 }
 
-.header {
-  height: 40px;
-  display: block;
+.main {
+  margin: 10px auto 0;
 }

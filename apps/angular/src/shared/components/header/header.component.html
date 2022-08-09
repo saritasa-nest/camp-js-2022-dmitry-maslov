@@ -1,15 +1,21 @@
 <header class="header">
   <nav class="naviation">
     <a routerLink="anime">Anime</a>
-    <a routerLink="auth">login</a>
   </nav>
   <div>
     <div *ngIf="isAuthorized$ | async; else noAuthorized">
-      <button type="button" (click)="handleLogout()">Logout</button>
+      <button
+        type="button"
+        (click)="handleLogout()"
+        mat-flat-button
+        color="accent"
+      >
+        Logout
+      </button>
     </div>
     <ng-template #noAuthorized>
       <div>
-        <a routerLink="/auth">Login</a>
+            <a mat-flat-button routerLink="/auth">Login</a>
       </div>
     </ng-template>
   </div>
