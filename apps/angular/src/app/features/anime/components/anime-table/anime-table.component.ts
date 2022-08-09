@@ -67,13 +67,13 @@ export class AnimeTableComponent {
   public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
   /** Anime type map and functional. */
-  public animeType = AnimeType;
+  public readonly animeType = AnimeType;
 
   /** Anime status map and functional. */
-  public animeStatus = AnimeStatus;
+  public readonly animeStatus = AnimeStatus;
 
   /** Is Loading. */
-  public isLoading$ = new BehaviorSubject<boolean>(true);
+  public readonly isLoading$ = new BehaviorSubject<boolean>(true);
 
   /** Sorted fields. */
   public readonly sortedFields = AnimeSortField;
