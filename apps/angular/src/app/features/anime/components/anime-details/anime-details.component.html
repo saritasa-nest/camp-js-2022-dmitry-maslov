@@ -2,6 +2,6 @@
   <img [src]="anime.image">
   <span>Title: {{anime.titleEng}}</span>
   <span>Aired: {{anime.airing}}</span>
-  <span>Status: {{anime.status}}</span>
+  <span>Status: {{animeStatus.toReadable(anime.status)}}</span>
   <span>Type: {{anime.type}}</span>
 </div>
