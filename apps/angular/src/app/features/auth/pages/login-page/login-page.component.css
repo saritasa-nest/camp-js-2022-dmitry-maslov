@@ -1,11 +1,9 @@
 .login-form {
   width: 400px;
-  display: block;
+  margin: 0 auto;
 }
 
 :host {
-  display: flex;
-  justify-content: center;
+  display: block;
   height: 100%;
-  align-items: center;
 }

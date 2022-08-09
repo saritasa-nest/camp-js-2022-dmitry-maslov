@@ -23,6 +23,7 @@
     <mat-label>Enter your password</mat-label>
     <input
       matInput
+      placeholder="••••••••"
       autocomplete="current-password"
       formControlName="password"
       [type]="shouldShowPassword ? 'password' : 'text'"
@@ -42,13 +43,15 @@
       {{ loginForm.controls.password.getError("appError") }}
     </mat-error>
   </mat-form-field>
-  <button
-    mat-button
-    type="submit"
-    [disabled]="isLoading$ | async"
-    color="primary"
-  >
-    Log-in
-  </button>
-  <a routerLink="registration"> Register </a>
+  <div>
+    <button
+      mat-button
+      type="submit"
+      [disabled]="isLoading$ | async"
+      color="primary"
+    >
+      Log-in
+    </button>
+    <a routerLink="registration"> Register </a>
+  </div>
 </form>

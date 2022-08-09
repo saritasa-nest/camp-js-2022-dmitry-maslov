@@ -2,7 +2,9 @@
   height: 100%;
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid black;
+  align-items: center;
+  padding: 3px;
+  border-bottom: 1px solid black;
 }
 
 .navigation {
