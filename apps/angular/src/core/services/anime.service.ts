@@ -83,3 +83,24 @@ const API_FIELDS = {
   search: 'search',
   typeIn: 'type__in',
 };
+
+/** Params for {getPaginatedAnimeList} method.*/
+export interface PaginatedAnimeListParams {
+
+  /** Pagination params. */
+  paginationParams: PaginationParams;
+
+  /** Anime Filters. */
+  filterParams: AnimeFilters;
+
+  /** Sort params. */
+  sortParams: AnimeSortParams;
+}
+
+const API_FIELDS = {
+  offset: 'offset',
+  limit: 'limit',
+  order: 'ordering',
+  search: 'search',
+  typeIn: 'type__in',
+};

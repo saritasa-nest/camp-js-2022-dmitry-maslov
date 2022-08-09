@@ -1,4 +1,7 @@
-.anime-table {
+:host {
   display: block;
+}
+
+.anime-table {
   padding: 0 40px;
 }
