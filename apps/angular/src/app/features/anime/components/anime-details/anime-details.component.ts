@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
 import { AnimeType } from '@js-camp/core/models/anime-type';
@@ -13,6 +14,8 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeDetailsComponent implements OnInit {
+  /** Month year format. */
+  public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
   /** Anime status. */
   public readonly animeStatus = AnimeStatus;

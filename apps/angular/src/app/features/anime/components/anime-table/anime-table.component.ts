@@ -1,4 +1,3 @@
-import { Anime } from '@js-camp/core/models/anime';
 import { AnimeType } from '@js-camp/core/models/anime-type';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
 import {
@@ -118,6 +117,16 @@ export class AnimeTableComponent {
       type: [],
     });
 
+  /**
+   * Open Details.
+   * @param id Id.
+   */
+  public openDetails(id: number): void {
+    this.router.navigate([`anime/${id}`], {
+      queryParamsHandling: 'merge',
+    });
+  }
+
   public constructor(
     private readonly formBuilder: FormBuilder,
     private readonly router: Router,
@@ -143,8 +152,6 @@ export class AnimeTableComponent {
       filterParams$,
     ]).pipe(
       debounceTime(300),
-
-      // observeOn(asapScheduler),
       tap(() => this.isLoading$.next(true)),
       switchMap(([page, limit, sortParams, filterParams]) => {
         const paginationParams: PaginationParams = {

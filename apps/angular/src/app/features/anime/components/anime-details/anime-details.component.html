@@ -1,7 +1,11 @@
 <div *ngIf="anime$ | async as anime">
-  <img [src]="anime.image">
-  <span>Title: {{anime.titleEng}}</span>
-  <span>Aired: {{anime.airing}}</span>
-  <span>Status: {{animeStatus.toReadable(anime.status)}}</span>
-  <span>Type: {{anime.type}}</span>
+  <img [src]="anime.image" />
+  <div>Title: {{ anime.titleEng }}</div>
+  <div>Aired: {{ anime.airing ? "On air" : "Not " }}</div>
+  <div>Status: {{ animeStatus.toReadable(anime.status) }}</div>
+  <div>Type: {{ animeType.toReadable(anime.type) }}</div>
+  <div>
+    Aired range:
+    {{ anime.airedRange.airedStart | date: monthYearFormat }} - {{anime.airedRange.airedFinish | date: monthYearFormat}}
+  </div>
 </div>
