@@ -9,8 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { CommonModule } from '@angular/common';
 
-import { UnauthorizedGuard } from '@js-camp/angular/core/guards/unauthorized.guard';
-
 import { AuthorizedGuard } from '@js-camp/angular/core/guards/authorized.guard';
 
 import { LoginFormComponent } from './components/login-form/login-form.component';
