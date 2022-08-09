@@ -1,4 +1,7 @@
 <form [formGroup]="loginForm" class="login-form" (submit)="handleLogin()">
+  <mat-error *ngIf="loginForm.hasError('login')">
+    {{ loginForm.getError("login") }}
+  </mat-error>
   <mat-progress-bar
     mode="indeterminate"
     *ngIf="isLoading$ | async"
@@ -6,40 +9,39 @@
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Email</mat-label>
     <input
-    matInput
-    placeholder="pat@example.com"
-    formControlName="email"
-    autocomplete="email"
-    required
+      matInput
+      placeholder="pat@example.com"
+      formControlName="email"
+      autocomplete="email"
+      required
     />
     <mat-error *ngIf="loginForm.controls.email.hasError('appError')">
-      {{loginForm.controls.email.getError('appError')}}
+      {{ loginForm.controls.email.getError("appError") }}
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Enter your password</mat-label>
     <input
-    matInput
-    autocomplete="current-password"
-    formControlName="password"
-    [type]="shouldShowPassword ? 'password' : 'text'"
+      matInput
+      autocomplete="current-password"
+      formControlName="password"
+      [type]="shouldShowPassword ? 'password' : 'text'"
     />
     <button
-    type="button"
-    matSuffix
-    (click)="shouldShowPassword = !shouldShowPassword"
-    [attr.aria-label]="'Hide password'"
-    [attr.aria-pressed]="shouldShowPassword"
+      type="button"
+      matSuffix
+      (click)="shouldShowPassword = !shouldShowPassword"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="shouldShowPassword"
     >
-    <mat-icon appearance="fill">{{
-      shouldShowPassword ? "visibility_off" : "visibility"
-    }}</mat-icon>
-  </button>
-  <mat-error *ngIf="loginForm.controls.password.hasError('appError')">
-    {{loginForm.controls.password.getError('appError')}}
-  </mat-error>
+      <mat-icon appearance="fill">{{
+        shouldShowPassword ? "visibility_off" : "visibility"
+      }}</mat-icon>
+    </button>
+    <mat-error *ngIf="loginForm.controls.password.hasError('appError')">
+      {{ loginForm.controls.password.getError("appError") }}
+    </mat-error>
   </mat-form-field>
-
   <button
     mat-button
     type="submit"
@@ -48,7 +50,5 @@
   >
     Log-in
   </button>
-  <a routerLink="registration">
-    Register
-  </a>
+  <a routerLink="registration"> Register </a>
 </form>
