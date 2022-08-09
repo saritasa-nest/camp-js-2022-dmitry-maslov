@@ -14,10 +14,7 @@ export namespace AppValidators {
     controlTitle = controlName,
   ): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (
-        control.parent &&
-        control.parent.get(controlName)?.value !== control.value
-      ) {
+      if (control.parent && control.parent.get(controlName)?.value !== control.value) {
         return {
           [ValidationErrorCode.Match]: {
             controlName,

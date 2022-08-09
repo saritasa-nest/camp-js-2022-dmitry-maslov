@@ -10,7 +10,6 @@ export namespace RegistrationMapper {
   export function validationErrorFromDto(
     errorDto: ValidationErrorDto<RegistrationDataDto> | null | undefined,
   ): EntityValidationErrors<Registration> {
-    console.log(errorDto);
     return {
       email: extractErrorMessage(errorDto?.email),
       password:

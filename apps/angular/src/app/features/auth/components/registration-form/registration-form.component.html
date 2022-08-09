@@ -9,12 +9,16 @@
   ></mat-progress-bar>
   <mat-form-field appearance="fill" class="form__field">
     <mat-label>Email</mat-label>
+
     <input
       matInput
       placeholder="pat@example.com"
       formControlName="email"
       autocomplete="email"
     />
+    <mat-error *ngIf="registrationForm.controls.email.hasError('email')">
+      Must be an email address 
+    </mat-error>
     <mat-error *ngIf="registrationForm.controls.email.hasError('appError')">
       {{ registrationForm.controls.email.getError('appError').message }}
     </mat-error>
@@ -54,6 +58,19 @@
     />
     <mat-error *ngIf="registrationForm.controls.password.hasError('appError')">
       {{ registrationForm.controls.password.getError('appError').message }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="form__field">
+    <mat-label>Password confirm</mat-label>
+    <input
+      matInput
+      type="password"
+      placeholder="password"
+      formControlName="passwordConfirm"
+      autocomplete="new-password"
+    />
+    <mat-error *ngIf="registrationForm.controls.passwordConfirm.hasError('match')">
+      Passwords not matched
     </mat-error>
   </mat-form-field>
   <button
