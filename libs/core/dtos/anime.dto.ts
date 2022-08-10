@@ -1,6 +1,9 @@
 import { AnimeStatus } from '../models/anime-status';
 import { AnimeType } from '../models/anime-type';
 
+import { GenreDto } from './genre.dto';
+import { StudioDto } from './studio.dto';
+
 /** Anime DTO. */
 export interface AnimeDTO {
 
@@ -33,4 +36,16 @@ export interface AnimeDTO {
 
   /** Status. */
   readonly status: AnimeStatus;
+
+  /** Genres. */
+  readonly genres: readonly number[];
+
+  /** Studios. */
+  readonly studios: readonly number[];
+
+  /** Genres data. */
+  readonly genres_data: readonly GenreDto[];
+
+  /** Studios data. */
+  readonly studios_data: readonly StudioDto[];
 }

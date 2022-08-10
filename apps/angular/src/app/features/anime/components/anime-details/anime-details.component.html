@@ -1,11 +1,26 @@
-<div *ngIf="anime$ | async as anime">
-  <img [src]="anime.image" />
-  <div>Title: {{ anime.titleEng }}</div>
-  <div>Aired: {{ anime.airing ? "On air" : "Not " }}</div>
-  <div>Status: {{ animeStatus.toReadable(anime.status) }}</div>
-  <div>Type: {{ animeType.toReadable(anime.type) }}</div>
-  <div>
-    Aired range:
-    {{ anime.airedRange.airedStart | date: monthYearFormat }} - {{anime.airedRange.airedFinish | date: monthYearFormat}}
+<div *ngIf="anime$ | async as anime" class="anime-details">
+  <div class="details__image-container">
+    <img class="details__image" [src]="anime.image" />
+  </div>
+  <div class="details__info">
+    <div class="details__title">{{ anime.titleEng }}</div>
+    <div class="details__status">Status: {{ animeStatus.toReadable(anime.status) }}</div>
+    <div class="details__range">Type: {{ animeType.toReadable(anime.type) }}</div>
+    <div class="details__aired">Aired: {{ anime.airing ? "On air" : "Not " }}</div>
+    <div class="details__airdeRange">
+      Aired range:
+      {{ anime.airedRange.airedStart | date: monthYearFormat }} - {{anime.airedRange.airedFinish | date: monthYearFormat}}
+    </div>
+    <div>Synopsis: {{anime.synopsis}}</div>
+    <div *ngIf="anime.genres[0] !== null && anime.genres[0] !== undefined">Genres: 
+      <div *ngFor="let genre of anime.genres">
+        {{genre.name}}  
+      <div>
+    </div>
+    <div *ngIf="anime.studios[0] !== null && anime.studios[0] !== undefined">Studios:
+      <div *ngFor="let stdio of anime.studios">
+        {{stdio.name}}  
+      <div>
+    </div>
   </div>
 </div>

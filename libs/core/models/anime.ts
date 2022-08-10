@@ -2,6 +2,8 @@ import { Immerable, OmitImmerable } from './immerable';
 
 import { AnimeStatus } from './anime-status';
 import { AnimeType } from './anime-type';
+import { Genre } from './genre';
+import { Studio } from './studios';
 
 /** Anime. */
 export class Anime extends Immerable {
@@ -33,6 +35,15 @@ export class Anime extends Immerable {
   /** Airing. */
   public readonly airing: boolean;
 
+  /** Synopsis. */
+  public readonly synopsis: string;
+
+  /** Genres. */
+  public readonly genres: readonly Genre[];
+
+  /** Studios. */
+  public readonly studios: readonly Studio[];
+
   public constructor(data: InitArgs) {
     super();
     this.id = data.id;
@@ -43,6 +54,9 @@ export class Anime extends Immerable {
     this.airedRange = data.airedRange;
     this.type = data.type;
     this.status = data.status;
+    this.synopsis = data.synopsis;
+    this.genres = data.genres;
+    this.studios = data.studios;
   }
 }
 

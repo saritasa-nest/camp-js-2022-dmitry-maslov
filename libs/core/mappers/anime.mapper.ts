@@ -1,9 +1,11 @@
-
 import { AnimeBase } from '../models/anime-base';
 import { AnimeType } from '../models/anime-type';
 
 import { AnimeDTO } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
+
+import { StudioMapper } from './studio.mapper';
+import { GenreMapper } from './genre.mapper';
 
 export namespace AnimeMapper {
 
@@ -40,6 +42,9 @@ export namespace AnimeMapper {
       },
       type: AnimeType.toAnimeType(dto.type),
       status: dto.status,
+      synopsis: dto.synopsis,
+      studios: dto.studios_data.map(studio => StudioMapper.fromDto(studio)),
+      genres: dto.genres_data.map(genre => GenreMapper.fromDto(genre)),
     });
   }
 }
