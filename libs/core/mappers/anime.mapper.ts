@@ -45,6 +45,7 @@ export namespace AnimeMapper {
       synopsis: dto.synopsis,
       studios: dto.studios_data.map(studio => StudioMapper.fromDto(studio)),
       genres: dto.genres_data.map(genre => GenreMapper.fromDto(genre)),
+      youTubeTrailerId: dto.trailer_youtube_id,
     });
   }
 }

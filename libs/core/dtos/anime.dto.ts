@@ -48,4 +48,7 @@ export interface AnimeDTO {
 
   /** Studios data. */
   readonly studios_data: readonly StudioDto[];
+
+  /** YouTube trailer id. */
+  readonly trailer_youtube_id: string;
 }

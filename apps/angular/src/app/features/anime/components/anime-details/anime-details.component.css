@@ -1,12 +1,26 @@
-.anime-details {
+.details__image {
+  width: 300px;
+  display: block;
+}
+
+.group__title {
+  font-weight: bold;
+  font-size: larger;
+}
+
+.card {
+  padding: 10px 40px;
+}
+
+.details__basic {
+  display: flex;
+}
+
+.basic__info {
+  margin: 0 10px;
+}
+
+.details__trailer {
   display: flex;
   justify-content: center;
-}
-
-.details__image {
-  width: 200px;
-}
-
-.details__title {
-  font-size: x-large;
 }
