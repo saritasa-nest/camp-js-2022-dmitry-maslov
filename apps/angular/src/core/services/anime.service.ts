@@ -1,4 +1,4 @@
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { PaginatedDataMapper } from '@js-camp/core/mappers/paginated-data.mapper';
 import { AnimeDTO } from '@js-camp/core/dtos/anime.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';

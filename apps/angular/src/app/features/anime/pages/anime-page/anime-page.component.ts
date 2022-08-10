@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 /** Anime Page. */
 @Component({

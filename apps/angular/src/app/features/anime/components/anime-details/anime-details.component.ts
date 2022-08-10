@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 import { Anime } from '@js-camp/core/models/anime';
@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./anime-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeDetailsComponent implements OnInit {
+export class AnimeDetailsComponent implements OnInit, OnDestroy {
   /** Month year format. */
   public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
@@ -22,6 +22,8 @@ export class AnimeDetailsComponent implements OnInit {
 
   /** Anime type. */
   public readonly animeType = AnimeType;
+
+  private youTubeApiTag?: HTMLScriptElement;
 
   /** Anime id. */
   @Input()
@@ -32,8 +34,19 @@ export class AnimeDetailsComponent implements OnInit {
 
   public constructor(private animeService: AnimeService) {}
 
-  /** Init anime. */
+  /** @inheritdoc */
   public ngOnInit(): void {
     this.anime$ = this.animeService.getAnime(this.animeId);
+
+    this.youTubeApiTag = document.createElement('script');
+    this.youTubeApiTag.src = 'https://www.youtube.com/iframe_api';
+    document.body.appendChild(this.youTubeApiTag);
+  }
+
+  /** @inheritdoc */
+  public ngOnDestroy(): void {
+    if (this.youTubeApiTag !== undefined) {
+      document.removeChild(this.youTubeApiTag);
+    }
   }
 }
