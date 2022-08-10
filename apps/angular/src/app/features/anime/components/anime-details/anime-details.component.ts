@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { YouTubePlayerService } from '@js-camp/angular/core/services/youtube-api.service';
+import { MultimediaService } from '@js-camp/angular/core/services/multimedia.service';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
@@ -38,12 +38,12 @@ export class AnimeDetailsComponent implements OnInit {
 
   public constructor(
     private animeService: AnimeService,
-    private youTubePlayerService: YouTubePlayerService,
+    private youTubePlayerService: MultimediaService,
   ) {}
 
   /** @inheritdoc */
   public ngOnInit(): void {
     this.anime$ = this.animeService.getAnime(this.animeId);
-    this.youTubePlayerService.appendYouTubeApi();
+    this.youTubePlayerService.initYouTubePlayer();
   }
 }

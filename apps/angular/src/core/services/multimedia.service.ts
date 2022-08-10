@@ -1,17 +1,17 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 
-/** Service turns youtube player on and off. */
+/** Multimedia service. Connects multimedia scripts. */
 @Injectable({
   providedIn: 'root',
 })
-export class YouTubePlayerService {
+export class MultimediaService {
   private youTubeApiTag?: HTMLScriptElement;
 
   public constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  /** On youtube api service. */
-  public appendYouTubeApi(): void {
+  /** Init YouTube player. */
+  public initYouTubePlayer(): void {
     if (this.youTubeApiTag === undefined) {
       this.youTubeApiTag = document.createElement('script');
       this.youTubeApiTag.src = 'https://www.youtube.com/iframe_api';
