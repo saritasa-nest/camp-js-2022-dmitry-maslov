@@ -46,7 +46,7 @@
     <div class="group__title" *ngIf="anime.synopsis">Synopsis</div>
     {{ anime.synopsis }}
   </mat-card-content>
-  <mat-card-content>
+  <mat-card-content *ngIf="anime.youTubeTrailerId">
     <div class="group__title">Trailer</div>
     <div class="details__trailer">
       <youtube-player
