@@ -20,7 +20,5 @@ export class HeaderComponent {
       .subscribe();
   }
 
-  public constructor(
-    private userService: UserService,
-  ) {}
+  public constructor(private readonly userService: UserService) {}
 }

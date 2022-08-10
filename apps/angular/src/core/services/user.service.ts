@@ -25,6 +25,7 @@ import {
 
 import { AppConfigService } from './app-config.service';
 import { AuthService } from './auth.service';
+import { LocalStorageService } from './local-storage.service';
 import { UserSecretStorageService } from './user-secret-storage.service';
 
 /** Stateful service for storing/managing information about the current user. */
@@ -40,6 +41,8 @@ export class UserService {
 
   private readonly currentUserUrl: URL;
 
+  private returnUrl?: string;
+
   public constructor(
     appConfig: AppConfigService,
     private readonly httpClient: HttpClient,
@@ -52,26 +55,6 @@ export class UserService {
     this.currentUser$ = this.initCurrentUserStream();
     this.isAuthorized$ = this.currentUser$.pipe(map(user => user != null));
   }
-
-  // /** Update user secret, supposed to be called when user data is outdated. */
-  // public refreshSecret(): Observable<void> {
-  //   return this.userSecretStorage.currentSecret$.pipe(
-  //     first(),
-  //     switchMap(secret =>
-  //       secret != null ?
-  //         this.authService.refreshSecret(secret) :
-  //         throwError(() => new AppError('Unauthorized'))),
-
-  //     catchError((error: unknown) =>
-  //       this.userSecretStorage
-  //         .removeSecret()
-  //         .pipe(
-  //           switchMapTo(throwError(() => error)),
-  //         )),
-  //     switchMap(newSecret => this.userSecretStorage.saveSecret(newSecret)),
-  //     mapTo(void 0),
-  //   );
-  // }
 
   /** Update user secret, supposed to be called when user data is outdated. */
   public refreshSecret(): Observable<void> {
@@ -129,9 +112,18 @@ export class UserService {
     );
   }
 
+  /**
+   * Set URL to be redirected to after authorization.
+   * @param url Url.
+   */
+  public setReturnUrl(url: string): void {
+    this.returnUrl = url;
+  }
+
   private async redirectAfterAuthorization(): Promise<void> {
-    const DEFAULT_REDIRECT_URL = '/';
-    const route = this.router.createUrlTree([DEFAULT_REDIRECT_URL]);
+    const REDIRECT_URL = this.returnUrl ?? '/';
+
+    const route = this.router.createUrlTree([REDIRECT_URL]);
     await this.router.navigateByUrl(route);
   }
 

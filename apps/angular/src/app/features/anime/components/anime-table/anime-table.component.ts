@@ -123,7 +123,6 @@ export class AnimeTableComponent {
    */
   public openDetails(id: number): void {
     this.router.navigate([`anime/${id}`], {
-      queryParamsHandling: 'merge',
     });
   }
 
