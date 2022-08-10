@@ -25,7 +25,6 @@ import {
 
 import { AppConfigService } from './app-config.service';
 import { AuthService } from './auth.service';
-import { LocalStorageService } from './local-storage.service';
 import { UserSecretStorageService } from './user-secret-storage.service';
 
 /** Stateful service for storing/managing information about the current user. */
