@@ -12,11 +12,12 @@ import { increaseContent } from './../../constants/tableHeaders/tableHeaders';
 export interface SortParams {
 
   /** Sort field. */
-  readonly sortField: AnimeSortField;
+  readonly sortField: AnimeSortField & '';
 
   /** Sort direction. */
   sortDirection: SortDirection;
 }
+
 interface AnimeTableHeaderProps {
 
   /** Causes the parent component to change the sort option. */
