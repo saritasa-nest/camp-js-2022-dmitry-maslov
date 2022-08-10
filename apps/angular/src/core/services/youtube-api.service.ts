@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 
 /** Service turns youtube player on and off. */
 @Injectable({
@@ -7,17 +8,14 @@ import { Injectable } from '@angular/core';
 export class YouTubePlayerService {
   private youTubeApiTag?: HTMLScriptElement;
 
-  /** On youtube api service. */
-  public onYouTubeApi(): void {
-    this.youTubeApiTag = document.createElement('script');
-    this.youTubeApiTag.src = 'https://www.youtube.com/iframe_api';
-    document.body.appendChild(this.youTubeApiTag);
-  }
+  public constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  /** Off youtube api service. */
-  public offYouTubeApi(): void {
-    if (this.youTubeApiTag !== undefined) {
-      document.body.removeChild(this.youTubeApiTag);
+  /** On youtube api service. */
+  public appendYouTubeApi(): void {
+    if (this.youTubeApiTag === undefined) {
+      this.youTubeApiTag = document.createElement('script');
+      this.youTubeApiTag.src = 'https://www.youtube.com/iframe_api';
+      this.document.body.appendChild(this.youTubeApiTag);
     }
   }
 }

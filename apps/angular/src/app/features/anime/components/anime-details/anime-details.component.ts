@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./anime-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeDetailsComponent implements OnInit, OnDestroy {
+export class AnimeDetailsComponent implements OnInit {
   /** Month year format. */
   public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
@@ -45,11 +45,6 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
   /** @inheritdoc */
   public ngOnInit(): void {
     this.anime$ = this.animeService.getAnime(this.animeId);
-    this.youTubePlayerService.onYouTubeApi();
-  }
-
-  /** @inheritdoc */
-  public ngOnDestroy(): void {
-    this.youTubePlayerService.offYouTubeApi();
+    this.youTubePlayerService.appendYouTubeApi();
   }
 }
