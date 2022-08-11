@@ -4,7 +4,6 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { MultimediaService } from '@js-camp/angular/core/services/multimedia.service';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 import { Anime } from '@js-camp/core/models/anime';
@@ -31,17 +30,11 @@ export class AnimeDetailsComponent implements OnInit {
   /** Anime type. */
   public readonly animeType = AnimeType;
 
-  /** Anime id. */
-  @Input()
-  public animeId: number | null = null;
-
   /** Anime. */
-  public anime$?: Observable<Anime>;
+  @Input()
+  public anime$: Observable<Anime> | null = null;
 
-  public constructor(
-    private readonly animeService: AnimeService,
-    private readonly multimediaService: MultimediaService,
-  ) {}
+  public constructor(private readonly multimediaService: MultimediaService) {}
 
   /** @inheritdoc */
   public trackByGenreId(_index: number, genre: Genre): Genre['id'] {
@@ -55,10 +48,6 @@ export class AnimeDetailsComponent implements OnInit {
 
   /** @inheritdoc */
   public ngOnInit(): void {
-    if (this.animeId === null) {
-      throw new Error('Parameter animeId not passed');
-    }
-    this.anime$ = this.animeService.getAnime(this.animeId);
     this.multimediaService.initYouTubePlayer();
   }
 }

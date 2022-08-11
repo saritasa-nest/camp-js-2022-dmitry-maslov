@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { Anime } from '@js-camp/core/models/anime';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 
 /** Anime Page. */
 @Component({
@@ -10,12 +12,13 @@ import { map, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimePageComponent {
-  /** Anime ID. */
-  public readonly animeId$: Observable<number>;
+  /** Anime. */
+  public readonly anime$: Observable<Anime>;
 
-  public constructor(route: ActivatedRoute) {
-    this.animeId$ = route.paramMap.pipe(
-      map(paramMap => parseInt(paramMap.get('id') ?? '', 10)),
-    );
+  public constructor(route: ActivatedRoute, animeService: AnimeService) {
+    this.anime$ = route.paramMap
+      .pipe(map(paramMap => parseInt(paramMap.get('id') ?? '', 10)))
+      .pipe(switchMap(id => animeService.getAnime(id)));
+    catchError((err: unknown) => of(err));
   }
 }

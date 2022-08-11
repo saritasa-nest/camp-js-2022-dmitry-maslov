@@ -19,7 +19,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class LoginFormComponent {
   /** Is loading. */
-  public readonly isLoading$ = new BehaviorSubject<boolean>(false);
+  public readonly isLoading$ = new BehaviorSubject(false);
 
   /** Should show password. */
   public shouldShowPassword = true;
