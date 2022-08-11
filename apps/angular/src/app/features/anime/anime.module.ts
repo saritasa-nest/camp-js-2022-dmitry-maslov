@@ -1,19 +1,13 @@
-import { MatTableModule } from '@angular/material/table';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSortModule } from '@angular/material/sort';
-import { MatSelectModule } from '@angular/material/select';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatCardModule } from '@angular/material/card';
 import { RouterModule, Routes } from '@angular/router';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 
 import { SharedModule } from '@js-camp/angular/shared/shared.module';
 
 import { UnauthorizedGuard } from '@js-camp/angular/core/guards/unauthorized.guard';
+
+import { MaterialModule } from '@js-camp/angular/shared/material.module';
 
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
 import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.component';
@@ -37,14 +31,7 @@ const routes: Routes = [
     CommonModule,
     SharedModule,
     YouTubePlayerModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSortModule,
-    MatSelectModule,
-    MatProgressBarModule,
-    MatCardModule,
+    MaterialModule,
     RouterModule.forChild(routes),
   ],
 })
