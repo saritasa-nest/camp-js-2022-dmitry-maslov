@@ -4,12 +4,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ApiKeyInterceptor } from '../core/interceptors/api-key-interceptor';
-
 import { AuthInterceptor } from '../core/interceptors/auth-interceptor';
-
 import { RefreshTokenInterceptor } from '../core/interceptors/refresh-token-interceptor';
-
 import { HeaderComponent } from '../shared/components/header/header.component';
+
+import { MaterialModule } from '../shared/material.module';
 
 import { MaterialModule } from '../shared/material.module';
 

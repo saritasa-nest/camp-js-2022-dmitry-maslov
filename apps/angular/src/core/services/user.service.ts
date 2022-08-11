@@ -50,7 +50,6 @@ export class UserService {
     private readonly userSecretStorage: UserSecretStorageService,
   ) {
     this.currentUserUrl = new URL('users/profile/', appConfig.apiUrl);
-
     this.currentUser$ = this.initCurrentUserStream();
     this.isAuthorized$ = this.currentUser$.pipe(map(user => user != null));
   }

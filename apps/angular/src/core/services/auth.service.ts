@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   /**
-   * Register new user .
+   * Register new user.
    * @param registrationData Registration data.
    */
   public register(registrationData: Registration): Observable<UserSecret> {
@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   /**
-   * Refresh user's secret.
+   * Refresh user secret.
    * @param secret Secret data.
    */
   public refreshSecret(secret: UserSecret): Observable<UserSecret> {
@@ -76,7 +76,7 @@ export class AuthService {
     headers: HttpHeaders,
     userSecret: UserSecret,
   ): HttpHeaders {
-    return headers.set('Authorization', `${AUTH_PREFIX} ${userSecret.access}`);
+    return headers.set('Authorization', `${AUTH_PREFIX} ${userSecret.accessToken}`);
   }
 
   /**

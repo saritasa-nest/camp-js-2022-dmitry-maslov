@@ -43,6 +43,7 @@ const QUERY_PARAMS_MAP = {
 const RESET_PAGINATION_PAGE = 1;
 
 /** Anime table component. */
+@Destroyable()
 @Component({
   selector: 'camp-anime-table',
   templateUrl: './anime-table.component.html',
@@ -60,7 +61,7 @@ export class AnimeTableComponent {
   public readonly animeStatus = AnimeStatus;
 
   /** Is Loading. */
-  public readonly isLoading$ = new BehaviorSubject<boolean>(true);
+  public readonly isLoading$ = new BehaviorSubject(true);
 
   /** Sorted fields. */
   public readonly sortedFields = AnimeSortField;
@@ -279,6 +280,7 @@ export class AnimeTableComponent {
         tap(initialQueryParams => {
           this.setInitialParamsFromQuery(initialQueryParams);
         }),
+        takeUntilDestroy(this),
       )
       .subscribe();
   }

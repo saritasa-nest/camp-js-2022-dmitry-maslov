@@ -6,16 +6,16 @@ export namespace UserSecretDataMapper {
   /** @inheritdoc */
   export function toDto(data: UserSecret): UserSecretDto {
     return {
-      access: data.access,
-      refresh: data.refresh,
+      access: data.accessToken,
+      refresh: data.refreshToken,
     };
   }
 
   /** @inheritdoc */
   export function fromDto(dto: UserSecretDto): UserSecret {
     return {
-      access: dto.access,
-      refresh: dto.refresh,
+      accessToken: dto.access,
+      refreshToken: dto.refresh,
     };
   }
 }

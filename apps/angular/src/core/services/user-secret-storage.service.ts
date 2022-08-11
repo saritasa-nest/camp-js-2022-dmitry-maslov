@@ -48,7 +48,7 @@ export class UserSecretStorageService {
       defer(() =>
         this.storageService.get<UserSecret>(USER_SECRET_STORAGE_KEY)),
       secretChange$,
-    ).pipe(distinctUntilChanged((x, y) => x?.access === y?.access));
+    ).pipe(distinctUntilChanged((x, y) => x?.accessToken === y?.accessToken));
 
     return race(secretFromStorage$, secretChange$).pipe(
       shareReplay({ refCount: true, bufferSize: 1 }),
