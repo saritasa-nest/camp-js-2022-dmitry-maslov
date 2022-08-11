@@ -7,19 +7,19 @@
       {{ anime.titleJpn }}
     </mat-card-subtitle>
   </mat-card-title-group>
-  <div class="details__basic">
+  <div class="card__basic">
     <img
       [src]="anime.image"
       [alt]="'Poster anime - ' + anime.titleEng"
-      class="details__image"
+      class="card__image"
     />
     <div class="basic__info">
       <mat-card-content>
-        <div class="group__title">Type</div>
+        <div class="group-title">Type</div>
         {{ animeType.toReadable(anime.type) }}
       </mat-card-content>
       <mat-card-content>
-        <div class="group__title">Aired:</div>
+        <div class="group-title">Aired:</div>
         <div>Status: {{ animeStatus.toReadable(anime.status) }}</div>
         <div *ngIf="anime.airedRange.airedStart">
           Start: {{ anime.airedRange.airedStart | date: monthYearFormat }}
@@ -28,27 +28,27 @@
           Finish: {{ anime.airedRange.airedFinish | date: monthYearFormat }}
         </div>
       </mat-card-content>
-      <mat-card-content *ngIf="anime.studios[0]">
-        <div class="group__title">Studios</div>
-        <div *ngFor="let studio of anime.studios">
+      <mat-card-content *ngIf="anime.studios.length > 0">
+        <div class="group-title">Studios</div>
+        <div *ngFor="let studio of anime.studios; trackBy:trackByStudioId">
           {{ studio.name }}
         </div>
       </mat-card-content>
-      <mat-card-content *ngIf="anime.genres[0]">
-        <div class="group__title">Genres</div>
-        <div *ngFor="let genre of anime.genres">
+      <mat-card-content *ngIf="anime.genres.length > 0">
+        <div class="group-title">Genres</div>
+        <div *ngFor="let genre of anime.genres; trackBy:trackByGenreId">
           {{ genre.name }}
         </div>
       </mat-card-content>
     </div>
   </div>
   <mat-card-content>
-    <div class="group__title" *ngIf="anime.synopsis">Synopsis</div>
+    <div class="group-title" *ngIf="anime.synopsis">Synopsis</div>
     {{ anime.synopsis }}
   </mat-card-content>
   <mat-card-content *ngIf="anime.youTubeTrailerId">
-    <div class="group__title">Trailer</div>
-    <div class="details__trailer">
+    <div class="group-title">Trailer</div>
+    <div class="card__trailer">
       <youtube-player
         [videoId]="anime.youTubeTrailerId"
         suggestedQuality="highres"

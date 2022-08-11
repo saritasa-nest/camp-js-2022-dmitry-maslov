@@ -10,6 +10,8 @@ import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
 import { AnimeType } from '@js-camp/core/models/anime-type';
+import { Genre } from '@js-camp/core/models/genre';
+import { Studio } from '@js-camp/core/models/studios';
 import { Observable } from 'rxjs';
 
 /** Anime Detail Component. */
@@ -31,19 +33,32 @@ export class AnimeDetailsComponent implements OnInit {
 
   /** Anime id. */
   @Input()
-  public animeId!: number;
+  public animeId: number | null = null;
 
   /** Anime. */
   public anime$?: Observable<Anime>;
 
   public constructor(
-    private animeService: AnimeService,
-    private youTubePlayerService: MultimediaService,
+    private readonly animeService: AnimeService,
+    private readonly multimediaService: MultimediaService,
   ) {}
 
   /** @inheritdoc */
+  public trackByGenreId(_index: number, genre: Genre): Genre['id'] {
+    return genre.id;
+  }
+
+  /** @inheritdoc */
+  public trackByStudioId(_index: number, studio: Studio): Studio['id'] {
+    return studio.id;
+  }
+
+  /** @inheritdoc */
   public ngOnInit(): void {
+    if (this.animeId === null) {
+      throw new Error('Parameter animeId not passed');
+    }
     this.anime$ = this.animeService.getAnime(this.animeId);
-    this.youTubePlayerService.initYouTubePlayer();
+    this.multimediaService.initYouTubePlayer();
   }
 }

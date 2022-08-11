@@ -123,8 +123,7 @@ export class AnimeTableComponent {
    * @param id Id.
    */
   public openDetails(id: number): void {
-    this.router.navigate([`anime/${id}`], {
-    });
+    this.router.navigate([`anime/${id}`]);
   }
 
   public constructor(
