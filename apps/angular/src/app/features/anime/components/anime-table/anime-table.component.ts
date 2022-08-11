@@ -9,7 +9,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
-
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { AnimeSortParams } from '@js-camp/angular/core/models/animeSortParams';
@@ -18,6 +17,7 @@ import { PaginationParams } from '@js-camp/core/models/pagination-params';
 import { BehaviorSubject, combineLatest, debounceTime, first, map, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 import { AnimeBase } from '@js-camp/core/models/anime-base';
 import { FormBuilder } from '@angular/forms';
+import { Destroyable, takeUntilDestroy } from '@js-camp/angular/core/utils/rxjs/destroyable';
 
 const DEFAULT_PARAMS = {
   paginationParams: {

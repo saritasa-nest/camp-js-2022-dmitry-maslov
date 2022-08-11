@@ -10,8 +10,6 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 
 import { MaterialModule } from '../shared/material.module';
 
-import { MaterialModule } from '../shared/material.module';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './../shared/shared.module';
