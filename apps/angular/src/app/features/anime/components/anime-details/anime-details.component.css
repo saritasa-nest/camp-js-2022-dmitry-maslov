@@ -1,5 +1,6 @@
 .card__image {
-  width: 300px;
+  max-width: 300px;
+  min-height: 440px;
   display: block;
 }
 
