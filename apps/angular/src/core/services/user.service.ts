@@ -48,30 +48,9 @@ export class UserService {
     private readonly userSecretStorage: UserSecretStorageService,
   ) {
     this.currentUserUrl = new URL('users/profile/', appConfig.apiUrl);
-
     this.currentUser$ = this.initCurrentUserStream();
     this.isAuthorized$ = this.currentUser$.pipe(map(user => user != null));
   }
-
-  // /** Update user secret, supposed to be called when user data is outdated. */
-  // public refreshSecret(): Observable<void> {
-  //   return this.userSecretStorage.currentSecret$.pipe(
-  //     first(),
-  //     switchMap(secret =>
-  //       secret != null ?
-  //         this.authService.refreshSecret(secret) :
-  //         throwError(() => new AppError('Unauthorized'))),
-
-  //     catchError((error: unknown) =>
-  //       this.userSecretStorage
-  //         .removeSecret()
-  //         .pipe(
-  //           switchMapTo(throwError(() => error)),
-  //         )),
-  //     switchMap(newSecret => this.userSecretStorage.saveSecret(newSecret)),
-  //     mapTo(void 0),
-  //   );
-  // }
 
   /** Update user secret, supposed to be called when user data is outdated. */
   public refreshSecret(): Observable<void> {

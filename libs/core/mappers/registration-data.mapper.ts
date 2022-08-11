@@ -15,7 +15,7 @@ export namespace RegistrationMapper {
       password:
         extractErrorMessage(errorDto?.password) ??
         extractErrorMessage(errorDto?.non_field_errors),
-      avatar: extractErrorMessage(errorDto?.avatar),
+      avatarUrl: extractErrorMessage(errorDto?.avatar),
       firstName: extractErrorMessage(errorDto?.first_name),
       lastName: extractErrorMessage(errorDto?.last_name),
     };

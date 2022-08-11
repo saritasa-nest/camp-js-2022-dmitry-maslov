@@ -2,8 +2,8 @@
 export interface UserSecret {
 
   /** Refresh token. */
-  readonly refresh: string;
+  readonly refreshToken: string;
 
   /** Access token. */
-  readonly access: string;
+  readonly accessToken: string;
 }

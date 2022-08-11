@@ -13,7 +13,7 @@ import { AnimeFilters } from '@js-camp/core/models/anime-filters';
 import { AnimeFiltersMapper } from '@js-camp/core/mappers/anime-filters.mapper';
 
 import { AnimeSortParams } from '../models/animeSortParams';
-import { AnimeSortMapper } from '../mappers/animeSortParams.mapper';
+import { SortMapper } from '../mappers/sort-params.mapper';
 
 import { AppConfigService } from './app-config.service';
 
@@ -47,7 +47,7 @@ export class AnimeService {
       params: {
         [API_FIELDS.offset]: offset,
         [API_FIELDS.limit]: limit,
-        [API_FIELDS.order]: AnimeSortMapper.toDto(sortParams),
+        [API_FIELDS.order]: SortMapper.toDto(sortParams),
         [API_FIELDS.search]: filterParams.search,
         [API_FIELDS.typeIn]: AnimeFiltersMapper.filterTypeToDto(filterParams.type),
       },
@@ -58,22 +58,8 @@ export class AnimeService {
             dto: paginatedDataDto,
             resultMapper: AnimeMapper.fromDto,
           })),
-
       );
   }
-}
-
-/** Params for {getPaginatedAnimeList} method.*/
-export interface PaginatedAnimeListParams {
-
-  /** Pagination params. */
-  paginationParams: PaginationParams;
-
-  /** Anime Filters. */
-  filterParams: AnimeFilters;
-
-  /** Sort params. */
-  sortParams: AnimeSortParams;
 }
 
 const API_FIELDS = {
@@ -84,15 +70,15 @@ const API_FIELDS = {
   typeIn: 'type__in',
 };
 
-/** Params for {getPaginatedAnimeList} method.*/
+/** Params for {@link getPaginatedAnimeList} method.*/
 export interface PaginatedAnimeListParams {
 
   /** Pagination params. */
-  paginationParams: PaginationParams;
+  readonly paginationParams: PaginationParams;
 
   /** Anime Filters. */
-  filterParams: AnimeFilters;
+  readonly filterParams: AnimeFilters;
 
   /** Sort params. */
-  sortParams: AnimeSortParams;
+  readonly sortParams: AnimeSortParams;
 }

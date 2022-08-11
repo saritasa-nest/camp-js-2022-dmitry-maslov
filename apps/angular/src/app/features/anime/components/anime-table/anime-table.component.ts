@@ -30,6 +30,7 @@ import { PaginatedData } from '@js-camp/core/models/pagination';
 import { AnimeSortParams } from '@js-camp/angular/core/models/animeSortParams';
 import { AnimeFilters } from '@js-camp/core/models/anime-filters';
 import { PaginationParams } from '@js-camp/core/models/pagination-params';
+import { Destroyable, takeUntilDestroy } from '@js-camp/angular/core/utils/rxjs/destroyable';
 
 const DEFAULT_PARAMS = {
   paginationParams: {
@@ -55,6 +56,7 @@ const QUERY_PARAMS_MAP = {
 const RESET_PAGINATION_PAGE = 1;
 
 /** Anime table component. */
+@Destroyable()
 @Component({
   selector: 'camp-anime-table',
   templateUrl: './anime-table.component.html',
@@ -66,13 +68,13 @@ export class AnimeTableComponent {
   public readonly monthYearFormat = MONTH_YEAR_FORMAT;
 
   /** Anime type map and functional. */
-  public animeType = AnimeType;
+  public readonly animeType = AnimeType;
 
   /** Anime status map and functional. */
-  public animeStatus = AnimeStatus;
+  public readonly animeStatus = AnimeStatus;
 
   /** Is Loading. */
-  public isLoading$ = new BehaviorSubject<boolean>(true);
+  public readonly isLoading$ = new BehaviorSubject(true);
 
   /** Sorted fields. */
   public readonly sortedFields = AnimeSortField;
@@ -154,8 +156,6 @@ export class AnimeTableComponent {
       filterParams$,
     ]).pipe(
       debounceTime(300),
-
-      // observeOn(asapScheduler),
       tap(() => this.isLoading$.next(true)),
       switchMap(([page, limit, sortParams, filterParams]) => {
         const paginationParams: PaginationParams = {
@@ -284,6 +284,7 @@ export class AnimeTableComponent {
         tap(initialQueryParams => {
           this.setInitialParamsFromQuery(initialQueryParams);
         }),
+        takeUntilDestroy(this),
       )
       .subscribe();
   }

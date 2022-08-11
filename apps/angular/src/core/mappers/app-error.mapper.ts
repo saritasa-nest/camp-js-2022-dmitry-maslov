@@ -36,7 +36,10 @@ export class AppErrorMapper {
    * @param mapper Mapper function that transform validation DTO errors to the application validation model.
    * @returns AppError if httpError is not "Bad Request" error or AppValidationError if it is "Bad Request"/.
    */
-  public fromDtoWithValidationSupport<TDto, TEntity extends Record<string, unknown>>(
+  public fromDtoWithValidationSupport<
+    TDto,
+    TEntity extends Record<string, unknown>,
+  >(
     httpError: HttpErrorResponse,
     mapper: ErrorMapper<TDto, TEntity>,
   ): AppError | AppValidationError<TEntity> {
@@ -80,11 +83,9 @@ export class AppErrorMapper {
    * @param mapper Mapper function that transform validation DTO errors to the application validation model.
    * @returns AppError if httpError is not "Bad Request" error or AppValidationError if it is "Bad Request".
    */
-  public catchHttpErrorToAppErrorWithValidationSupport<
-    T,
-    TDto,
-    TEntity extends Record<string, unknown>,
-  >(mapper: ErrorMapper<TDto, TEntity>): MonoTypeOperatorFunction<T> {
+  public catchHttpErrorToAppErrorWithValidationSupport<T, TDto, TEntity extends Record<string, unknown>>(
+    mapper: ErrorMapper<TDto, TEntity>,
+  ): MonoTypeOperatorFunction<T> {
     return catchHttpErrorResponse(error => {
       const appError = this.fromDtoWithValidationSupport<TDto, TEntity>(
         error,
@@ -112,12 +113,14 @@ export namespace AppErrorMapper {
    * @param mapper Mapper function that transform validation DTO errors to the application validation model.
    * @returns AppError if httpError is not "Bad Request" error or AppValidationError if it is "Bad Request"/.
    */
-  export function fromDtoWithValidationSupport<TDto, TEntity extends Record<string, unknown>>(
+  export function fromDtoWithValidationSupport<
+    TDto,
+    TEntity extends Record<string, unknown>,
+  >(
     httpError: HttpErrorResponse,
     mapper: ErrorMapper<TDto, TEntity>,
   ): AppError | AppValidationError<TEntity> {
     if (httpError.status !== 400) {
-
       // It is not a validation error. Return simple AppError.
       return fromDto(httpError);
     }
@@ -135,9 +138,9 @@ export namespace AppErrorMapper {
     // This is a validation error => create AppValidationError.
     const message = httpError.error.detail;
     const validationData =
-        typeof mapper === 'function' ?
-          mapper(httpError.error.data) :
-          mapper.validationErrorFromDto(httpError.error.data);
+      typeof mapper === 'function' ?
+        mapper(httpError.error.data) :
+        mapper.validationErrorFromDto(httpError.error.data);
     return new AppValidationError<TEntity>(message, validationData);
   }
 
@@ -152,12 +155,11 @@ export namespace AppErrorMapper {
     TEntity extends Record<string, unknown>,
   >(mapper: ErrorMapper<TDto, TEntity>): MonoTypeOperatorFunction<T> {
     return catchHttpErrorResponse(error => {
-
       const appError = fromDtoWithValidationSupport<TDto, TEntity>(
         error,
         mapper,
       );
-     return throwError(() => appError);
-   });
+      return throwError(() => appError);
+    });
   }
 }
