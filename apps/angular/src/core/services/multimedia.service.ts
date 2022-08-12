@@ -8,7 +8,7 @@ import { Inject, Injectable } from '@angular/core';
 export class MultimediaService {
   private youTubeApiTag?: HTMLScriptElement;
 
-  public constructor(@Inject(DOCUMENT) private document: Document) {}
+  public constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
   /** Init YouTube player. */
   public initYouTubePlayer(): void {

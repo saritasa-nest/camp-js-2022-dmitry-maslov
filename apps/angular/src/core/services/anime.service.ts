@@ -11,7 +11,6 @@ import { PaginationParams } from '@js-camp/core/models/pagination-params';
 import { PaginationParamsMapper } from '@js-camp/core/mappers/pagination-params.mapper';
 import { AnimeFilters } from '@js-camp/core/models/anime-filters';
 import { AnimeFiltersMapper } from '@js-camp/core/mappers/anime-filters.mapper';
-
 import { Anime } from '@js-camp/core/models/anime';
 
 import { AnimeSortParams } from '../models/animeSortParams';
@@ -54,8 +53,7 @@ export class AnimeService {
   }: PaginatedAnimeListParams): Observable<PaginatedData<AnimeBase>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
-    return this.httpClient
-      .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
+    return this.httpClient.get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
         [API_FIELDS.offset]: offset,
         [API_FIELDS.limit]: limit,

@@ -1,6 +1,8 @@
 import { AnimeStatus } from '../models/anime-status';
 import { AnimeType } from '../models/anime-type';
 
+import { DateRangeDto } from './date-range.dto';
+
 import { GenreDto } from './genre.dto';
 import { StudioDto } from './studio.dto';
 
@@ -20,10 +22,7 @@ export interface AnimeDTO {
   readonly image: string;
 
   /** Aired. */
-  readonly aired: {
-    readonly start: string | null;
-    readonly end: string | null;
-  };
+  readonly aired: DateRangeDto;
 
   /** Airing. */
   readonly airing: boolean;
