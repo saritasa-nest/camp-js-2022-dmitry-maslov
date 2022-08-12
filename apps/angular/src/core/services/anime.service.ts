@@ -42,8 +42,7 @@ export class AnimeService {
   }: PaginatedAnimeListParams): Observable<PaginatedData<Anime>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
-    return this.httpClient
-      .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
+    return this.httpClient.get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
         [API_FIELDS.offset]: offset,
         [API_FIELDS.limit]: limit,

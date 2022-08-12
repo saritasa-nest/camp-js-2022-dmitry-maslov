@@ -76,9 +76,7 @@ export class UserService {
 
   /** Logout current user. */
   public logout(): Observable<void> {
-    return this.userSecretStorage
-      .removeSecret()
-      .pipe(finalize(() => this.navigateToAuthPage()));
+    return this.userSecretStorage.removeSecret().pipe(finalize(() => this.navigateToAuthPage()));
   }
 
   /**
