@@ -19,10 +19,30 @@ import { AnimeTableComponent } from './components/anime-table/anime-table.compon
 import { AnimeListPageComponent } from './pages/anime-list-page/anime-list-page.component';
 import { AnimePageComponent } from './pages/anime-page/anime-page.component';
 import { AnimeDetailsComponent } from './components/anime-details/anime-details.component';
+import { AnimeManagerComponent } from './components/anime-manager/anime-manager.component';
+import { CreateAnimePageComponent } from './pages/create-anime-page/create-anime-page.component';
+import { EditAnimePageComponent } from './pages/edit-anime-page/edit-anime-page.component';
 
 const routes: Routes = [
   { path: '', title: 'Anime list', component: AnimeListPageComponent },
-  { path: ':id', title: 'Anime', component: AnimePageComponent, canActivate: [UnauthorizedGuard] },
+  {
+    path: 'add',
+    title: 'Add anime',
+    component: CreateAnimePageComponent,
+    canActivate: [UnauthorizedGuard],
+  },
+  {
+    path: ':id',
+    title: 'Anime',
+    component: AnimePageComponent,
+    canActivate: [UnauthorizedGuard],
+  },
+  {
+    path: ':id/edit',
+    title: 'Edit Anime',
+    component: EditAnimePageComponent,
+    canActivate: [UnauthorizedGuard],
+  },
 ];
 
 /** Anime module. */
@@ -32,6 +52,9 @@ const routes: Routes = [
     AnimeListPageComponent,
     AnimePageComponent,
     AnimeDetailsComponent,
+    AnimeManagerComponent,
+    CreateAnimePageComponent,
+    EditAnimePageComponent,
   ],
   imports: [
     CommonModule,
