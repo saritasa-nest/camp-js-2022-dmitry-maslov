@@ -40,8 +40,7 @@ export class AuthService {
    * @param registrationData Registration data.
    */
   public register(registrationData: Registration): Observable<UserSecret> {
-    return this.httpClient
-      .post<UserSecretDto>(this.registerUrl.toString(), {
+    return this.httpClient.post<UserSecretDto>(this.registerUrl.toString(), {
       ...RegistrationMapper.toDto(registrationData),
     })
       .pipe(
@@ -55,8 +54,7 @@ export class AuthService {
    * @param secret Secret data.
    */
   public refreshSecret(secret: UserSecret): Observable<UserSecret> {
-    return this.httpClient
-      .post<UserSecretDto>(this.refreshSecretUrl.toString(), {
+    return this.httpClient.post<UserSecretDto>(this.refreshSecretUrl.toString(), {
       refresh: UserSecretDataMapper.toDto(secret).refresh,
     })
       .pipe(
@@ -84,8 +82,7 @@ export class AuthService {
    * @param loginData Login data.
    */
   public login(loginData: Login): Observable<UserSecret> {
-    return this.httpClient
-      .post<UserSecretDto>(
+    return this.httpClient.post<UserSecretDto>(
       this.loginUrl.toString(),
       loginMapper.toDto(loginData),
     )

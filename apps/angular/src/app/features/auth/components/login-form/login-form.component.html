@@ -34,9 +34,9 @@
       [attr.aria-label]="'Hide password'"
       [attr.aria-pressed]="shouldShowPassword"
     >
-      <mat-icon appearance="fill">{{
-        shouldShowPassword ? "visibility_off" : "visibility"
-      }}</mat-icon>
+      <mat-icon appearance="fill">
+        {{ shouldShowPassword ? "visibility_off" : "visibility" }}
+      </mat-icon>
     </button>
     <mat-error *ngIf="loginForm.controls.password.hasError('appError')">
       {{ loginForm.controls.password.getError("appError") }}
