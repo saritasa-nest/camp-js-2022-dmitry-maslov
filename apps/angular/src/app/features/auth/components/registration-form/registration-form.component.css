@@ -2,7 +2,7 @@
   display: block;
 }
 
-.registration-form {
+.form {
   display: flex;
   flex-direction: column;
 }
