@@ -1,7 +1,7 @@
 <form
+  class="registration-form"
   [formGroup]="registrationForm"
-  style="display: flex; flex-direction: column"
-  (submit)="handleRegistrationSubmit()"
+  (onSubmit)="onRegistrationSubmit()"
 >
   <mat-progress-bar
     mode="indeterminate"
@@ -52,7 +52,6 @@
     <input
       matInput
       type="password"
-      placeholder="••••••••"
       formControlName="password"
       autocomplete="new-password"
     />
@@ -65,7 +64,6 @@
     <input
       matInput
       type="password"
-      placeholder="••••••••"
       formControlName="passwordConfirm"
       autocomplete="new-password"
     />

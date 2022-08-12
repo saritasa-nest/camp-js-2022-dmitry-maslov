@@ -4,13 +4,13 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { MultimediaService } from '@js-camp/angular/core/services/multimedia.service';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
 import { AnimeType } from '@js-camp/core/models/anime-type';
-import { Observable } from 'rxjs';
+
+import { trackById } from '../../utils/trackById';
 
 /** Anime Detail Component. */
 @Component({
@@ -29,21 +29,17 @@ export class AnimeDetailsComponent implements OnInit {
   /** Anime type. */
   public readonly animeType = AnimeType;
 
-  /** Anime id. */
-  @Input()
-  public animeId!: number;
-
   /** Anime. */
-  public anime$?: Observable<Anime>;
+  @Input()
+  public anime: Anime | null = null;
 
-  public constructor(
-    private animeService: AnimeService,
-    private youTubePlayerService: MultimediaService,
-  ) {}
+  public constructor(private readonly multimediaService: MultimediaService) {}
+
+  /** Track by id. */
+  public trackById = trackById;
 
   /** @inheritdoc */
   public ngOnInit(): void {
-    this.anime$ = this.animeService.getAnime(this.animeId);
-    this.youTubePlayerService.initYouTubePlayer();
+    this.multimediaService.initYouTubePlayer();
   }
 }

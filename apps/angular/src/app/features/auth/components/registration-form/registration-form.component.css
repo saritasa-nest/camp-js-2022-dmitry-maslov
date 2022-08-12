@@ -1,3 +1,8 @@
 :host {
   display: block;
 }
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+}

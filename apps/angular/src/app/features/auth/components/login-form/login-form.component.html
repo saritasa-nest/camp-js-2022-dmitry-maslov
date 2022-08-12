@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm" class="login-form" (submit)="handleLogin()">
+<form [formGroup]="loginForm" class="form" (ngSubmit)="onLogin()">
   <mat-error *ngIf="loginForm.hasError('login')">
     {{ loginForm.getError("login") }}
   </mat-error>
@@ -23,7 +23,6 @@
     <mat-label>Enter your password</mat-label>
     <input
       matInput
-      placeholder="••••••••"
       autocomplete="current-password"
       formControlName="password"
       [type]="shouldShowPassword ? 'password' : 'text'"

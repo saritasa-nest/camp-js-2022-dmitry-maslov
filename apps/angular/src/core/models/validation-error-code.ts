@@ -1,39 +1,25 @@
-/**
- * Validation error code.
- */
+/** Validation error code. */
 export enum ValidationErrorCode {
 
   /** Wrong email.*/
   Email = 'email',
 
-  /**
-   * Required field.
-   */
+  /** Required field. */
   Required = 'required',
 
-  /**
-   * Match of values error. When value of one control does not match to another.
-   */
+  /** Match of values error. When value of one control does not match to another. */
   Match = 'match',
 
-  /**
-   * Minimal length restriction.
-   */
+  /** Minimal length restriction. */
   MinLength = 'minlength',
 
-  /**
-   * Maximal length restriction.
-   */
+  /** Maximal length restriction. */
   MaxLength = 'maxlength',
 
-  /**
-   * Maximum value restriction.
-   */
+  /** Maximum value restriction. */
   Min = 'min',
 
-  /**
-   * Minimum value restriction.
-   */
+  /** Minimum value restriction. */
   Max = 'max',
 
   /** Pattern restriction. */
@@ -50,71 +36,55 @@ export enum ValidationErrorCode {
 export interface MatchErrorData {
 
   /** Control name. */
-  controlName: string;
+  readonly controlName: string;
 
   /** Control title. */
-  controlTitle: string;
+  readonly controlTitle: string;
 }
 
 /** Length validation error data. */
 export interface LengthErrorData {
 
   /** Actual length. */
-  actualLength: number;
+  readonly actualLength: number;
 
   /** Required length. */
-  requiredLength: number;
+  readonly requiredLength: number;
 }
 
 /** Pattern validation error data. */
 export interface PatternErrorData {
 
   /** Actual length. */
-  actualValue: string;
+  readonly actualValue: string;
 
   /** Required length. */
-  requiredPattern: string;
+  readonly requiredPattern: string;
 }
 
-/**
- * App validation error data.
- */
+/** App validation error data. */
 export interface AppErrorData {
 
-  /**
-   * Message.
-   */
-  message: string;
+  /** Message. */
+  readonly message: string;
 }
 
-/**
- * Min value validation error data.
- */
+/** Min value validation error data. */
 export interface MinValueErrorData {
 
-  /**
-   * Actual value.
-   */
-  actual: number;
+  /** Actual value. */
+  readonly actual: number;
 
-  /**
-   * Min value.
-   */
-  min: number;
+  /** Min value. */
+  readonly min: number;
 }
 
-/**
- * Max value validation error data.
- */
+/** Max value validation error data.*/
 export interface MaxValueErrorData {
 
-  /**
-   * Actual value.
-   */
-  actual: number;
+  /** Actual value. */
+  readonly actual: number;
 
-  /**
-   * Min value.
-   */
-  max: number;
+  /**  Min value. */
+  readonly max: number;
 }

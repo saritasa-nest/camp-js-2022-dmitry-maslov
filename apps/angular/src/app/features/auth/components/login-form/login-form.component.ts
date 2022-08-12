@@ -19,22 +19,24 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class LoginFormComponent {
   /** Is loading. */
-  public isLoading$ = new BehaviorSubject<boolean>(false);
+  public readonly isLoading$ = new BehaviorSubject(false);
 
   /** Should show password. */
   public shouldShowPassword = true;
 
   /** Login form. */
-  public loginForm = this.formBuilder.nonNullable.group({
-    email: this.formBuilder.nonNullable.control('', [
-      Validators.required,
-      Validators.email,
-    ]),
-    password: this.formBuilder.nonNullable.control('', [Validators.required]),
+  public readonly loginForm = this.formBuilder.nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
   });
 
+  public constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService,
+  ) {}
+
   /** Login. */
-  public handleLogin(): void {
+  public onLogin(): void {
     if (this.loginForm.invalid) {
       return void 0;
     }
@@ -51,15 +53,10 @@ export class LoginFormComponent {
       )
       .subscribe({
         error: () => {
-          this.loginForm.setErrors({
-            login: 'Wrong email or password',
-          });
-        },
+            this.loginForm.setErrors({
+              login: 'Wrong email or password',
+            });
+          },
       });
   }
-
-  public constructor(
-    private readonly formBuilder: FormBuilder,
-    private readonly userService: UserService,
-  ) {}
 }

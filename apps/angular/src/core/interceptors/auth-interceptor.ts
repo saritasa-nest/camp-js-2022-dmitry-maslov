@@ -49,7 +49,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   /**
    * Checks if a request is for authorization or refresh token.
-   * @param url - Request url.
+   * @param url Request url.
    */
   private shouldInterceptToken(url: string): boolean {
     return url.startsWith(this.appConfigService.apiUrl);

@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UserService } from '@js-camp/angular/core/services/user.service';
+import { Destroyable, takeUntilDestroy } from '@js-camp/angular/core/utils/rxjs/destroyable';
 import { first } from 'rxjs';
 
 /** Header component. */
+@Destroyable()
 @Component({
   selector: 'camp-header',
   templateUrl: './header.component.html',
@@ -12,11 +14,15 @@ import { first } from 'rxjs';
 export class HeaderComponent {
 
   /** Is Authorized. */
-  public isAuthorized$ = this.userService.isAuthorized$;
+  public readonly isAuthorized$ = this.userService.isAuthorized$;
 
   /** Handle logout. */
   public handleLogout(): void {
-    this.userService.logout().pipe(first())
+    this.userService.logout()
+      .pipe(
+        first(),
+        takeUntilDestroy(this),
+      )
       .subscribe();
   }
 

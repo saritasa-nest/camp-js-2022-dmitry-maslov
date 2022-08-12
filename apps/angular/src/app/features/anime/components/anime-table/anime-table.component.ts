@@ -9,7 +9,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { AnimeSortField } from '@js-camp/core/enums/anime/sort';
 import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats';
-
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PaginatedData } from '@js-camp/core/models/pagination';
 import { AnimeSortParams } from '@js-camp/angular/core/models/animeSortParams';
@@ -18,6 +17,7 @@ import { PaginationParams } from '@js-camp/core/models/pagination-params';
 import { BehaviorSubject, combineLatest, debounceTime, first, map, Observable, skip, startWith, switchMap, tap } from 'rxjs';
 import { AnimeBase } from '@js-camp/core/models/anime-base';
 import { FormBuilder } from '@angular/forms';
+import { Destroyable, takeUntilDestroy } from '@js-camp/angular/core/utils/rxjs/destroyable';
 
 const DEFAULT_PARAMS = {
   paginationParams: {
@@ -43,6 +43,7 @@ const QUERY_PARAMS_MAP = {
 const RESET_PAGINATION_PAGE = 1;
 
 /** Anime table component. */
+@Destroyable()
 @Component({
   selector: 'camp-anime-table',
   templateUrl: './anime-table.component.html',
@@ -60,7 +61,7 @@ export class AnimeTableComponent {
   public readonly animeStatus = AnimeStatus;
 
   /** Is Loading. */
-  public readonly isLoading$ = new BehaviorSubject<boolean>(true);
+  public readonly isLoading$ = new BehaviorSubject(true);
 
   /** Sorted fields. */
   public readonly sortedFields = AnimeSortField;
@@ -121,9 +122,8 @@ export class AnimeTableComponent {
    * Open Details.
    * @param id Id.
    */
-  public openDetails(id: number): void {
-    this.router.navigate([`anime/${id}`], {
-    });
+  public onAnimeClick(id: number): void {
+    this.router.navigate([`anime/${id}`]);
   }
 
   public constructor(
@@ -279,6 +279,7 @@ export class AnimeTableComponent {
         tap(initialQueryParams => {
           this.setInitialParamsFromQuery(initialQueryParams);
         }),
+        takeUntilDestroy(this),
       )
       .subscribe();
   }

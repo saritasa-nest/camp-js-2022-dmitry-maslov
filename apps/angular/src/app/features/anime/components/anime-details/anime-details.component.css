@@ -1,9 +1,10 @@
-.details__image {
-  width: 300px;
+.card__image {
+  max-width: 300px;
+  min-height: 440px;
   display: block;
 }
 
-.group__title {
+.group-title {
   font-weight: bold;
   font-size: larger;
 }
@@ -12,15 +13,15 @@
   padding: 10px 40px;
 }
 
-.details__basic {
+.card__basic {
   display: flex;
 }
 
-.basic__info {
+.card__info {
   margin: 0 10px;
 }
 
-.details__trailer {
+.card__trailer {
   display: flex;
   justify-content: center;
 }

@@ -17,33 +17,35 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class RegistrationFormComponent {
   /** Is Loading. */
-  public isLoading$ = new BehaviorSubject<boolean>(false);
+  public readonly isLoading$ = new BehaviorSubject<boolean>(false);
 
   /** Registration form. */
-  public registrationForm = this.formBuilder.group({
-    email: this.formBuilder.nonNullable.control('', [
-      Validators.email,
-      Validators.required,
-    ]),
-
-    firstName: this.formBuilder.nonNullable.control('', [Validators.required]),
-
-    lastName: this.formBuilder.nonNullable.control('', [Validators.required]),
-
-    password: this.formBuilder.nonNullable.control('', [Validators.required]),
-
-    passwordConfirm: this.formBuilder.nonNullable.control('', [Validators.required, AppValidators.matchControl('password')]),
+  public readonly registrationForm = this.formBuilder.group({
+    email: ['', [Validators.email, Validators.required]],
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    passwordConfirm: ['', [Validators.required, AppValidators.matchControl('password')]],
   });
 
+  public constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService,
+  ) {}
+
   /** Register. */
-  public handleRegistrationSubmit(): void {
+  public onRegistrationSubmit(): void {
 
     if (this.registrationForm.invalid) {
       return void 0;
     }
 
-    const { email, firstName, lastName, password } =
-    this.registrationForm.value;
+    const {
+      email,
+      firstName,
+      lastName,
+      password,
+    } = this.registrationForm.value;
 
     this.userService
       .register({
@@ -59,9 +61,4 @@ export class RegistrationFormComponent {
       )
       .subscribe();
   }
-
-  public constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-  ) {}
 }

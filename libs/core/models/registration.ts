@@ -7,8 +7,8 @@ export interface Registration {
   /** First name. */
   readonly firstName: string;
 
-  /** Avatar. */
-  readonly avatar?: string;
+  /** Avatar url. */
+  readonly avatarUrl?: string;
 
   /** Last name. */
   readonly lastName: string;
