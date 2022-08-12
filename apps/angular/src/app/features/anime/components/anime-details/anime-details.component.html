@@ -21,11 +21,11 @@
       <mat-card-content>
         <div class="group-title">Aired:</div>
         <div>Status: {{ animeStatus.toReadable(anime.status) }}</div>
-        <div *ngIf="anime.airedRange.airedStart">
-          Start: {{ anime.airedRange.airedStart | date: monthYearFormat }}
+        <div *ngIf="anime.airedRange.start">
+          Start: {{ anime.airedRange.start | date: monthYearFormat }}
         </div>
-        <div *ngIf="anime.airedRange.airedFinish">
-          Finish: {{ anime.airedRange.airedFinish | date: monthYearFormat }}
+        <div *ngIf="anime.airedRange.end">
+          Finish: {{ anime.airedRange.end | date: monthYearFormat }}
         </div>
       </mat-card-content>
       <mat-card-content *ngIf="anime.studios.length > 0">

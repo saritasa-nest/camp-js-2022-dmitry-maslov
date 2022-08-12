@@ -40,7 +40,7 @@ export class UserService {
 
   private readonly currentUserUrl: URL;
 
-  private returnUrl?: string;
+  private returnUrl = '';
 
   public constructor(
     appConfig: AppConfigService,

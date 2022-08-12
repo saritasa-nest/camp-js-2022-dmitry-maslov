@@ -6,6 +6,7 @@ import { Anime } from '../models/anime';
 
 import { StudioMapper } from './studio.mapper';
 import { GenreMapper } from './genre.mapper';
+import { DateRangeMapper } from './date-range.mapper';
 
 export namespace AnimeMapper {
 
@@ -19,7 +20,7 @@ export namespace AnimeMapper {
       image: dto.image,
       titleEng: dto.title_eng,
       titleJpn: dto.title_jpn,
-      airedStart: dto.aired.start === null ? null : new Date(dto.aired.start),
+      airedStart: dto.aired.start ? new Date(dto.aired.start) : null,
       type: AnimeType.toAnimeType(dto.type),
       status: dto.status,
     });
@@ -36,10 +37,7 @@ export namespace AnimeMapper {
       image: dto.image,
       titleEng: dto.title_eng,
       titleJpn: dto.title_jpn,
-      airedRange: {
-        airedStart: dto.aired.start === null ? null : new Date(dto.aired.start),
-        airedFinish: dto.aired.end === null ? null : new Date(dto.aired.end),
-      },
+      airedRange: DateRangeMapper.fromDto(dto.aired),
       type: AnimeType.toAnimeType(dto.type),
       status: dto.status,
       synopsis: dto.synopsis,

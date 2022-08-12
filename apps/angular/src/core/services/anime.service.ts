@@ -11,7 +11,6 @@ import { PaginationParams } from '@js-camp/core/models/pagination-params';
 import { PaginationParamsMapper } from '@js-camp/core/mappers/pagination-params.mapper';
 import { AnimeFilters } from '@js-camp/core/models/anime-filters';
 import { AnimeFiltersMapper } from '@js-camp/core/mappers/anime-filters.mapper';
-
 import { Anime } from '@js-camp/core/models/anime';
 
 import { AnimeSortParams } from '../models/animeSortParams';

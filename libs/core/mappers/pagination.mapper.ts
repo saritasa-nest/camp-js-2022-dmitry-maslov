@@ -1,6 +1,5 @@
+import { PaginatedDataDto } from '../dtos/paginated-data.dto';
 import { PaginatedData } from '../models/pagination';
-
-import { PaginatedDataDto } from './../dtos/pagination.dto';
 
 export namespace PaginatedDataMapper {
 

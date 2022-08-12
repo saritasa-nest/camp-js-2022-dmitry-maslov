@@ -4,6 +4,7 @@ import { AnimeStatus } from './anime-status';
 import { AnimeType } from './anime-type';
 import { Genre } from './genre';
 import { Studio } from './studios';
+import { DateRange } from './date-range';
 
 /** Anime. */
 export class Anime extends Immerable {
@@ -21,10 +22,7 @@ export class Anime extends Immerable {
   public readonly titleJpn: string;
 
   /** Aired Range. */
-  public readonly airedRange: {
-    readonly airedStart: Date | null;
-    readonly airedFinish: Date | null;
-  };
+  public readonly airedRange: DateRange;
 
   /** Anime type. */
   public readonly type: AnimeType;
