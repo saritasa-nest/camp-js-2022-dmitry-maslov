@@ -9,9 +9,6 @@ import { MONTH_YEAR_FORMAT } from '@js-camp/angular/shared/constants/dateFormats
 import { Anime } from '@js-camp/core/models/anime';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
 import { AnimeType } from '@js-camp/core/models/anime-type';
-import { Genre } from '@js-camp/core/models/genre';
-import { Studio } from '@js-camp/core/models/studios';
-import { Observable } from 'rxjs';
 
 import { trackById } from '../../utils/trackById';
 
