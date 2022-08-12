@@ -2,11 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { YouTubePlayerModule } from '@angular/youtube-player';
-
 import { SharedModule } from '@js-camp/angular/shared/shared.module';
-
 import { UnauthorizedGuard } from '@js-camp/angular/core/guards/unauthorized.guard';
-
 import { MaterialModule } from '@js-camp/angular/shared/material.module';
 
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
@@ -18,7 +15,11 @@ import { CreateAnimePageComponent } from './pages/create-anime-page/create-anime
 import { EditAnimePageComponent } from './pages/edit-anime-page/edit-anime-page.component';
 
 const routes: Routes = [
-  { path: '', title: 'Anime list', component: AnimeListPageComponent },
+  {
+    path: '',
+    title: 'Anime list',
+    component: AnimeListPageComponent,
+  },
   {
     path: 'add',
     title: 'Add anime',
@@ -26,15 +27,15 @@ const routes: Routes = [
     canActivate: [UnauthorizedGuard],
   },
   {
-    path: ':id',
-    title: 'Anime',
-    component: AnimePageComponent,
-    canActivate: [UnauthorizedGuard],
-  },
-  {
     path: ':id/edit',
     title: 'Edit Anime',
     component: EditAnimePageComponent,
+    canActivate: [UnauthorizedGuard],
+  },
+  {
+    path: ':id',
+    title: 'Anime',
+    component: AnimePageComponent,
     canActivate: [UnauthorizedGuard],
   },
 ];

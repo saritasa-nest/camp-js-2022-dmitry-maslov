@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'camp-create-anime-page',
@@ -6,8 +6,4 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./create-anime-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateAnimePageComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class CreateAnimePageComponent {}

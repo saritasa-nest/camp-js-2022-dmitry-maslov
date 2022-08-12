@@ -1,3 +1,45 @@
-<form>
-  
+<form [formGroup]="animeForm" class="form">
+  <mat-form-field appearance="fill">
+    <mat-label>English title</mat-label>
+      <input 
+      matInput 
+      type="text" 
+      formControlName="titleEng" 
+      placeholder="Naruto"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Japanese title</mat-label>
+    <input 
+      matInput 
+      type="text" 
+      formControlName="titleJpn" 
+      placeholder="ナルト"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input
+      [formGroup]="animeForm.controls.airedRange"
+      [rangePicker]="picker"
+    >
+      <input matStartDate formControlName="start" placeholder="Start date" />
+      <input matEndDate formControlName="end" placeholder="End date" />
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+
+    <mat-error *ngIf="animeForm.controls.airedRange.controls.start"
+      >Invalid start date</mat-error
+    >
+    <mat-error
+      *ngIf="
+        animeForm.controls.airedRange.controls.end.hasError('matEndDateInvalid')
+      "
+      >Invalid end date</mat-error
+    >
+  </mat-form-field>
 </form>
