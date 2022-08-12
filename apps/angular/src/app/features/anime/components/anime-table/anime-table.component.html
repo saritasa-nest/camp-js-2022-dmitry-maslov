@@ -104,6 +104,6 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let anime; columns: displayedColumns" (click)="openDetails(anime.id)"></tr>
+    <tr mat-row *matRowDef="let anime; columns: displayedColumns" (click)="onAnimeClick(anime.id)"></tr>
   </table>
 </div>

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 /** Anime Page. */
 @Component({
@@ -19,6 +19,5 @@ export class AnimePageComponent {
     this.anime$ = route.paramMap
       .pipe(map(paramMap => parseInt(paramMap.get('id') ?? '', 10)))
       .pipe(switchMap(id => animeService.getAnime(id)));
-    catchError((err: unknown) => of(err));
   }
 }

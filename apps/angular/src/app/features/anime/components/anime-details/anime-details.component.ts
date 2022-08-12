@@ -13,6 +13,8 @@ import { Genre } from '@js-camp/core/models/genre';
 import { Studio } from '@js-camp/core/models/studios';
 import { Observable } from 'rxjs';
 
+import { trackById } from '../../utils/trackById';
+
 /** Anime Detail Component. */
 @Component({
   selector: 'camp-anime-details',
@@ -32,19 +34,12 @@ export class AnimeDetailsComponent implements OnInit {
 
   /** Anime. */
   @Input()
-  public anime$: Observable<Anime> | null = null;
+  public anime: Anime | null = null;
 
   public constructor(private readonly multimediaService: MultimediaService) {}
 
-  /** @inheritdoc */
-  public trackByGenreId(_index: number, genre: Genre): Genre['id'] {
-    return genre.id;
-  }
-
-  /** @inheritdoc */
-  public trackByStudioId(_index: number, studio: Studio): Studio['id'] {
-    return studio.id;
-  }
+  /** Track by id. */
+  public trackById = trackById;
 
   /** @inheritdoc */
   public ngOnInit(): void {

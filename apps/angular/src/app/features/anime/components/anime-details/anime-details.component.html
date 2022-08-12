@@ -1,4 +1,4 @@
-<mat-card *ngIf="anime$ | async as anime" class="card">
+<mat-card *ngIf="anime" class="card">
   <mat-card-title-group>
     <mat-card-title>
       {{ anime.titleEng }}
@@ -13,7 +13,7 @@
       [alt]="'Poster anime - ' + anime.titleEng"
       class="card__image"
     />
-    <div class="basic__info">
+    <div class="card__info">
       <mat-card-content>
         <div class="group-title">Type</div>
         {{ animeType.toReadable(anime.type) }}
@@ -30,13 +30,13 @@
       </mat-card-content>
       <mat-card-content *ngIf="anime.studios.length > 0">
         <div class="group-title">Studios</div>
-        <div *ngFor="let studio of anime.studios; trackBy:trackByStudioId">
+        <div *ngFor="let studio of anime.studios; trackBy:trackById">
           {{ studio.name }}
         </div>
       </mat-card-content>
       <mat-card-content *ngIf="anime.genres.length > 0">
         <div class="group-title">Genres</div>
-        <div *ngFor="let genre of anime.genres; trackBy:trackByGenreId">
+        <div *ngFor="let genre of anime.genres; trackBy:trackById">
           {{ genre.name }}
         </div>
       </mat-card-content>

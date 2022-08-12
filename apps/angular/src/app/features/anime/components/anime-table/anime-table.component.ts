@@ -122,7 +122,7 @@ export class AnimeTableComponent {
    * Open Details.
    * @param id Id.
    */
-  public openDetails(id: number): void {
+  public onAnimeClick(id: number): void {
     this.router.navigate([`anime/${id}`]);
   }
 
