@@ -42,4 +42,18 @@
       >Invalid end date</mat-error
     >
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-select
+      formControlName="type"
+    >
+      <mat-option
+      *ngFor="let type of animeTypeReadableMap | keyvalue"
+      [value]="type.key"
+      >
+        {{ type.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </form>
+{{ animeForm.value | json}}

@@ -50,3 +50,13 @@ export namespace AnimeType {
     return AnimeType.Unknown;
   }
 }
+
+export const ANIME_TYPE_READABLE_MAP = {
+  [AnimeType.Movie]: AnimeType.toReadable(AnimeType.Movie),
+  [AnimeType.TV]: AnimeType.toReadable(AnimeType.TV),
+  [AnimeType.OVA]: AnimeType.toReadable(AnimeType.OVA),
+  [AnimeType.ONA]: AnimeType.toReadable(AnimeType.ONA),
+  [AnimeType.Special]: AnimeType.toReadable(AnimeType.Special),
+  [AnimeType.Music]: AnimeType.toReadable(AnimeType.Music),
+  [AnimeType.Unknown]: AnimeType.toReadable(AnimeType.Unknown),
+};

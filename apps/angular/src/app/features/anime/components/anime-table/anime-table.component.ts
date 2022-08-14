@@ -1,4 +1,4 @@
-import { AnimeType } from '@js-camp/core/models/anime-type';
+import { AnimeType, ANIME_TYPE_READABLE_MAP } from '@js-camp/core/models/anime-type';
 import { AnimeStatus } from '@js-camp/core/models/anime-status';
 import {
   AnimeService,
@@ -84,15 +84,7 @@ export class AnimeTableComponent {
 
   /** Anime type options. */
   public readonly filterOptionsMap = {
-    type: {
-      [AnimeType.Movie]: AnimeType.toReadable(AnimeType.Movie),
-      [AnimeType.TV]: AnimeType.toReadable(AnimeType.TV),
-      [AnimeType.OVA]: AnimeType.toReadable(AnimeType.OVA),
-      [AnimeType.ONA]: AnimeType.toReadable(AnimeType.ONA),
-      [AnimeType.Special]: AnimeType.toReadable(AnimeType.Special),
-      [AnimeType.Music]: AnimeType.toReadable(AnimeType.Music),
-      [AnimeType.Unknown]: AnimeType.toReadable(AnimeType.Unknown),
-    },
+    type: ANIME_TYPE_READABLE_MAP,
   } as const;
 
   /** Pagination limit. */

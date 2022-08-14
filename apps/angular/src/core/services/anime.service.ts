@@ -12,6 +12,12 @@ import { PaginationParamsMapper } from '@js-camp/core/mappers/pagination-params.
 import { AnimeFilters } from '@js-camp/core/models/anime-filters';
 import { AnimeFiltersMapper } from '@js-camp/core/mappers/anime-filters.mapper';
 import { Anime } from '@js-camp/core/models/anime';
+import { Genre } from '@js-camp/core/models/genre';
+import { GenreDto } from '@js-camp/core/dtos/genre.dto';
+import { GenreMapper } from '@js-camp/core/mappers/genre.mapper';
+import { Studio } from '@js-camp/core/models/studios';
+import { StudioDto } from '@js-camp/core/dtos/studio.dto';
+import { StudioMapper } from '@js-camp/core/mappers/studio.mapper';
 
 import { AnimeSortParams } from '../models/animeSortParams';
 import { SortMapper } from '../mappers/sort-params.mapper';
@@ -25,11 +31,38 @@ import { AppConfigService } from './app-config.service';
 export class AnimeService {
   private readonly animeUrl: URL;
 
+  private readonly genresUrl: URL;
+
+  private readonly studiosUrl: URL;
+
   public constructor(
     appConfig: AppConfigService,
     private readonly httpClient: HttpClient,
   ) {
     this.animeUrl = new URL('anime/anime/', appConfig.apiUrl);
+    this.genresUrl = new URL('anime/genres/', appConfig.apiUrl);
+    this.studiosUrl = new URL('anime/studio/', appConfig.apiUrl);
+  }
+
+  /** Get paginated genres. */
+  public getPaginatedGenres(): Observable<PaginatedData<Genre>> {
+    return this.httpClient.get<PaginatedDataDto<GenreDto>>(this.genresUrl.toString()).pipe(
+      map(request => PaginatedDataMapper.fromDto({
+          dto: request,
+          resultMapper: GenreMapper.fromDto,
+      })),
+    );
+  }
+
+  /** Get paginated studios. */
+  public getPaginatedStudios(): Observable<PaginatedData<Studio>> {
+    return this.httpClient.get<PaginatedDataDto<StudioDto>>(this.studiosUrl.toString()).pipe(
+      map(request =>
+        PaginatedDataMapper.fromDto({
+          dto: request,
+          resultMapper: StudioMapper.fromDto,
+        })),
+    );
   }
 
   /**
@@ -37,9 +70,9 @@ export class AnimeService {
    * @param id Anime id.
    */
   public getAnime(id: number): Observable<Anime> {
-    return this.httpClient
-      .get<AnimeDTO>(`${this.animeUrl.toString()}${id}/`)
-      .pipe(map(animeDto => AnimeMapper.fromDtoToAnime(animeDto)));
+    return this.httpClient.get<AnimeDTO>(`${this.animeUrl.toString()}${id}/`).pipe(
+      map(animeDto => AnimeMapper.fromDtoToAnime(animeDto)),
+    );
   }
 
   /**
@@ -53,7 +86,8 @@ export class AnimeService {
   }: PaginatedAnimeListParams): Observable<PaginatedData<AnimeBase>> {
     const { offset, limit } = PaginationParamsMapper.toDto(paginationParams);
 
-    return this.httpClient.get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
+    return this.httpClient
+      .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
         [API_FIELDS.offset]: offset,
         [API_FIELDS.limit]: limit,
