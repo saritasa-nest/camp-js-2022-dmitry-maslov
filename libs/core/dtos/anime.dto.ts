@@ -1,3 +1,6 @@
+import { AnimeRating } from '../models/anime-rating';
+import { AnimeSeason } from '../models/anime-season';
+import { AnimeSource } from '../models/anime-source';
 import { AnimeStatus } from '../models/anime-status';
 import { AnimeType } from '../models/anime-type';
 
@@ -36,10 +39,10 @@ export interface AnimeDTO {
   /** Status. */
   readonly status: AnimeStatus;
 
-  /** Genres. */
+  /** Genres id. */
   readonly genres: readonly number[];
 
-  /** Studios. */
+  /** Studios id. */
   readonly studios: readonly number[];
 
   /** Genres data. */
@@ -50,4 +53,13 @@ export interface AnimeDTO {
 
   /** YouTube trailer id. */
   readonly trailer_youtube_id: string;
+
+  /** Rating. */
+  readonly rating: AnimeRating;
+
+  /** Source. */
+  readonly source: AnimeSource;
+
+  /** Season. */
+  readonly season: AnimeSeason;
 }

@@ -4,6 +4,12 @@ import { AnimeType } from '../models/anime-type';
 import { AnimeDTO } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
 
+import { AnimeRating } from '../models/anime-rating';
+
+import { AnimeSource } from '../models/anime-source';
+
+import { AnimeSeason } from '../models/anime-season';
+
 import { StudioMapper } from './studio.mapper';
 import { GenreMapper } from './genre.mapper';
 import { DateRangeMapper } from './date-range.mapper';
@@ -39,6 +45,9 @@ export namespace AnimeMapper {
       titleJpn: dto.title_jpn,
       airedRange: DateRangeMapper.fromDto(dto.aired),
       type: AnimeType.toAnimeType(dto.type),
+      rating: AnimeRating.toAnimeRating(dto.rating),
+      source: AnimeSource.toAnimeSource(dto.source),
+      season: AnimeSeason.toAnimeSeason(dto.season),
       status: dto.status,
       synopsis: dto.synopsis,
       studios: dto.studios_data.map(studio => StudioMapper.fromDto(studio)),

@@ -1,20 +1,20 @@
 <form [formGroup]="animeForm" class="form">
   <mat-form-field appearance="fill">
     <mat-label>English title</mat-label>
-      <input 
-      matInput 
-      type="text" 
-      formControlName="titleEng" 
+    <input
+      matInput
+      type="text"
+      formControlName="titleEng"
       placeholder="Naruto"
     />
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Japanese title</mat-label>
-    <input 
-      matInput 
-      type="text" 
-      formControlName="titleJpn" 
+    <input
+      matInput
+      type="text"
+      formControlName="titleJpn"
       placeholder="ナルト"
     />
   </mat-form-field>
@@ -43,17 +43,73 @@
     >
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-select
-      formControlName="type"
-    >
+  <mat-form-field appearance="fill">
+    <mat-label>Type</mat-label>
+    <mat-select  formControlName="type">
       <mat-option
-      *ngFor="let type of animeTypeReadableMap | keyvalue"
-      [value]="type.key"
+        *ngFor="let type of animeTypeReadableMap | keyvalue"
+        [value]="type.key"
       >
         {{ type.value }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option
+        *ngFor="let status of animeStatusReadableMap | keyvalue"
+        [value]="status.key"
+      >
+        {{ status.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Rating</mat-label>
+    <mat-select formControlName="rating">
+      <mat-option
+        *ngFor="let rating of animeRatingReadableMap | keyvalue"
+        [value]="rating.key"
+      >
+        {{ rating.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Source</mat-label>
+    <mat-select formControlName="source">
+      <mat-option
+        *ngFor="let source of animeSourceReadableMap | keyvalue"
+        [value]="source.key"
+      >
+        {{ source.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Season</mat-label>
+    <mat-select formControlName="season">
+      <mat-option
+        *ngFor="let season of animeSeasonReadableMap | keyvalue"
+        [value]="season.key"
+      >
+        {{ season.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Synopsis</mat-label>
+    <textarea matInput
+    formControlName="synopsis"
+    cdkTextareaAutosize
+    #autosize="cdkTextareaAutosize"
+    cdkAutosizeMinRows="1"
+    cdkAutosizeMaxRows="5"></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>YouTube trailer id</mat-label>
+    <input matInput formControlName="youTubeTrailerId" />
+  </mat-form-field>
 </form>
-{{ animeForm.value | json}}
+<!-- {{ animeForm.value | json }} -->

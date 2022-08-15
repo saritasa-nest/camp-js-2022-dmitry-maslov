@@ -5,6 +5,9 @@ import { AnimeType } from './anime-type';
 import { Genre } from './genre';
 import { Studio } from './studios';
 import { DateRange } from './date-range';
+import { AnimeRating } from './anime-rating';
+import { AnimeSource } from './anime-source';
+import { AnimeSeason } from './anime-season';
 
 /** Anime. */
 export class Anime extends Immerable {
@@ -45,6 +48,15 @@ export class Anime extends Immerable {
   /** YouTube trailer id. */
   public readonly youTubeTrailerId: string;
 
+  /** Rating. */
+  public readonly rating: AnimeRating;
+
+  /** Source. */
+  public readonly source: AnimeSource;
+
+  /** Season. */
+  public readonly season: AnimeSeason;
+
   public constructor(data: InitArgs) {
     super();
     this.id = data.id;
@@ -59,6 +71,9 @@ export class Anime extends Immerable {
     this.genres = data.genres;
     this.studios = data.studios;
     this.youTubeTrailerId = data.youTubeTrailerId;
+    this.rating = data.rating;
+    this.source = data.source;
+    this.season = data.season;
   }
 }
 

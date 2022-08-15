@@ -4,10 +4,22 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Anime } from '@js-camp/core/models/anime';
-import { AnimeType, ANIME_TYPE_READABLE_MAP } from '@js-camp/core/models/anime-type';
+import {
+  AnimeRating,
+  ANIME_RATING_READABLE_MAP,
+} from '@js-camp/core/models/anime-rating';
+import { AnimeSeason, ANIME_SEASON_READABLE_MAP } from '@js-camp/core/models/anime-season';
+import { AnimeSource, ANIME_SOURCE_READABLE_MAP } from '@js-camp/core/models/anime-source';
+import {
+  AnimeStatus,
+  ANIME_STATUS_READABLE_MAP,
+} from '@js-camp/core/models/anime-status';
+import {
+  AnimeType,
+  ANIME_TYPE_READABLE_MAP,
+} from '@js-camp/core/models/anime-type';
 import { DateRange } from '@js-camp/core/models/date-range';
 
 /** Anime manager component. */
@@ -22,7 +34,7 @@ export class AnimeManagerComponent implements OnInit {
   @Input()
   public anime: Anime | null = null;
 
-  public readonly genres$ = this.animeService.getPaginatedGenres();
+  // public readonly genres$ = this.animeService.getPaginatedGenres();
 
   /** Anime form. */
   public readonly animeForm = this.formBuilder.group({
@@ -32,15 +44,32 @@ export class AnimeManagerComponent implements OnInit {
       start: null,
       end: null,
     }),
-    type: this.formBuilder.nonNullable.control<AnimeType | null>(null),
+    type: this.formBuilder.control<AnimeType | null>(null, [Validators.required]),
+    rating: this.formBuilder.control<AnimeRating | null>(null, [Validators.required]),
+    status: this.formBuilder.control<AnimeStatus | null>(null, [Validators.required]),
+    source: this.formBuilder.control<AnimeSource | null>(null, [Validators.required]),
+    season: this.formBuilder.control<AnimeSeason | null>(null, [Validators.required]),
+    synopsis: ['', [Validators.required]],
+    youTubeTrailerId: '',
   });
 
   /** Anime type readable map. */
   public readonly animeTypeReadableMap = ANIME_TYPE_READABLE_MAP;
 
+  /** Anime status readable map. */
+  public readonly animeStatusReadableMap = ANIME_STATUS_READABLE_MAP;
+
+  /** Anime rating readable map. */
+  public readonly animeRatingReadableMap = ANIME_RATING_READABLE_MAP;
+
+  /** Anime source readable map. */
+  public readonly animeSourceReadableMap = ANIME_SOURCE_READABLE_MAP;
+
+  /** Anime season readable map. */
+  public readonly animeSeasonReadableMap = ANIME_SEASON_READABLE_MAP;
+
   public constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly animeService: AnimeService,
   ) {}
 
   /** @inheritdoc */
@@ -54,6 +83,12 @@ export class AnimeManagerComponent implements OnInit {
           end: this.anime.airedRange.end,
         },
         type: this.anime.type,
+        status: this.anime.status,
+        synopsis: this.anime.synopsis,
+        youTubeTrailerId: this.anime.youTubeTrailerId,
+        rating: this.anime.rating,
+        source: this.anime.source,
+        season: this.anime.season,
       });
     }
   }
