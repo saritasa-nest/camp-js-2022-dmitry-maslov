@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserSecretDto } from '@js-camp/core/dtos/user-secret.dto';
-import { loginMapper } from '@js-camp/core/mappers/login-data.mapper';
+import { LoginMapper } from '@js-camp/core/mappers/login-data.mapper';
 import { RegistrationMapper } from '@js-camp/core/mappers/registration-data.mapper';
 import { UserSecretDataMapper } from '@js-camp/core/mappers/user-secret-data.mapper';
 import { Login } from '@js-camp/core/models/login';
@@ -84,12 +84,12 @@ export class AuthService {
   public login(loginData: Login): Observable<UserSecret> {
     return this.httpClient.post<UserSecretDto>(
       this.loginUrl.toString(),
-      loginMapper.toDto(loginData),
+      LoginMapper.toDto(loginData),
     )
       .pipe(
         map(dto => UserSecretDataMapper.fromDto(dto)),
         AppErrorMapper.catchHttpErrorToAppErrorWithValidationSupport(
-          loginMapper.validationErrorFromDto,
+          LoginMapper.validationErrorFromDto,
         ),
       );
   }

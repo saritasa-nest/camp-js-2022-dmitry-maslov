@@ -3,7 +3,7 @@ import { extractErrorMessage, ValidationErrorDto } from '../dtos/validation-erro
 import { EntityValidationErrors } from '../models/app-error';
 import { Login } from '../models/login';
 
-export namespace loginMapper {
+export namespace LoginMapper {
 
   /** @inheritdoc */
   export function validationErrorFromDto(
