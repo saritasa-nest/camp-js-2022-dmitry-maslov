@@ -35,8 +35,6 @@ export class RegistrationFormComponent {
 
   /** Register. */
   public onRegistrationSubmit(): void {
-
-    console.log(this.registrationForm.value);
     if (this.registrationForm.invalid) {
       return void 0;
     }
