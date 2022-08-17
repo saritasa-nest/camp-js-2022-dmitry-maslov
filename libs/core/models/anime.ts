@@ -3,7 +3,7 @@ import { Immerable, OmitImmerable } from './immerable';
 import { AnimeStatus } from './anime-status';
 import { AnimeType } from './anime-type';
 import { Genre } from './genre';
-import { Studio } from './studios';
+import { Studio } from './studio';
 import { DateRange } from './date-range';
 
 /** Anime. */

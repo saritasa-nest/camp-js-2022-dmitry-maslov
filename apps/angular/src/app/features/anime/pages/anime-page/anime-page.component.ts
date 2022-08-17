@@ -18,7 +18,7 @@ export class AnimePageComponent {
   public constructor(route: ActivatedRoute, animeService: AnimeService) {
     this.anime$ = route.paramMap.pipe(
       map(paramMap => parseInt(paramMap.get('id') ?? '', 10)),
-      (switchMap(id => animeService.getAnime(id))),
+      switchMap(id => animeService.getAnime(id)),
     );
   }
 }
