@@ -15,7 +15,7 @@ import { Anime } from '@js-camp/core/models/anime';
 import { Genre } from '@js-camp/core/models/genre';
 import { GenreDto } from '@js-camp/core/dtos/genre.dto';
 import { GenreMapper } from '@js-camp/core/mappers/genre.mapper';
-import { Studio } from '@js-camp/core/models/studios';
+import { Studio } from '@js-camp/core/models/studio';
 import { StudioDto } from '@js-camp/core/dtos/studio.dto';
 import { StudioMapper } from '@js-camp/core/mappers/studio.mapper';
 
