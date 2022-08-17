@@ -1,17 +1,16 @@
 import { memo, useEffect, FC } from 'react';
 import { Box, Button } from '@mui/material';
-import { Formik, Form, Field, ErrorMessage, FormikErrors, validateYupSchema } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import TextField from '@mui/material/TextField';
-
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
+import { AppLoadingSpinnerComponent } from '@js-camp/react/components/AppLoadingSpinner';
 
 import { initValues, loginFormSchema, LoginFormValue } from './form-setting';
 
-const LoginForm: FC = () => {
+const LoginFormComponent: FC = () => {
   const dispatch = useAppDispatch();
-  const { error, isAuthorized, isLoading } = useAppSelector(
+  const { error, isLoading } = useAppSelector(
     state => state.auth,
   );
 
@@ -21,6 +20,10 @@ const LoginForm: FC = () => {
   const handleUserLogin = (value: LoginFormValue): void => {
     dispatch(AuthActions.loginUser(value));
   };
+
+  if (isLoading) {
+    return <AppLoadingSpinnerComponent></AppLoadingSpinnerComponent>;
+  }
 
   return (
     <Formik
@@ -59,11 +62,11 @@ const LoginForm: FC = () => {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-              Sign In
+        Sign In
         </Button>
       </Box>
     </Formik>
   );
 };
 
-export default memo(LoginForm);
+export const LoginForm = memo(LoginFormComponent);

@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 
+import { AppValidationError } from '@js-camp/core/models/app-error';
+
 import { initValues, RegistrationFormValue, registrationFormSchema } from './form-setting';
 
 const RegistrationFormComponent: FC = () => {
@@ -16,6 +18,7 @@ const RegistrationFormComponent: FC = () => {
   );
 
   useEffect(() => {
+
   }, [error]);
 
   const handleUserLogin = (value: RegistrationFormValue): void => {
@@ -38,6 +41,7 @@ const RegistrationFormComponent: FC = () => {
           label="Email Address"
           autoComplete="email"
           autoFocus
+
         />
         <ErrorMessage name="email"></ErrorMessage>
 

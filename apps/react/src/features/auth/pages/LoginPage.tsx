@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 import { FC, memo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import LoginForm from '../components/LoginForm/LoginForm';
+import { LoginForm } from '../components/LoginForm/LoginForm';
 
 export const LoginPageComponent: FC = () => {
   const { error, isAuthorized, isLoading } = useAppSelector(state => state.auth);
