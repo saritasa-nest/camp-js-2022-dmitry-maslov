@@ -1,5 +1,5 @@
 import { StudioDto } from '../dtos/studio.dto';
-import { Studio } from '../models/studios';
+import { Studio } from '../models/studio';
 
 export namespace StudioMapper {
 
