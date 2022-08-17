@@ -44,7 +44,7 @@ function* loginUserWorker(
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDtoWithValidationSupport(
-        error,
+        error.response,
         LoginMapper.validationErrorFromDto,
       );
       yield put(AuthActions.loginFailure(appError));

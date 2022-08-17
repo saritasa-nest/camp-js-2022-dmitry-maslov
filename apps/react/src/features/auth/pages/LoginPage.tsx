@@ -11,7 +11,7 @@ export const LoginPageComponent: FC = () => {
   return (
     <Box>
       <pre>
-        Error: {JSON.stringify(error)}
+        Error: {JSON.stringify(error, null, 2)}
       </pre>
       <pre>
         Is authorized: {JSON.stringify(isAuthorized)}

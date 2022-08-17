@@ -1,4 +1,6 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
+
+import { ErrorDTO } from '../dtos/error.dto';
 
 import { ValidationErrorDto } from '../dtos/validation-error-dto';
 
@@ -21,7 +23,6 @@ export class AppErrorMapper {
    * @param httpError Http error response.
    */
   public static fromDto(httpError: AxiosError): AppError {
-    console.log('app error: ', httpError);
     const { message } = httpError;
     return new AppError(message);
   }
@@ -33,12 +34,17 @@ export class AppErrorMapper {
    * @returns AppError if httpError is not "Bad Request" error or AppValidationError if it is "Bad Request".
    */
   public static fromDtoWithValidationSupport<TErrorDto, TEntity extends object>(
-    httpError: AxiosError<TErrorDto>,
+    httpError: AxiosError<ErrorDTO<TErrorDto>>,
     mapper: ErrorMapper<TErrorDto, TEntity>,
   ): AppError | AppValidationError<TEntity> {
+
     if (httpError.response?.status !== 400) {
       // It is not a validation error. Return simple AppError.
       return this.fromDto(httpError);
+    }
+
+    if (httpError.response == null) {
+      throw new Error('httpError not have response');
     }
 
     if (mapper == null) {
@@ -50,12 +56,13 @@ export class AppErrorMapper {
     }
 
     // This is a validation error => create AppValidationError.
-    const errorData = httpError.response.data as ValidationErrorDto<TErrorDto>;
+    const errorData = httpError.response.data.data as ValidationErrorDto<TErrorDto>;
+    const message = httpError.response.data.details;
 
     const validationData = typeof mapper === 'function' ?
       mapper(errorData) :
       mapper.validationErrorFromDto(errorData);
 
-    return new AppValidationError<TEntity>(httpError.message, validationData);
+    return new AppValidationError<TEntity>(message, validationData);
   }
 }
