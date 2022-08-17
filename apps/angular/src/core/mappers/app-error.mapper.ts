@@ -103,6 +103,7 @@ export namespace AppErrorMapper {
    * @param httpError Http error response.
    */
   export function fromDto(httpError: HttpErrorResponse): AppError {
+    console.log('app error: ', httpError);
     const { message } = httpError;
     return new AppError(message);
   }

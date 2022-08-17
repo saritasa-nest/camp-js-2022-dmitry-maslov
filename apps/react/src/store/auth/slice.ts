@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { AuthActions } from './dispatchers';
-
 import { initialState } from './state';
 
 export const authSlice = createSlice({
@@ -10,17 +9,14 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: builder => builder
     .addCase(AuthActions.loginUser, state => {
-      console.log('load');
       state.error = undefined;
       state.isLoading = true;
     })
     .addCase(AuthActions.loginSuccess, state => {
-      console.log('success');
       state.isAuthorized = true;
       state.isLoading = false;
     })
     .addCase(AuthActions.loginFailure, (state, action) => {
-      console.log('failure', action.payload);
       state.error = action.payload;
       state.isLoading = false;
     })
@@ -31,7 +27,15 @@ export const authSlice = createSlice({
       state.isAuthorized = false;
       state.isLoading = false;
     })
-    .addCase(AuthActions.logoutFailure, (state, action) => {
+    .addCase(AuthActions.registerUser, state => {
+      state.error = undefined;
+      state.isLoading = true;
+    })
+    .addCase(AuthActions.registerSuccess, state => {
+      state.isAuthorized = true;
+      state.isLoading = false;
+    })
+    .addCase(AuthActions.registerFailure, (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
     }),

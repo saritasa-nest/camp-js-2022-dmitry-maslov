@@ -1,5 +1,6 @@
-import { AppError } from '@js-camp/core/models/app-error';
-import { ValidationError } from 'yup';
+import { AppError, AppValidationError } from '@js-camp/core/models/app-error';
+import { Login } from '@js-camp/core/models/login';
+import { Registration } from '@js-camp/core/models/registration';
 
 /** Auth state. */
 export interface AuthState {
@@ -8,7 +9,7 @@ export interface AuthState {
   readonly isLoading: boolean;
 
   /** Error. */
-  readonly error?: AppError | ValidationError;
+  readonly error?: AppError | AppValidationError<Login> | AppValidationError<Registration>;
 
   /** User. */
   readonly isAuthorized: boolean;

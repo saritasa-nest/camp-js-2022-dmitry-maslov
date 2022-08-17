@@ -1,9 +1,8 @@
-import { AppErrorMapper } from '@js-camp/core/mappers/app-error.mapper';
 import { LoginMapper } from '@js-camp/core/mappers/login-data.mapper';
-import { AppError, AppValidationError } from '@js-camp/core/models/app-error';
+import { RegistrationMapper } from '@js-camp/core/mappers/registration-data.mapper';
 import { Login } from '@js-camp/core/models/login';
+import { Registration } from '@js-camp/core/models/registration';
 import { UserSecret } from '@js-camp/core/models/user-secret';
-import { AxiosError } from 'axios';
 
 import { http } from '..';
 
@@ -25,5 +24,18 @@ export namespace AuthApi {
         LoginMapper.toDto(loginData),
       )
     ).data;
+  }
+
+  /**
+   * Registration.
+   * @param registrationData Registration data.
+   */
+  export async function register(
+    registrationData: Registration,
+  ): Promise<UserSecret> {
+    return (await http.post(
+      registerUrl.toString(),
+      RegistrationMapper.toDto(registrationData),
+    )).data;
   }
 }

@@ -30,9 +30,11 @@ export type ValidationErrorDto<T> = {
 export function extractErrorMessage<T>(
   errorData: ValidationErrorDto<T> | string[] | null | undefined,
 ): string | undefined {
+
   if (errorData == null) {
     return;
   }
+
   if (Array.isArray(errorData)) {
     return extractErrorMessageFromArray(errorData);
   }

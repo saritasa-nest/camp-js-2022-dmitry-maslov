@@ -1,5 +1,6 @@
 import { AppError } from '@js-camp/core/models/app-error';
 import { Login } from '@js-camp/core/models/login';
+import { Registration } from '@js-camp/core/models/registration';
 import { createAction } from '@reduxjs/toolkit';
 
 export namespace AuthActions {
@@ -13,5 +14,9 @@ export namespace AuthActions {
 
   export const logoutSuccess = createAction('auth/logoutSuccess');
 
-  export const logoutFailure = createAction<AppError>('auth/logoutFailure');
+  export const registerUser = createAction<Registration>('auth/register');
+
+  export const registerSuccess = createAction('auth/registerSuccess');
+
+  export const registerFailure = createAction<AppError>('auth/registerFailure');
 }

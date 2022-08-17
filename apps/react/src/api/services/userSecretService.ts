@@ -15,7 +15,8 @@ export namespace UserSecretStorageService {
   }
 
   /** Remove secret. */
-  export function removeSecret(): void {
+  // eslint-disable-next-line require-await
+  export async function removeSecret(): Promise<void> {
     LocalStorageService.remove(USER_SECRET_KEY);
   }
 

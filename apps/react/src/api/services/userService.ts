@@ -1,6 +1,5 @@
-import { AppError } from '@js-camp/core/models/app-error';
 import { Login } from '@js-camp/core/models/login';
-import { AxiosError } from 'axios';
+import { Registration } from '@js-camp/core/models/registration';
 
 import { AuthApi } from './authService';
 import { UserSecretStorageService } from './userSecretService';
@@ -16,7 +15,18 @@ export namespace UserService {
     UserSecretStorageService.saveSecret(userSecret);
   }
 
-  export function logout() {
-    UserSecretStorageService.removeSecret();
+  /**
+   * Register.
+   * @param registrationData Registration data.
+   */
+  export async function register(registrationData: Registration): Promise<void> {
+    const userSecret = await AuthApi.register(registrationData);
+    UserSecretStorageService.saveSecret(userSecret);
   }
+
+  /** Logout. */
+  export async function logout(): Promise<void> {
+    await UserSecretStorageService.removeSecret();
+  }
+
 }

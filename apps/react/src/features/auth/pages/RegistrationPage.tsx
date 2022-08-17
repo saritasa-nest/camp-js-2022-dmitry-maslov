@@ -1,15 +1,15 @@
 import { useAppSelector } from '@js-camp/react/store/index';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { FC, memo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import LoginForm from '../components/LoginForm/LoginForm';
+import { RegistrationForm } from '../components/RegistrationForm/RegistrationForm';
 
-export const LoginPageComponent: FC = () => {
+const RegistrationPageComponent: FC = () => {
   const { error, isAuthorized, isLoading } = useAppSelector(state => state.auth);
 
   return (
-    <Box>
+    <div>
       <pre>
         Error: {JSON.stringify(error)}
       </pre>
@@ -19,17 +19,17 @@ export const LoginPageComponent: FC = () => {
       <pre>
         Is loading: {JSON.stringify(isLoading)}
       </pre>
-      <LoginForm />
+      <RegistrationForm />
       <Button
-        component={RouterLink}
+        component={Link}
         color="inherit"
         variant="outlined"
-        to="/registration"
+        to="/login"
       >
-      Create account
+        I have account
       </Button>
-    </Box>
+    </div>
   );
 };
 
-export const LoginPage = memo(LoginPageComponent);
+export const RegistrationPage = memo(RegistrationPageComponent);

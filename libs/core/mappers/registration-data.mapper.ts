@@ -19,6 +19,7 @@ export namespace RegistrationMapper {
       firstName: extractErrorMessage(errorDto?.first_name),
       lastName: extractErrorMessage(errorDto?.last_name),
     };
+
   }
 
   /** @inheritdoc */

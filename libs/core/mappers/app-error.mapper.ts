@@ -21,6 +21,7 @@ export class AppErrorMapper {
    * @param httpError Http error response.
    */
   public static fromDto(httpError: AxiosError): AppError {
+    console.log('app error: ', httpError);
     const { message } = httpError;
     return new AppError(message);
   }
