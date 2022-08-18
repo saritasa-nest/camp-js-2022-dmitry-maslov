@@ -1,4 +1,5 @@
 import { useAppSelector } from '@js-camp/react/store';
+import { selectUser } from '@js-camp/react/store/auth/selectors';
 import { FC } from 'react';
 import {
   Navigate, Outlet, To, useLocation,

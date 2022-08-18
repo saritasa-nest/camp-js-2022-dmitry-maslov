@@ -33,6 +33,7 @@ const LoginFormComponent: FC = () => {
   } = useFormik({
     initialValues,
     onSubmit: handleUserLogin,
+    validateOnChange: true,
     validationSchema: loginFormSchema,
   });
 
@@ -53,12 +54,8 @@ const LoginFormComponent: FC = () => {
             undefined
           }
           <TextField
-            error={Boolean(touched.email && errors.email != null)}
-            helperText={
-              touched.password && errors.password != null ?
-                errors.password :
-                undefined
-            }
+            error={touched.email && errors.email !== undefined}
+            helperText={touched.email && errors.email !== undefined ? errors.email : undefined}
             margin="normal"
             required
             fullWidth
@@ -68,17 +65,16 @@ const LoginFormComponent: FC = () => {
             {...getFieldProps('email')}
           />
           <TextField
-            error={Boolean(touched.password && errors.password != null)}
-            helperText={
-              touched.password && errors.password != null ?
-                errors.password :
-                undefined
-            }
             margin="normal"
             required
             fullWidth
             label="Password"
             type="password"
+            error={Boolean(touched.password && errors.password != null)}
+            helperText={touched.password && errors.password != null ?
+              errors.password :
+              undefined
+            }
             autoComplete="current-password"
             {...getFieldProps('password')}
           />
