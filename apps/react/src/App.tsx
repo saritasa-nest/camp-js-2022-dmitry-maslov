@@ -1,6 +1,6 @@
 import { FC, Suspense } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 import { AppHeader } from './components/AppHeader/AppHeader';
 
@@ -9,13 +9,13 @@ import { store } from './store';
 
 export const App: FC = () => (
   <Provider store={store}>
-    <BrowserRouter>
+    <HashRouter>
       <div>
         <AppHeader></AppHeader>
         <Suspense fallback={<div>Brrr... here should be your loader component</div>}>
           <RootRouter />
         </Suspense>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   </Provider>
 );
