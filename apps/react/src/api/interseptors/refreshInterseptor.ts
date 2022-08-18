@@ -3,7 +3,7 @@
 // import { Observable, throwError } from 'rxjs';
 // import { switchMap } from 'rxjs/operators';
 
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { CONFIG } from '../config';
 

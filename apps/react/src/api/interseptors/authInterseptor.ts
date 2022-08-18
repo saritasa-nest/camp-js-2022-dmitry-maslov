@@ -8,6 +8,7 @@ import { UserSecretStorageService } from '../services/userSecretService';
  * @param config Axios config.
  */
 export function addAuthTokenBeforeRequest(config: AxiosRequestConfig): AxiosRequestConfig {
+
   if (!shouldInterceptToken(config)) {
     return config;
   }

@@ -10,7 +10,8 @@ export namespace UserSecretStorageService {
    * Save secret.
    * @param secret User secret.
    */
-  export function saveSecret(secret: UserSecret): void {
+  // eslint-disable-next-line require-await
+  export async function saveSecret(secret: UserSecret): Promise<void> {
     LocalStorageService.save(USER_SECRET_KEY, secret);
   }
 

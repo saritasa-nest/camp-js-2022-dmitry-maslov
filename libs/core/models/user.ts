@@ -18,7 +18,7 @@ export class User extends Immerable {
     super();
     this.avatar = data.avatar;
     this.email = data.email;
-    this.firstName = data.email;
+    this.firstName = data.firstName;
     this.lastName = data.lastName;
   }
 }

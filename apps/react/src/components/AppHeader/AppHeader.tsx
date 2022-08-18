@@ -6,13 +6,13 @@ import {
 
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 
-import { selectIsAuthorized } from '@js-camp/react/store/auth/selectors';
+import { selectUser } from '@js-camp/react/store/auth/selectors';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 
 const AppHeaderComponent: FC = () => {
 
-  const isAuthorized = useAppSelector(selectIsAuthorized);
+  const user = useAppSelector(selectUser);
 
   const dispatch = useAppDispatch();
 
@@ -20,8 +20,13 @@ const AppHeaderComponent: FC = () => {
     dispatch(AuthActions.logoutUser());
   };
 
-  const rightSection = isAuthorized ? (
+  const rightSection = user != null ? (
     <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+      <span>
+        Hello,
+        {' '}
+        <b>{user.firstName}</b>
+      </span>
       <Button
         color="inherit"
         onClick={handleUserLogout}

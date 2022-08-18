@@ -25,8 +25,6 @@ const LoginFormComponent: FC = () => {
   }, []);
 
   const {
-    values,
-    handleChange,
     handleSubmit,
     setErrors,
     touched,

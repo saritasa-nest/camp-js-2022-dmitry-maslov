@@ -34,8 +34,6 @@ const RegistrationFormComponent: FC = () => {
   };
 
   const {
-    values,
-    handleChange,
     handleSubmit,
     setErrors,
     touched,

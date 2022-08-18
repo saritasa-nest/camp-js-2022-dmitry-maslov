@@ -1,6 +1,7 @@
 import { AppErrorMapper } from '@js-camp/core/mappers/app-error.mapper';
 import { LoginMapper } from '@js-camp/core/mappers/login-data.mapper';
 import { RegistrationMapper } from '@js-camp/core/mappers/registration-data.mapper';
+import { User } from '@js-camp/core/models/user';
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
@@ -18,8 +19,8 @@ function* registerUserWorker(
   action: ReturnType<typeof AuthActions.registerUser>,
 ): SagaIterator {
   try {
-    yield call(UserService.register, action.payload);
-    yield put(AuthActions.registerSuccess());
+    const user: User = yield call(UserService.register, action.payload);
+    yield put(AuthActions.registerSuccess(user));
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDtoWithValidationSupport(
@@ -39,8 +40,8 @@ function* loginUserWorker(
   action: ReturnType<typeof AuthActions.loginUser>,
 ): SagaIterator {
   try {
-    yield call(UserService.login, action.payload);
-    yield put(AuthActions.loginSuccess());
+    const user: User = yield call(UserService.login, action.payload);
+    yield put(AuthActions.loginSuccess(user));
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDtoWithValidationSupport(
