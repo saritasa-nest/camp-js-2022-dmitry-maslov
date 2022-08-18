@@ -11,12 +11,10 @@ import { store } from './store';
 export const App: FC = () => (
   <Provider store={store}>
     <HashRouter>
-      <div>
-        <AppHeader></AppHeader>
-        <Suspense fallback={<AppLoadingSpinner></AppLoadingSpinner>}>
-          <RootRouter />
-        </Suspense>
-      </div>
+      <AppHeader></AppHeader>
+      <Suspense fallback={<AppLoadingSpinner></AppLoadingSpinner>}>
+        <RootRouter />
+      </Suspense>
     </HashRouter>
   </Provider>
 );

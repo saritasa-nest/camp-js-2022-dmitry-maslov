@@ -11,6 +11,8 @@ export default defineConfig({
       '@js-camp/react/store': path.resolve(__dirname, 'src/store'),
       '@js-camp/libs': path.resolve(__dirname, '../../libs'),
       '@js-camp/core': path.resolve(__dirname, '../../libs/core'),
+      '@js-camp/react/router': path.resolve(__dirname, 'src/routes'),
+      '@js-camp/react/routes/guards': path.resolve(__dirname, 'src/routes/guards'),
     },
   },
 });
