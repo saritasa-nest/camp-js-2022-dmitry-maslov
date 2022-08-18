@@ -1,7 +1,7 @@
 import { memo, FC } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 
-export const AppLoadingSpinnerComponent: FC = () => (
+const AppLoadingSpinnerComponent: FC = () => (
   <Box sx={{
     display: 'flex',
     justifyContent: 'center',
@@ -12,4 +12,4 @@ export const AppLoadingSpinnerComponent: FC = () => (
   </Box>
 );
 
-export const AppLoadingSpinner = AppLoadingSpinnerComponent;
+export const AppLoadingSpinner = memo(AppLoadingSpinnerComponent);

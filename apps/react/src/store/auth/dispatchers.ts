@@ -19,4 +19,6 @@ export namespace AuthActions {
   export const registerSuccess = createAction('auth/registerSuccess');
 
   export const registerFailure = createAction<AppError>('auth/registerFailure');
+
+  export const resetAuthErrorAndLoading = createAction('auth/resetErrors');
 }

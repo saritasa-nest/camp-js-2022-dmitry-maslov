@@ -1,107 +1,140 @@
+/* eslint-disable max-lines-per-function */
 import { memo, useEffect, FC } from 'react';
 import { Box, Button } from '@mui/material';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
 
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 
-import { AppValidationError } from '@js-camp/core/models/app-error';
+import { AppLoadingSpinner } from '@js-camp/react/components/AppLoadingSpinner';
 
-import { initValues, RegistrationFormValue, registrationFormSchema } from './form-setting';
+import { AppValidationError } from '@js-camp/core/models/app-error';
+import { Registration } from '@js-camp/core/models/registration';
+
+import {
+  initialValues,
+  RegistrationFormValue,
+  registrationFormSchema,
+} from './form-setting';
 
 const RegistrationFormComponent: FC = () => {
   const dispatch = useAppDispatch();
-  const { error, isAuthorized, isLoading } = useAppSelector(
+  const { error, isLoading } = useAppSelector(
     state => state.auth,
   );
 
-  useEffect(() => {
+  useEffect(() => () => {
+    dispatch(AuthActions.resetAuthErrorAndLoading());
+  }, []);
 
-  }, [error]);
-
-  const handleUserLogin = (value: RegistrationFormValue): void => {
+  const handleUserRegistration = (value: RegistrationFormValue): void => {
     dispatch(AuthActions.registerUser(value));
   };
 
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    setErrors,
+    touched,
+    errors,
+    getFieldProps,
+  } = useFormik({
+    initialValues,
+    validateOnChange: true,
+    validationSchema: registrationFormSchema,
+    onSubmit: handleUserRegistration,
+  });
+
+  useEffect(() => {
+    if (error != null && error instanceof AppValidationError<Registration>) {
+      setErrors(error.validationData);
+    }
+  }, [error]);
+
   return (
-    <Formik
-      initialValues={initValues}
-      validationSchema={registrationFormSchema}
-      onSubmit={value => handleUserLogin(value)}
-    >
-      <Box component={Form} sx={{ mt: 1 }}>
-        <Field
-          name="email"
-          as={TextField}
-          margin="normal"
-          required
-          fullWidth
-          label="Email Address"
-          autoComplete="email"
-          autoFocus
-
-        />
-        <ErrorMessage name="email"></ErrorMessage>
-
-        <Field
-          name="firstName"
-          as={TextField}
-          margin="normal"
-          required
-          fullWidth
-          label="First name"
-          autoComplete="additional-name"
-          autoFocus
-        />
-        <ErrorMessage name="firstName"></ErrorMessage>
-
-        <Field
-          name="lastName"
-          as={TextField}
-          margin="normal"
-          required
-          fullWidth
-          label="Last name"
-          autoComplete="family-name"
-          autoFocus
-        />
-        <ErrorMessage name="lastName"></ErrorMessage>
-
-        <Field
-          as={TextField}
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-        />
-        <ErrorMessage name="password"></ErrorMessage>
-
-        <Field
-          as={TextField}
-          margin="normal"
-          required
-          fullWidth
-          name="confirmPassword"
-          label="Confirm password"
-          type="password"
-        />
-        <ErrorMessage name="confirmPassword"></ErrorMessage>
-
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-              Sign In
-        </Button>
-      </Box>
-    </Formik>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+      {isLoading ? (
+        <AppLoadingSpinner></AppLoadingSpinner>
+      ) : (
+        <>
+          <TextField
+            error={touched.email && errors.email !== undefined}
+            helperText={touched.email && errors.email !== undefined ? errors.email : undefined}
+            margin="normal"
+            required
+            fullWidth
+            label="Email Address"
+            autoComplete="email"
+            autoFocus
+            {...getFieldProps('email')}
+          />
+          <TextField
+            error={Boolean(touched.firstName && errors.firstName != null)}
+            helperText={touched.firstName && errors.firstName != null ?
+              errors.firstName :
+              undefined
+            }
+            margin="normal"
+            required
+            fullWidth
+            label="First name"
+            autoComplete="additional-name"
+            {...getFieldProps('firstName')}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Last name"
+            autoComplete="family-name"
+            {...getFieldProps('lastName')}
+            error={Boolean(touched.lastName && errors.lastName != null)}
+            helperText={touched.lastName && errors.lastName != null ?
+              errors.lastName :
+              undefined
+            }
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            error={Boolean(touched.password && errors.password != null)}
+            helperText={touched.password && errors.password != null ?
+              errors.password :
+              undefined
+            }
+            {...getFieldProps('password')}
+          />
+          <TextField
+            error={Boolean(touched.confirmPassword && errors.confirmPassword != null)}
+            helperText={ touched.confirmPassword && errors.confirmPassword != null ?
+              errors.confirmPassword :
+              undefined
+            }
+            margin="normal"
+            required
+            fullWidth
+            label="Confirm password"
+            type="password"
+            {...getFieldProps('confirmPassword')}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+        </>
+      )}
+    </Box>
   );
 };
 

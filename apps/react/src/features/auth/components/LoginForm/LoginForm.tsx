@@ -1,71 +1,100 @@
 import { memo, useEffect, FC } from 'react';
 import { Box, Button } from '@mui/material';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
-import { AppLoadingSpinnerComponent } from '@js-camp/react/components/AppLoadingSpinner';
+import { AppLoadingSpinner } from '@js-camp/react/components/AppLoadingSpinner';
 
-import { initValues, loginFormSchema, LoginFormValue } from './form-setting';
+import { Login } from '@js-camp/core/models/login';
+
+import { AppValidationError } from '@js-camp/core/models/app-error';
+
+import { initialValues, loginFormSchema, LoginFormValue } from './form-setting';
 
 const LoginFormComponent: FC = () => {
   const dispatch = useAppDispatch();
-  const { error, isLoading } = useAppSelector(
-    state => state.auth,
-  );
-
-  useEffect(() => {
-  }, [error]);
+  const { error, isLoading } = useAppSelector(state => state.auth);
 
   const handleUserLogin = (value: LoginFormValue): void => {
     dispatch(AuthActions.loginUser(value));
   };
 
-  if (isLoading) {
-    return <AppLoadingSpinnerComponent></AppLoadingSpinnerComponent>;
-  }
+  useEffect(() => () => {
+    dispatch(AuthActions.resetAuthErrorAndLoading());
+  }, []);
+
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    setErrors,
+    touched,
+    errors,
+    getFieldProps,
+  } = useFormik({
+    initialValues,
+    onSubmit: handleUserLogin,
+    validationSchema: loginFormSchema,
+  });
+
+  useEffect(() => {
+    if (error !== undefined && error instanceof AppValidationError<Login>) {
+      setErrors(error.validationData);
+    }
+  }, [error]);
 
   return (
-    <Formik
-      initialValues={initValues}
-      validationSchema={loginFormSchema}
-      onSubmit={value => handleUserLogin(value)}
-    >
-      <Box component={Form} sx={{ mt: 1 }}>
-        <Field
-          name="email"
-          as={TextField}
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          autoComplete="email"
-          autoFocus
-        />
-        <ErrorMessage name="email"></ErrorMessage>
-        <Field
-          as={TextField}
-          htmlFor="password"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-        Sign In
-        </Button>
-      </Box>
-    </Formik>
+    <Box component="form" onSubmit={handleSubmit}>
+      {isLoading ? (
+        <AppLoadingSpinner></AppLoadingSpinner>
+      ) : (
+        <>
+          {error !== undefined && !(error instanceof AppValidationError) ?
+            'Wrong email or password' :
+            undefined
+          }
+          <TextField
+            error={Boolean(touched.email && errors.email != null)}
+            helperText={
+              touched.password && errors.password != null ?
+                errors.password :
+                undefined
+            }
+            margin="normal"
+            required
+            fullWidth
+            label="Email Address"
+            autoComplete="email"
+            autoFocus
+            {...getFieldProps('email')}
+          />
+          <TextField
+            error={Boolean(touched.password && errors.password != null)}
+            helperText={
+              touched.password && errors.password != null ?
+                errors.password :
+                undefined
+            }
+            margin="normal"
+            required
+            fullWidth
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            {...getFieldProps('password')}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+        </>
+      )}
+    </Box>
   );
 };
 

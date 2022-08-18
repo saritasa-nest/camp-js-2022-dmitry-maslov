@@ -38,5 +38,9 @@ export const authSlice = createSlice({
     .addCase(AuthActions.registerFailure, (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
+    })
+    .addCase(AuthActions.resetAuthErrorAndLoading, state => {
+      state.error = undefined;
+      state.isLoading = false;
     }),
 });

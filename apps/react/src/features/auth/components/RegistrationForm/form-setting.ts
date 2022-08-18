@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 /** Login form. */
 export type RegistrationFormValue = Registration & { confirmPassword: string; };
 
-export const initValues: RegistrationFormValue = {
+export const initialValues: RegistrationFormValue = {
   email: '',
   password: '',
   confirmPassword: '',
@@ -14,13 +14,14 @@ export const initValues: RegistrationFormValue = {
 
 export const registrationFormSchema: Yup.SchemaOf<RegistrationFormValue> =
   Yup.object().shape({
-    email: Yup.string().email('Invalid email')
-      .required('Required'),
-    password: Yup.string().required(),
-    firstName: Yup.string().required(),
-    lastName: Yup.string().required(),
+    email: Yup.string()
+      .email('Invalid email')
+      .required('This field is required'),
+    password: Yup.string().required('This field is required'),
+    firstName: Yup.string().required('This field is required'),
+    lastName: Yup.string().required('This field is required'),
     confirmPassword: Yup.string()
-      .required()
+      .required('This field is required')
       .oneOf([Yup.ref('password')], 'Passwords must match'),
 
     avatarUrl: Yup.string().notRequired(),
