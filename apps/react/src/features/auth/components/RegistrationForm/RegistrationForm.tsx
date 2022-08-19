@@ -2,7 +2,8 @@
 import { memo, useEffect, FC } from 'react';
 import { Box, Button } from '@mui/material';
 import { useFormik } from 'formik';
-import TextField from '@mui/material/TextField';
+import MuiTextField from '@mui/material/TextField';
+import { TextField } from 'formik-mui';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 import { AppLoadingSpinner } from '@js-camp/react/components/AppLoadingSpinner';
@@ -21,9 +22,12 @@ const RegistrationFormComponent: FC = () => {
     state => state.auth,
   );
 
-  useEffect(() => () => {
+  useEffect(() => {
     dispatch(AuthActions.resetAuthErrorAndLoading());
-  }, []);
+    return () => {
+    dispatch(AuthActions.resetAuthErrorAndLoading());
+  };
+}, []);
 
   const handleUserRegistration = (value: RegistrationFormValue): void => {
     dispatch(AuthActions.registerUser(value));
@@ -54,7 +58,7 @@ const RegistrationFormComponent: FC = () => {
         <AppLoadingSpinner></AppLoadingSpinner>
       ) : (
         <>
-          <TextField
+          <MuiTextField
             error={touched.email && errors.email !== undefined}
             helperText={touched.email && errors.email !== undefined ? errors.email : undefined}
             margin="normal"
@@ -65,7 +69,7 @@ const RegistrationFormComponent: FC = () => {
             autoFocus
             {...getFieldProps('email')}
           />
-          <TextField
+          <MuiTextField
             error={Boolean(touched.firstName && errors.firstName != null)}
             helperText={touched.firstName && errors.firstName != null ?
               errors.firstName :
@@ -78,7 +82,7 @@ const RegistrationFormComponent: FC = () => {
             autoComplete="additional-name"
             {...getFieldProps('firstName')}
           />
-          <TextField
+          <MuiTextField
             margin="normal"
             required
             fullWidth
@@ -91,7 +95,7 @@ const RegistrationFormComponent: FC = () => {
               undefined
             }
           />
-          <TextField
+          <MuiTextField
             margin="normal"
             required
             fullWidth
@@ -105,7 +109,7 @@ const RegistrationFormComponent: FC = () => {
             }
             {...getFieldProps('password')}
           />
-          <TextField
+          <MuiTextField
             error={Boolean(touched.confirmPassword && errors.confirmPassword != null)}
             helperText={ touched.confirmPassword && errors.confirmPassword != null ?
               errors.confirmPassword :

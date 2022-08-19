@@ -18,8 +18,11 @@ const LoginFormComponent: FC = () => {
     dispatch(AuthActions.loginUser(value));
   };
 
-  useEffect(() => () => {
+  useEffect(() => {
     dispatch(AuthActions.resetAuthErrorAndLoading());
+    return () => {
+      dispatch(AuthActions.resetAuthErrorAndLoading());
+    };
   }, []);
 
   const {
