@@ -28,7 +28,7 @@ export const refreshTokenBeforeResponse = async(error: AxiosError): Promise<neve
     throw new Error('failed response');
   }
 
-  if (error.response.status !== 401 || shouldRefreshTokenForUrl(error.response.config.url)) {
+  if (error.response.status !== 401 || !shouldRefreshTokenForUrl(error.response.config.url)) {
     throw error;
   }
 

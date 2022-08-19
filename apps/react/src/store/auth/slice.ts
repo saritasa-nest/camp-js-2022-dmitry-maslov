@@ -12,9 +12,6 @@ export const authSlice = createSlice({
       state.error = undefined;
       state.isLoading = true;
     })
-    .addCase(AuthActions.loginSuccess, state => {
-      state.isLoading = false;
-    })
     .addCase(AuthActions.loginFailure, (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
@@ -29,9 +26,6 @@ export const authSlice = createSlice({
     .addCase(AuthActions.registerUser, state => {
       state.error = undefined;
       state.isLoading = true;
-    })
-    .addCase(AuthActions.registerSuccess, state => {
-      state.isLoading = false;
     })
     .addCase(AuthActions.registerFailure, (state, action) => {
       state.error = action.payload;

@@ -5,9 +5,7 @@ import TextField from '@mui/material/TextField';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 import { AppLoadingSpinner } from '@js-camp/react/components/AppLoadingSpinner';
-
 import { Login } from '@js-camp/core/models/login';
-
 import { AppValidationError } from '@js-camp/core/models/app-error';
 
 import { initialValues, loginFormSchema, LoginFormValue } from './form-setting';

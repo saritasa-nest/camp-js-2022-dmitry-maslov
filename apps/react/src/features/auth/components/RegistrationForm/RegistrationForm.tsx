@@ -3,13 +3,9 @@ import { memo, useEffect, FC } from 'react';
 import { Box, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
-
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
-
 import { AppLoadingSpinner } from '@js-camp/react/components/AppLoadingSpinner';
-
 import { AppValidationError } from '@js-camp/core/models/app-error';
 import { Registration } from '@js-camp/core/models/registration';
 

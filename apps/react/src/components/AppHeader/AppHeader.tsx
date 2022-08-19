@@ -3,9 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar, Box, Button, Link, Toolbar,
 } from '@mui/material';
-
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
-
 import { selectUser } from '@js-camp/react/store/auth/selectors';
 
 import { useAppDispatch, useAppSelector } from '../../store';

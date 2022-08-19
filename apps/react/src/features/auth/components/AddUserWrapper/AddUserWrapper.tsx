@@ -1,10 +1,8 @@
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-
+import { UserSecretStorageService } from '@js-camp/react/api/services/userSecretService';
 import { useAppDispatch } from '@js-camp/react/store';
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 import { FC, memo, useEffect } from 'react';
-
-import { UserSecretStorageService } from '../../../../api/services/userSecretService';
 
 interface AddUserWrapperProps {
 
@@ -21,11 +19,7 @@ const AddUserWrapperComponent: FC<AddUserWrapperProps> = ({ children }) => {
     }
   }, []);
 
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export const AddUserWrapper = memo(AddUserWrapperComponent);

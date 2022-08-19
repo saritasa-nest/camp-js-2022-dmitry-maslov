@@ -6,6 +6,7 @@ import { LoginForm } from '../components/LoginForm/LoginForm';
 
 export const LoginPageComponent: FC = () => (
   <Box>
+    {/* <LoginFormNew /> */}
     <LoginForm />
     <Button
       component={RouterLink}

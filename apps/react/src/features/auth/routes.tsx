@@ -1,4 +1,4 @@
-import { NonAuthGuard } from '@js-camp/react/routes/guards/nonAutgGuard';
+import { NonAuthGuard } from '@js-camp/react/routes/guards/nonAuthGuard';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 

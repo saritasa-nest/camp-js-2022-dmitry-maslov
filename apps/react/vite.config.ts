@@ -2,17 +2,16 @@
 import path from 'path';
 
 import { defineConfig } from 'vite';
+import eslintPlugin from '@nabla/vite-plugin-eslint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  plugins: [eslintPlugin({ eslintOptions: { cache: false } })],
   resolve: {
     alias: {
-      '@js-camp/react/components': path.relative(__dirname, 'src/components'),
-      '@js-camp/react/store': path.resolve(__dirname, 'src/store'),
-      '@js-camp/libs': path.resolve(__dirname, '../../libs'),
+      '@js-camp/react': path.resolve(__dirname, '../react/src'),
       '@js-camp/core': path.resolve(__dirname, '../../libs/core'),
-      '@js-camp/react/router': path.resolve(__dirname, 'src/routes'),
-      '@js-camp/react/routes/guards': path.resolve(__dirname, 'src/routes/guards'),
+      '@js-camp': path.resolve(__dirname, '../..'),
     },
   },
 });

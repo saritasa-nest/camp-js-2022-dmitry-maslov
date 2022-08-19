@@ -6,14 +6,12 @@ import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import { UserService } from '../../api/services/userService';
-
 import { isApiError } from '../../utils/axios-error-guard';
 
 import { AuthActions } from './dispatchers';
 
 /**
- * Worker saga which register the user.
- * @param action Registration action.
+ * Worker fetch the user.
  */
 function* fetchUserWorker(): SagaIterator {
   try {
@@ -38,7 +36,6 @@ function* registerUserWorker(
   try {
     yield call(UserService.register, action.payload);
     yield put(AuthActions.fetchUser());
-    yield put(AuthActions.registerSuccess());
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDtoWithValidationSupport(
@@ -60,7 +57,6 @@ function* loginUserWorker(
   try {
     yield call(UserService.login, action.payload);
     yield put(AuthActions.fetchUser());
-    yield put(AuthActions.loginSuccess());
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDtoWithValidationSupport(
