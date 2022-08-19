@@ -1,4 +1,4 @@
-import { GeneralApiError } from '../api/dtos/api-error-dto';
+import { GeneralApiError } from '../core/dtos/api-error-dto';
 
 /**
  * Type guard for AxiosError.

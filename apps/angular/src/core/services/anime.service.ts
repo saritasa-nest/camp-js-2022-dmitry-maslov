@@ -18,6 +18,7 @@ import { GenreMapper } from '@js-camp/core/mappers/genre.mapper';
 import { Studio } from '@js-camp/core/models/studio';
 import { StudioDto } from '@js-camp/core/dtos/studio.dto';
 import { StudioMapper } from '@js-camp/core/mappers/studio.mapper';
+import { ANIME_LIST_REQUEST_FIELDS } from '@js-camp/core/dtos/anime-list-api-fields';
 
 import { AnimeSortParams } from '../models/animeSortParams';
 import { SortMapper } from '../mappers/sort-params.mapper';
@@ -79,7 +80,7 @@ export class AnimeService {
 
   /**
    * Method for getting paginated anime list.
-   * @param PaginatedAnimeListParams {PaginatedAnimeListParams}.
+   * @param PaginatedAnimeListParams {@link PaginatedAnimeListParams}.
    */
   public getPaginatedAnimeList({
     sortParams,
@@ -91,11 +92,11 @@ export class AnimeService {
     return this.httpClient
       .get<PaginatedDataDto<AnimeDTO>>(this.animeUrl.toString(), {
       params: {
-        [API_FIELDS.offset]: offset,
-        [API_FIELDS.limit]: limit,
-        [API_FIELDS.order]: SortMapper.toDto(sortParams),
-        [API_FIELDS.search]: filterParams.search,
-        [API_FIELDS.typeIn]: AnimeFiltersMapper.filterTypeToDto(
+        [ANIME_LIST_REQUEST_FIELDS.offset]: offset,
+        [ANIME_LIST_REQUEST_FIELDS.limit]: limit,
+        [ANIME_LIST_REQUEST_FIELDS.order]: SortMapper.toDto(sortParams),
+        [ANIME_LIST_REQUEST_FIELDS.search]: filterParams.search,
+        [ANIME_LIST_REQUEST_FIELDS.typeIn]: AnimeFiltersMapper.filterTypeToDto(
           filterParams.type,
         ),
       },
@@ -109,14 +110,6 @@ export class AnimeService {
       );
   }
 }
-
-const API_FIELDS = {
-  offset: 'offset',
-  limit: 'limit',
-  order: 'ordering',
-  search: 'search',
-  typeIn: 'type__in',
-};
 
 /** Params for {@link getPaginatedAnimeList} method.*/
 export interface PaginatedAnimeListParams {
