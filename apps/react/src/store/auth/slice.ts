@@ -12,8 +12,7 @@ export const authSlice = createSlice({
       state.error = undefined;
       state.isLoading = true;
     })
-    .addCase(AuthActions.loginSuccess, (state, action) => {
-      state.user = action.payload;
+    .addCase(AuthActions.loginSuccess, state => {
       state.isLoading = false;
     })
     .addCase(AuthActions.loginFailure, (state, action) => {
@@ -31,8 +30,7 @@ export const authSlice = createSlice({
       state.error = undefined;
       state.isLoading = true;
     })
-    .addCase(AuthActions.registerSuccess, (state, action) => {
-      state.user = action.payload;
+    .addCase(AuthActions.registerSuccess, state => {
       state.isLoading = false;
     })
     .addCase(AuthActions.registerFailure, (state, action) => {
@@ -41,6 +39,18 @@ export const authSlice = createSlice({
     })
     .addCase(AuthActions.resetAuthErrorAndLoading, state => {
       state.error = undefined;
+      state.isLoading = false;
+    })
+    .addCase(AuthActions.fetchUser, state => {
+      state.isLoading = true;
+      state.error = undefined;
+    })
+    .addCase(AuthActions.fetchUserSuccess, (state, actions) => {
+      state.user = actions.payload;
+      state.isLoading = false;
+    })
+    .addCase(AuthActions.fetchUserFailure, (state, action) => {
+      state.error = action.payload;
       state.isLoading = false;
     }),
 });

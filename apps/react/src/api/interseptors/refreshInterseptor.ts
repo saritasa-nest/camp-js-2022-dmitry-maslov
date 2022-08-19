@@ -32,7 +32,7 @@ export const refreshTokenBeforeResponse = async(error: AxiosError): Promise<neve
     throw error;
   }
 
-  if (UserSecretStorageService.getSecret() !== null) {
+  if (UserSecretStorageService.isUserSecretSaved() !== null) {
     try {
       await AuthApi.refreshSecret();
     } catch {

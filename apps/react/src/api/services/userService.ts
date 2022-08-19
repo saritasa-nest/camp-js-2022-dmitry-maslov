@@ -17,12 +17,9 @@ export namespace UserService {
    * Login.
    * @param loginData Login data.
    */
-  export async function login(loginData: Login): Promise<User> {
+  export async function login(loginData: Login): Promise<void> {
     const userSecret = await AuthApi.login(loginData);
     await UserSecretStorageService.saveSecret(userSecret);
-
-    const user = await getUser();
-    return user;
   }
 
   /** Get profile. */
@@ -35,12 +32,9 @@ export namespace UserService {
    * Register.
    * @param registrationData Registration data.
    */
-  export async function register(registrationData: Registration): Promise<User> {
+  export async function register(registrationData: Registration): Promise<void> {
     const userSecret = await AuthApi.register(registrationData);
     await UserSecretStorageService.saveSecret(userSecret);
-
-    const user = await getUser();
-    return user;
   }
 
   /** Logout. */

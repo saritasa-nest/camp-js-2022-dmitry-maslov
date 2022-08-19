@@ -15,12 +15,30 @@ import { AuthActions } from './dispatchers';
  * Worker saga which register the user.
  * @param action Registration action.
  */
+function* fetchUserWorker(): SagaIterator {
+  try {
+    const user: User = yield call(UserService.getUser);
+    yield put(AuthActions.fetchUserSuccess(user));
+  } catch (error: unknown) {
+    if (isApiError(error)) {
+      const appError = AppErrorMapper.fromDto(error);
+      yield put(AuthActions.fetchUserFailure(appError));
+      yield put(AuthActions.logoutUser());
+    }
+  }
+}
+
+/**
+ * Worker saga which register the user.
+ * @param action Registration action.
+ */
 function* registerUserWorker(
   action: ReturnType<typeof AuthActions.registerUser>,
 ): SagaIterator {
   try {
-    const user: User = yield call(UserService.register, action.payload);
-    yield put(AuthActions.registerSuccess(user));
+    yield call(UserService.register, action.payload);
+    yield put(AuthActions.fetchUser());
+    yield put(AuthActions.registerSuccess());
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDtoWithValidationSupport(
@@ -40,8 +58,9 @@ function* loginUserWorker(
   action: ReturnType<typeof AuthActions.loginUser>,
 ): SagaIterator {
   try {
-    const user: User = yield call(UserService.login, action.payload);
-    yield put(AuthActions.loginSuccess(user));
+    yield call(UserService.login, action.payload);
+    yield put(AuthActions.fetchUser());
+    yield put(AuthActions.loginSuccess());
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDtoWithValidationSupport(
@@ -66,4 +85,5 @@ export function* authSaga(): SagaIterator {
   yield takeLatest(AuthActions.loginUser.type, loginUserWorker);
   yield takeLatest(AuthActions.logoutUser.type, logoutUserWorker);
   yield takeLatest(AuthActions.registerUser.type, registerUserWorker);
+  yield takeLatest(AuthActions.fetchUser.type, fetchUserWorker);
 }

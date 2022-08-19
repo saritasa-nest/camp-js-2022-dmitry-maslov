@@ -21,6 +21,11 @@ export namespace UserSecretStorageService {
     LocalStorageService.remove(USER_SECRET_KEY);
   }
 
+  /** Is userSecret saved. */
+  export function isUserSecretSaved(): boolean {
+    return Boolean(getSecret());
+  }
+
   /** Get user secret. */
   export function getSecret(): UserSecret | null {
     return LocalStorageService.get(USER_SECRET_KEY);

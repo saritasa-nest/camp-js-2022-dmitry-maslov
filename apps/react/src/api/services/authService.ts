@@ -15,9 +15,9 @@ import { UserSecretStorageService } from './userSecretService';
 export namespace AuthApi {
   const loginUrl = new URL('auth/login/', CONFIG.apiUrl);
   const registerUrl = new URL('auth/register/', CONFIG.apiUrl);
-
   const refreshSecretUrl = new URL('auth/token/refresh/', CONFIG.apiUrl);
 
+  /** Refresh secret. */
   export async function refreshSecret(): Promise<void> {
     const userSecretDto = (await http.post<UserSecretDto>(refreshSecretUrl.toString())).data;
     const userSecret = UserSecretDataMapper.fromDto(userSecretDto);

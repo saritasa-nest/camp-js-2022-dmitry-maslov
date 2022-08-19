@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
+import { RouteObject, useRoutes } from 'react-router-dom';
 
 import { AppLoadingSpinner } from '../components/AppLoadingSpinner';
 
