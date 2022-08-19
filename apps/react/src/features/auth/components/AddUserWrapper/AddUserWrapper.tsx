@@ -6,15 +6,16 @@ import { FC, memo, useEffect } from 'react';
 
 import { UserSecretStorageService } from '../../../../api/services/userSecretService';
 
-interface Props {
+interface AddUserWrapperProps {
+
+  /** App. */
   readonly children: ReactJSXElement;
 }
 
-const AddUserWrapperComponent: FC<Props> = ({ children }) => {
+const AddUserWrapperComponent: FC<AddUserWrapperProps> = ({ children }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('here');
     if (UserSecretStorageService.isUserSecretSaved()) {
       dispatch(AuthActions.fetchUser());
     }
