@@ -1,10 +1,11 @@
+/* eslint-disable max-lines-per-function */
 import { memo, useEffect, FC } from 'react';
-import { Box, Button } from '@mui/material';
-import { useFormik } from 'formik';
-import TextField from '@mui/material/TextField';
+import { Field, Form, FormikProvider, useFormik } from 'formik';
+import { TextField } from 'formik-mui';
+import { Alert, Box } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
-import { AppLoadingSpinner } from '@js-camp/react/components/AppLoadingSpinner';
 import { Login } from '@js-camp/core/models/login';
 import { AppValidationError } from '@js-camp/core/models/app-error';
 
@@ -14,10 +15,6 @@ const LoginFormComponent: FC = () => {
   const dispatch = useAppDispatch();
   const { error, isLoading } = useAppSelector(state => state.auth);
 
-  const handleUserLogin = (value: LoginFormValue): void => {
-    dispatch(AuthActions.loginUser(value));
-  };
-
   useEffect(() => {
     dispatch(AuthActions.resetAuthErrorAndLoading());
     return () => {
@@ -25,71 +22,60 @@ const LoginFormComponent: FC = () => {
     };
   }, []);
 
-  const {
-    handleSubmit,
-    setErrors,
-    touched,
-    errors,
-    getFieldProps,
-  } = useFormik({
+  const handleLoginButtonClick = (value: LoginFormValue): void => {
+    dispatch(AuthActions.loginUser(value));
+  };
+
+  const formik = useFormik({
     initialValues,
-    onSubmit: handleUserLogin,
-    validateOnChange: true,
+    onSubmit: handleLoginButtonClick,
     validationSchema: loginFormSchema,
   });
 
   useEffect(() => {
     if (error !== undefined && error instanceof AppValidationError<Login>) {
-      setErrors(error.validationData);
+      formik.setErrors(error.validationData);
+      formik.setSubmitting(false);
     }
   }, [error]);
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
-      {isLoading ? (
-        <AppLoadingSpinner></AppLoadingSpinner>
-      ) : (
-        <>
-          {error !== undefined && !(error instanceof AppValidationError) ?
-            'Wrong email or password' :
+    <FormikProvider value={formik}>
+      <Box component={Form}>
+        {error !== undefined && !(error instanceof AppValidationError) ?
+          <Alert severity="error">Wrong email or password</Alert> :
             undefined
-          }
-          <TextField
-            error={touched.email && errors.email !== undefined}
-            helperText={touched.email && errors.email !== undefined ? errors.email : undefined}
-            margin="normal"
-            required
-            fullWidth
-            label="Email Address"
-            autoComplete="email"
-            autoFocus
-            {...getFieldProps('email')}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            error={Boolean(touched.password && errors.password != null)}
-            helperText={touched.password && errors.password != null ?
-              errors.password :
-              undefined
-            }
-            autoComplete="current-password"
-            {...getFieldProps('password')}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
-        </>
-      )}
-    </Box>
+        }
+        <Field
+          component={TextField}
+          name="email"
+          margin="normal"
+          required
+          fullWidth
+          label="Email Address"
+          autoComplete="email"
+          autoFocus
+        />
+        <Field
+          component={TextField}
+          name='password'
+          margin="normal"
+          required
+          fullWidth
+          label="Password"
+          type="password"
+        />
+        <LoadingButton
+          loading={isLoading}
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Sign In
+        </LoadingButton>
+      </Box>
+    </FormikProvider>
   );
 };
 

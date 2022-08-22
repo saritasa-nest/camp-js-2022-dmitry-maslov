@@ -14,7 +14,7 @@ const AppHeaderComponent: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleUserLogout = () => {
+  const handleLogoutButtonClick = () => {
     dispatch(AuthActions.logoutUser());
   };
 
@@ -27,7 +27,7 @@ const AppHeaderComponent: FC = () => {
       </span>
       <Button
         color="inherit"
-        onClick={handleUserLogout}
+        onClick={handleLogoutButtonClick}
         sx={{ mx: 1 }}
       >
         Logout
@@ -47,7 +47,6 @@ const AppHeaderComponent: FC = () => {
   return (
     <AppBar position="relative">
       <Toolbar>
-        {/* Read more about routing in MUI here: https://mui.com/guides/routing/ */}
         <Link
           component={RouterLink}
           to="/"
@@ -58,7 +57,6 @@ const AppHeaderComponent: FC = () => {
         >
           Anime app
         </Link>
-        <div />
         <Box sx={{ flexGrow: 1 }} />
         {rightSection}
       </Toolbar>

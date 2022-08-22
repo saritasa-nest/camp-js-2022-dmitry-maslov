@@ -1,4 +1,5 @@
 import { Login } from '@js-camp/core/models/login';
+import { VALIDATION_ERROR_TEXT } from '@js-camp/react/constants/validationErrorText';
 import * as Yup from 'yup';
 
 /** Login form. */
@@ -12,8 +13,8 @@ export const initialValues: LoginFormValue = {
 export const loginFormSchema: Yup.SchemaOf<LoginFormValue> = Yup.object().shape(
   {
     email: Yup.string()
-      .email('Invalid email')
-      .required('This field is required'),
-    password: Yup.string().required('This field is required'),
+      .email(VALIDATION_ERROR_TEXT.InvalidEmail)
+      .required(VALIDATION_ERROR_TEXT.Required),
+    password: Yup.string().required(VALIDATION_ERROR_TEXT.Required),
   },
 );

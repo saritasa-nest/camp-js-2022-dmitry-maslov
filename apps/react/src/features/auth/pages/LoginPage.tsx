@@ -1,12 +1,11 @@
-import { Box, Button } from '@mui/material';
 import { FC, memo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { Box, Button } from '@mui/material';
 
 import { LoginForm } from '../components/LoginForm/LoginForm';
 
 export const LoginPageComponent: FC = () => (
   <Box>
-    {/* <LoginFormNew /> */}
     <LoginForm />
     <Button
       component={RouterLink}
