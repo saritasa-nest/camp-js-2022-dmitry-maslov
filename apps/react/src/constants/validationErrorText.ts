@@ -1,5 +1,6 @@
-export const VALIDATION_ERROR_TEXT = {
-  required: 'This field is required',
-  invalidEmail: 'Invalid email',
-  passwordsNotMatch: 'Passwords do not match',
-};
+/** Validation error text. */
+export enum VALIDATION_ERROR_TEXT {
+  Required = 'This field is required',
+  InvalidEmail = 'Invalid email',
+  PasswordsNotMatch = 'Passwords do not match',
+}
