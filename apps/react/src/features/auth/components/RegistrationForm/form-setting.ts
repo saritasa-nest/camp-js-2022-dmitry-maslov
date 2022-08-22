@@ -16,14 +16,14 @@ export const initialValues: RegistrationFormValue = {
 export const registrationFormSchema: Yup.SchemaOf<RegistrationFormValue> =
   Yup.object().shape({
     email: Yup.string()
-      .email(VALIDATION_ERROR_TEXT.invalidEmail)
-      .required(VALIDATION_ERROR_TEXT.required),
-    password: Yup.string().required(VALIDATION_ERROR_TEXT.required),
-    firstName: Yup.string().required(VALIDATION_ERROR_TEXT.required),
-    lastName: Yup.string().required(VALIDATION_ERROR_TEXT.required),
+      .email(VALIDATION_ERROR_TEXT.InvalidEmail)
+      .required(VALIDATION_ERROR_TEXT.Required),
+    password: Yup.string().required(VALIDATION_ERROR_TEXT.Required),
+    firstName: Yup.string().required(VALIDATION_ERROR_TEXT.Required),
+    lastName: Yup.string().required(VALIDATION_ERROR_TEXT.Required),
     confirmPassword: Yup.string()
-      .required(VALIDATION_ERROR_TEXT.required)
-      .oneOf([Yup.ref('password')], VALIDATION_ERROR_TEXT.passwordsNotMatch),
+      .required(VALIDATION_ERROR_TEXT.Required)
+      .oneOf([Yup.ref('password')], VALIDATION_ERROR_TEXT.PasswordsNotMatch),
 
     avatarUrl: Yup.string().notRequired(),
   });

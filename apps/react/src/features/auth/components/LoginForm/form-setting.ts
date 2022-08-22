@@ -13,8 +13,8 @@ export const initialValues: LoginFormValue = {
 export const loginFormSchema: Yup.SchemaOf<LoginFormValue> = Yup.object().shape(
   {
     email: Yup.string()
-      .email(VALIDATION_ERROR_TEXT.invalidEmail)
-      .required(VALIDATION_ERROR_TEXT.required),
-    password: Yup.string().required(VALIDATION_ERROR_TEXT.required),
+      .email(VALIDATION_ERROR_TEXT.InvalidEmail)
+      .required(VALIDATION_ERROR_TEXT.Required),
+    password: Yup.string().required(VALIDATION_ERROR_TEXT.Required),
   },
 );
