@@ -1,20 +1,23 @@
 import { AnimeBase } from '@js-camp/core/models/anime-base';
 import { AppError } from '@js-camp/core/models/app-error';
+import { createEntityAdapter } from '@reduxjs/toolkit';
+
+export const animeEntityAdapter = createEntityAdapter<AnimeBase>({
+  selectId: anime => anime.id,
+});
 
 /** Anime state. */
-export interface AnimeState {
+interface IAnimeState {
 
   /** Anime is in process or not. */
   readonly isLoading: boolean;
 
   /** Error. */
   readonly error?: AppError;
-
-  /** Anime list. */
-  readonly animeList: readonly AnimeBase[];
 }
 
-export const initialState: AnimeState = {
+export const initialState = animeEntityAdapter.getInitialState<IAnimeState>({
   isLoading: false,
-  animeList: [],
-};
+});
+
+export type AnimeState = typeof initialState;

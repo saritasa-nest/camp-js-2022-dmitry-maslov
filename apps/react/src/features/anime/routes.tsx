@@ -2,8 +2,8 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { AuthGuard } from '@js-camp/react/routes/guards/authGuard';
 
-const AnimeListPage = lazy(() =>
-  import('./pages/AnimeListPage').then(module => ({ default: module.AnimeListPage })));
+const AnimePage = lazy(() =>
+  import('./pages/AnimePage').then(module => ({ default: module.AnimePage })));
 
 export const animeRoutes: RouteObject[] = [
   {
@@ -11,7 +11,7 @@ export const animeRoutes: RouteObject[] = [
     children: [
       {
         path: '*',
-        element: <AnimeListPage />,
+        element: <AnimePage />,
       },
     ],
   },

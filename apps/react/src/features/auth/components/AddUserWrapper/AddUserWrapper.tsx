@@ -6,7 +6,7 @@ import { FC, memo, ReactNode, useEffect } from 'react';
 interface AddUserWrapperProps {
 
   /** Children. */
-  readonly children: readonly ReactNode[];
+  readonly children: ReactNode;
 }
 
 const AddUserWrapperComponent: FC<AddUserWrapperProps> = ({ children }) => {

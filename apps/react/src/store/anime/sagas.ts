@@ -1,5 +1,6 @@
 import { AppErrorMapper } from '@js-camp/core/mappers/app-error.mapper';
 import { AnimeBase } from '@js-camp/core/models/anime-base';
+import { PaginatedData } from '@js-camp/core/models/pagination';
 import { AnimeService } from '@js-camp/react/api/services/animeService';
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
@@ -15,10 +16,12 @@ import { AnimeActions } from './dispatchers';
 function* fetchAnimeListWorker(
   action: ReturnType<typeof AnimeActions.fetchAnimeList>,
 ): SagaIterator {
-
   try {
-    const paginatedAnimeList: readonly AnimeBase[] = yield call(AnimeService.getPaginatedAnimeList, action.payload);
-    yield put(AnimeActions.fetchAnimeListSuccess(paginatedAnimeList));
+    const paginatedAnimeList: PaginatedData<AnimeBase> = yield call(
+      AnimeService.getPaginatedAnimeList,
+      action.payload,
+    );
+    yield put(AnimeActions.fetchAnimeListSuccess(paginatedAnimeList.items));
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDto(error);

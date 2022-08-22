@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { AnimeActions } from './dispatchers';
-import { initialState } from './state';
+import { animeEntityAdapter, AnimeState, initialState } from './state';
 
 export const animeSlice = createSlice({
   name: 'anime',
@@ -13,7 +13,7 @@ export const animeSlice = createSlice({
       state.isLoading = true;
     })
     .addCase(AnimeActions.fetchAnimeListSuccess, (state, action) => {
-      state.animeList = action.payload as WritableDraft<AnimeBase>[];
+      animeEntityAdapter.addMany(state as AnimeState, action.payload);
       state.isLoading = false;
     })
     .addCase(AnimeActions.fetchAnimeListFailure, (state, actions) => {
