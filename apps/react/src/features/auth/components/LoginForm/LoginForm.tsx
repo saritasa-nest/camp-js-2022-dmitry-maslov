@@ -35,8 +35,8 @@ const LoginFormComponent: FC = () => {
   useEffect(() => {
     if (error !== undefined && error instanceof AppValidationError<Login>) {
       formik.setErrors(error.validationData);
-      formik.setSubmitting(false);
     }
+    formik.setSubmitting(false);
   }, [error]);
 
   return (
