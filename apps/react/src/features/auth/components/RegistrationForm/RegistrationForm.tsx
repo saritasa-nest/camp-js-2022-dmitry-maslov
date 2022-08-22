@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 import { AppValidationError } from '@js-camp/core/models/app-error';
 import { Registration } from '@js-camp/core/models/registration';
+import { PasswordField } from '@js-camp/react/components';
 
 import {
   initialValues,
@@ -77,22 +78,19 @@ const RegistrationFormComponent: FC = () => {
           name="lastName"
         />
         <Field
-          component={TextField}
+          component={PasswordField}
+          name="password"
           margin="normal"
           required
           fullWidth
-          label="Password"
-          type="password"
           autoComplete="current-password"
-          name="password"
         />
         <Field
-          component={TextField}
+          component={PasswordField}
           margin="normal"
           required
           fullWidth
           label="Confirm password"
-          type="password"
           name="confirmPassword"
         />
         <LoadingButton

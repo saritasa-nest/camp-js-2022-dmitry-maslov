@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 import { AuthActions } from '@js-camp/react/store/auth/dispatchers';
 import { Login } from '@js-camp/core/models/login';
 import { AppValidationError } from '@js-camp/core/models/app-error';
+import { PasswordField } from '@js-camp/react/components';
 
 import { initialValues, loginFormSchema, LoginFormValue } from './form-setting';
 
@@ -35,8 +36,8 @@ const LoginFormComponent: FC = () => {
   useEffect(() => {
     if (error !== undefined && error instanceof AppValidationError<Login>) {
       formik.setErrors(error.validationData);
-      formik.setSubmitting(false);
     }
+    formik.setSubmitting(false);
   }, [error]);
 
   return (
@@ -57,13 +58,11 @@ const LoginFormComponent: FC = () => {
           autoFocus
         />
         <Field
-          component={TextField}
+          component={PasswordField}
           name='password'
           margin="normal"
           required
           fullWidth
-          label="Password"
-          type="password"
         />
         <LoadingButton
           loading={isLoading}
