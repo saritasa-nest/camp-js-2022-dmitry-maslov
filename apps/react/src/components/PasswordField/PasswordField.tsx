@@ -1,22 +1,15 @@
-import { FieldHookConfig, useField } from 'formik';
 import { TextField, TextFieldProps } from 'formik-mui';
 import { FC, memo } from 'react';
 
-type Props = TextFieldProps & FieldHookConfig<{password: string;}>;
+type Props = TextFieldProps;
 
-const PasswordFieldComponent: FC<Props> = props => {
-
-  const [field, meta] = useField(props);
-  return (
-    <TextField
-      {...props}
-      field={field}
-      meta={meta}
-      label="Password"
-      type="password"
-      autoComplete="current-password"
-    />
-  );
-};
+const PasswordFieldComponent: FC<Props> = props => (
+  <TextField
+    {...props}
+    type="password"
+    label={props.label ?? 'Password'}
+    autoComplete="current-password"
+  />
+);
 
 export const PasswordField = memo(PasswordFieldComponent);
