@@ -2,11 +2,16 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '../store';
 
-import { animeEntityAdapter } from './state';
+import { animeListEntityAdapter } from './state';
 
-export const { selectAll } = animeEntityAdapter.getSelectors();
+export const { selectAll } = animeListEntityAdapter.getSelectors();
 
-export const selectAnime = createSelector(
-  (state: RootState) => selectAll(state.anime),
+export const selectAnimeList = createSelector(
+  (state: RootState) => selectAll(state.animeList),
   animeList => animeList,
+);
+
+export const selectState = createSelector(
+  (state: RootState) => state.animeList,
+  state => state,
 );

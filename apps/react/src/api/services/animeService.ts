@@ -19,7 +19,7 @@ export namespace AnimeService {
   const animeListUrl = new URL('anime/anime/', CONFIG.apiUrl);
 
   /**
-   * Function for getting paginated anime list.
+   * Getting paginated anime list.
    * @param PaginatedAnimeListParams {@link PaginatedAnimeListParams}.
    */
   export async function getPaginatedAnimeList({

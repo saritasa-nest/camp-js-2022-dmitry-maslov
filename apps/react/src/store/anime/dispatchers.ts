@@ -3,10 +3,10 @@ import { AppError } from '@js-camp/core/models/app-error';
 import { PaginatedAnimeListParams } from '@js-camp/react/api/services/animeService';
 import { createAction } from '@reduxjs/toolkit';
 
-export namespace AnimeActions {
-  export const fetchAnimeList = createAction<PaginatedAnimeListParams>('anime/animeList');
+export namespace AnimeListActions {
+  export const fetchAnimeList = createAction<PaginatedAnimeListParams>('animeList/animeList');
 
-  export const fetchAnimeListFailure = createAction<AppError>('anime/animeListFailure');
+  export const fetchAnimeListFailure = createAction<AppError>('animeList/animeListFailure');
 
-  export const fetchAnimeListSuccess = createAction<readonly AnimeBase[]>('anime/animeListSuccess');
+  export const fetchAnimeListSuccess = createAction<readonly AnimeBase[]>('animeList/animeListSuccess');
 }

@@ -1,22 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { AnimeActions } from './dispatchers';
-import { animeEntityAdapter, AnimeState, initialState } from './state';
+import { AnimeListActions } from './dispatchers';
+import { animeListEntityAdapter, AnimeState, initialState } from './state';
 
-export const animeSlice = createSlice({
-  name: 'anime',
+export const animeListSlice = createSlice({
+  name: 'animeList',
   initialState,
   reducers: {},
   extraReducers: builder => builder
-    .addCase(AnimeActions.fetchAnimeList, state => {
+    .addCase(AnimeListActions.fetchAnimeList, state => {
       state.error = undefined;
       state.isLoading = true;
     })
-    .addCase(AnimeActions.fetchAnimeListSuccess, (state, action) => {
-      animeEntityAdapter.addMany(state as AnimeState, action.payload);
+    .addCase(AnimeListActions.fetchAnimeListSuccess, (state, action) => {
+      animeListEntityAdapter.addMany(state as AnimeState, action.payload);
       state.isLoading = false;
     })
-    .addCase(AnimeActions.fetchAnimeListFailure, (state, actions) => {
+    .addCase(AnimeListActions.fetchAnimeListFailure, (state, actions) => {
       state.isLoading = false;
       state.error = actions.payload;
     }),

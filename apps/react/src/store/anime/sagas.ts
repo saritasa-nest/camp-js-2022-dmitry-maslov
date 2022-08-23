@@ -7,30 +7,30 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 
 import { isApiError } from '../../utils/axios-error-guard';
 
-import { AnimeActions } from './dispatchers';
+import { AnimeListActions } from './dispatchers';
 
 /**
- * Worker fetch the user.
+ * Worker fetch the anime list.
  * @param action Action.
  */
 function* fetchAnimeListWorker(
-  action: ReturnType<typeof AnimeActions.fetchAnimeList>,
+  action: ReturnType<typeof AnimeListActions.fetchAnimeList>,
 ): SagaIterator {
   try {
     const paginatedAnimeList: PaginatedData<AnimeBase> = yield call(
       AnimeService.getPaginatedAnimeList,
       action.payload,
     );
-    yield put(AnimeActions.fetchAnimeListSuccess(paginatedAnimeList.items));
+    yield put(AnimeListActions.fetchAnimeListSuccess(paginatedAnimeList.items));
   } catch (error: unknown) {
     if (isApiError(error)) {
       const appError = AppErrorMapper.fromDto(error);
-      yield put(AnimeActions.fetchAnimeListFailure(appError));
+      yield put(AnimeListActions.fetchAnimeListFailure(appError));
     }
   }
 }
 
-/** Watcher saga for auth. */
-export function* animeSaga(): SagaIterator {
-  yield takeLatest(AnimeActions.fetchAnimeList, fetchAnimeListWorker);
+/** Watcher saga for animeList. */
+export function* animeListSaga(): SagaIterator {
+  yield takeLatest(AnimeListActions.fetchAnimeList, fetchAnimeListWorker);
 }
