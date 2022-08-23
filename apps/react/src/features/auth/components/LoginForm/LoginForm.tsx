@@ -23,7 +23,7 @@ const LoginFormComponent: FC = () => {
     };
   }, []);
 
-  const handleLoginButtonClick = (value: LoginFormValue): void => {
+  const handleLoginButtonClick = (value: LoginFormValue) => {
     dispatch(AuthActions.loginUser(value));
   };
 

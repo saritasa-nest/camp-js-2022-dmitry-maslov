@@ -2,7 +2,6 @@ import { Registration } from '@js-camp/core/models/registration';
 import { VALIDATION_ERROR_TEXT } from '@js-camp/react/constants/validationErrorText';
 import * as Yup from 'yup';
 
-/** Login form. */
 export type RegistrationFormValue = Registration & { confirmPassword: string; };
 
 export const initialValues: RegistrationFormValue = {
