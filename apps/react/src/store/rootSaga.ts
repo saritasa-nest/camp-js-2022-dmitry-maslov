@@ -1,11 +1,11 @@
 import { all, call, spawn } from 'redux-saga/effects';
 
-import { animeListSaga } from './anime/sagas';
+import { animeBaseSaga } from './animeBase/sagas';
 import { authSaga } from './auth/sagas';
 
 /** Root saga. */
 export function* rootSaga() {
-  const sagas = [authSaga, animeListSaga];
+  const sagas = [authSaga, animeBaseSaga];
 
   yield all(sagas.map(saga => spawn(function* spawnFunction() {
     while (true) {

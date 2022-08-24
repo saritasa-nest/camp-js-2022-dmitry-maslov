@@ -1,3 +1,4 @@
+import '@js-camp/react/theme/style.css';
 import { FC, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';

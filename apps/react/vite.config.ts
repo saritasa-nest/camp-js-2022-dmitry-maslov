@@ -11,6 +11,7 @@ export default defineConfig({
     alias: {
       '@js-camp/react': path.resolve(__dirname, '../react/src'),
       '@js-camp/core': path.resolve(__dirname, '../../libs/core'),
+      '@js-camp/utils': path.resolve(__dirname, '../../libs/utils'),
       '@js-camp': path.resolve(__dirname, '../..'),
     },
   },

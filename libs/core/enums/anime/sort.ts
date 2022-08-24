@@ -20,7 +20,13 @@ export enum AnimeSortField {
 
 /** Sort Direction. */
 export enum SortDirection {
-  NotSorted = 0,
-  Increase = 1,
-  Decrease = 2,
+  NotSorted = '0',
+  Increase = 'inc',
+  Decrease = 'decr',
 }
+
+export const SORT_DIRECTION_READABLE_MAP = {
+  [SortDirection.Decrease]: 'Decrease',
+  [SortDirection.Increase]: 'Increase',
+  [SortDirection.NotSorted]: 'Not sorted',
+};

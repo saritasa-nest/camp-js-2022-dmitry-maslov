@@ -1,4 +1,4 @@
-import { SortDirection } from '@mui/material';
+import { SortDirection } from '@js-camp/core/enums/anime/sort';
 
 /** Sort params. */
 export interface SortParams<T> {
