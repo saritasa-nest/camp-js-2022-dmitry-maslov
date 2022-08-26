@@ -38,6 +38,8 @@ export namespace AnimeMapper {
    */
   export function fromDtoToAnime(dto: AnimeDTO): Anime {
     return new Anime({
+      genres: dto.genres,
+      studios: dto.studios,
       airing: dto.airing,
       id: dto.id,
       image: dto.image,
@@ -50,8 +52,8 @@ export namespace AnimeMapper {
       season: AnimeSeason.toAnimeSeason(dto.season),
       status: dto.status,
       synopsis: dto.synopsis,
-      studios: dto.studios_data.map(studio => StudioMapper.fromDto(studio)),
-      genres: dto.genres_data.map(genre => GenreMapper.fromDto(genre)),
+      studiosData: dto.studios_data.map(studio => StudioMapper.fromDto(studio)),
+      genresData: dto.genres_data.map(genre => GenreMapper.fromDto(genre)),
       youTubeTrailerId: dto.trailer_youtube_id,
     });
   }

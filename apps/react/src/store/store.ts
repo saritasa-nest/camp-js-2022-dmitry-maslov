@@ -2,17 +2,23 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { animeBaseSlice } from './animeBase/slice';
+import { animeSlice } from './anime/slice';
 
 import { authSlice } from './auth/slice';
+import { extendedAnimeSlice } from './extendedAnime/slice';
+import { animeGenreSlice } from './animeGenre/slice';
 import { rootSaga } from './rootSaga';
+import { animeStudioSlice } from './animeStudio/slice';
 
 const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
-    animeBase: animeBaseSlice.reducer,
+    anime: animeSlice.reducer,
+    extendedAnime: extendedAnimeSlice.reducer,
+    animeGenre: animeGenreSlice.reducer,
+    animeStudio: animeStudioSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

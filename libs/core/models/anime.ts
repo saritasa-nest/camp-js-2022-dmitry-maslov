@@ -39,11 +39,17 @@ export class Anime extends Immerable {
   /** Synopsis. */
   public readonly synopsis: string;
 
+  /** Genres id. */
+  public readonly genres: readonly number[];
+
+  /** Studios id. */
+  public readonly studios: readonly number[];
+
   /** Genres. */
-  public readonly genres: readonly Genre[];
+  public readonly genresData: readonly Genre[];
 
   /** Studios. */
-  public readonly studios: readonly Studio[];
+  public readonly studiosData: readonly Studio[];
 
   /** YouTube trailer id. */
   public readonly youTubeTrailerId: string;
@@ -59,6 +65,8 @@ export class Anime extends Immerable {
 
   public constructor(data: InitArgs) {
     super();
+    this.studios = data.studios;
+    this.genres = data.genres;
     this.id = data.id;
     this.airing = data.airing;
     this.image = data.image;
@@ -68,8 +76,8 @@ export class Anime extends Immerable {
     this.type = data.type;
     this.status = data.status;
     this.synopsis = data.synopsis;
-    this.genres = data.genres;
-    this.studios = data.studios;
+    this.genresData = data.genresData;
+    this.studiosData = data.studiosData;
     this.youTubeTrailerId = data.youTubeTrailerId;
     this.rating = data.rating;
     this.source = data.source;

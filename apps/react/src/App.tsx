@@ -1,4 +1,5 @@
 import '@js-camp/react/theme/style.css';
+import { Box } from '@mui/material';
 import { FC, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
@@ -13,9 +14,11 @@ export const App: FC = () => (
     <AddUserWrapper>
       <HashRouter>
         <AppHeader />
-        <Suspense fallback={<AppLoadingSpinner />}>
-          <RootRouter />
-        </Suspense>
+        <Box sx={{ px: 1 }}>
+          <Suspense fallback={<AppLoadingSpinner />}>
+            <RootRouter />
+          </Suspense>
+        </Box>
       </HashRouter>
     </AddUserWrapper>
   </Provider>
